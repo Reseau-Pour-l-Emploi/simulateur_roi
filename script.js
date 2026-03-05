@@ -118,6 +118,7 @@ function updateChart() {
             }]
         },
         options: {
+            animation: false, // Désactivé pour garantir la capture PDF immédiate
             responsive: true,
             maintainAspectRatio: false,
             scales: {
@@ -130,6 +131,19 @@ function updateChart() {
             plugins: { legend: { display: false } }
         }
     });
+}
+
+// Fonction d'exportation PDF appelée par le bouton dans le HTML
+function exportationPDF() {
+    const element = document.getElementById('capture-zone');
+    const options = {
+        margin:       0.2,
+        filename:     'Simulateur-ROI.pdf',
+        image:        { type: 'jpeg', quality: 0.98 },
+        html2canvas:  { scale: 2, useCORS: true },
+        jsPDF:        { unit: 'in', format: 'a4', orientation: 'landscape' }
+    };
+    html2pdf().set(options).from(element).save();
 }
 
 window.onload = () => switchMode('DE');
