@@ -133,17 +133,4 @@ function updateChart() {
     });
 }
 
-// Fonction d'exportation PDF appelée par le bouton dans le HTML
-function exportationPDF() {
-    const element = document.getElementById('capture-zone');
-    const options = {
-        margin: 0,
-        filename: 'Simulateur-ROI.pdf',
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2, useCORS: true },
-        jsPDF: { unit: 'in', format: 'a4', orientation: 'landscape' }
-    };
-    html2pdf().set(options).from(element).save();
-}
-
 window.onload = () => switchMode('DE');
