@@ -1,0 +1,81 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f8fafc;
+    color: #1e293b;
+    margin: 0;
+    padding: 0;
+}
+
+#app {
+    max-width: 1400px;
+    margin: 0 auto;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 20px;
+}
+
+.main-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr 1fr;
+    gap: 20px;
+}
+
+.card {
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    border: 1px solid #e2e8f0;
+}
+
+h2 {
+    font-size: 0.8rem;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    margin-bottom: 20px;
+    font-weight: 800;
+}
+
+.result-hero {
+    background: #0f172a;
+    color: white;
+    text-align: center;
+    padding: 40px 20px;
+    border-radius: 12px;
+}
+
+.input-group { margin-bottom: 12px; }
+.input-group label { display: block; font-size: 0.75rem; font-weight: 700; margin-bottom: 4px; color: #475569; }
+
+input[type="number"] {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    font-weight: 800;
+}
+
+.total-badge {
+    display: inline-block;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 900;
+    margin-top: 10px;
+    text-transform: uppercase;
+}
+
+@media print {
+    @page { size: A4 landscape; margin: 5mm; }
+    body { background: white; padding: 0; }
+    #app { max-width: 100% !important; width: 100% !important; height: 100vh !important; justify-content: center !important; padding: 0 !important; }
+    .no-print { display: none !important; }
+    .card { border: 1px solid #e2e8f0 !important; box-shadow: none !important; }
+    .bg-slate-50 { background-color: #f8fafc !important; -webkit-print-color-adjust: exact; }
+    .bg-blue-50 { background-color: #eff6ff !important; -webkit-print-color-adjust: exact; }
+}
