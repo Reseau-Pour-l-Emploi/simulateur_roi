@@ -2,99 +2,120 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Simulateur ROI - Des actions pour l'emploi</title>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.js"></script>
+    
     <link rel="stylesheet" href="style.css">
     <link rel="icon" type="image/png" href="favicon.png">
 </head>
 <body>
 
-    <div id="app">
-        <header class="flex justify-between items-center mb-8 border-b-2 border-slate-900 pb-6">
-            <div class="flex-1">
-                <h1 id="main-title" class="text-3xl font-black uppercase tracking-tighter text-slate-900 leading-tight">
-                    ROI lié au placement des demandeurs d'emploi
-                </h1>
-                <div class="flex gap-4 mt-4 no-print">
-                    <button onclick="switchMode('DE')" id="btn-de" class="text-xs font-bold px-4 py-2 rounded-full border-2 border-blue-600 bg-blue-600 text-white transition">Placement DE</button>
-                    <button onclick="switchMode('ENT')" id="btn-ent" class="text-xs font-bold px-4 py-2 rounded-full border-2 border-emerald-600 text-emerald-600 hover:bg-emerald-50 transition">Aide Recrutement Entreprise</button>
-                </div>
-            </div>
-            <div class="text-right no-print">
-                <button onclick="window.print()" class="bg-slate-900 text-white px-8 py-3 rounded-xl font-bold hover:bg-black transition-all shadow-lg">Exporter en PDF</button>
-            </div>
-        </header>
-
-        <div class="main-grid">
-            <div class="card flex flex-col">
-                <h2>Coût de l'action</h2>
-                <div class="space-y-4">
-                    <div class="bg-slate-50 p-3 rounded-lg border border-slate-200">
-                        <label class="text-[9px] font-black text-slate-500 uppercase">Taux Journalier Moyen (TJM €)</label>
-                        <input type="number" id="tjm_val" value="450" oninput="calculate()" class="w-full bg-transparent border-none p-0 text-lg font-bold focus:ring-0">
+    <div id="capture-zone">
+        <div id="app">
+            <header class="flex justify-between items-center mb-8 border-b-2 border-slate-900 pb-6">
+                <div class="flex-1">
+                    <h1 id="main-title" class="text-3xl font-black uppercase tracking-tighter text-slate-900 leading-tight">
+                        ROI lié au placement des demandeurs d'emploi
+                    </h1>
+                    <div class="flex gap-4 mt-4 no-print">
+                        <button onclick="switchMode('DE')" id="btn-de" class="text-xs font-bold px-4 py-2 rounded-full border-2 border-blue-600 bg-blue-600 text-white transition">Placement DE</button>
+                        <button onclick="switchMode('ENT')" id="btn-ent" class="text-xs font-bold px-4 py-2 rounded-full border-2 border-emerald-600 text-emerald-600 hover:bg-emerald-50 transition">Aide Recrutement Entreprise</button>
                     </div>
-                    <div class="input-group"><label>Accompagnement RH (Jours)</label><input type="number" id="c_rh" value="5" oninput="calculate()"></div>
-                    <div class="input-group"><label>Logistique (€)</label><input type="number" id="c_log" value="500" oninput="calculate()"></div>
-                    <div class="input-group"><label>Aides Financières (€)</label><input type="number" id="c_aides" value="1500" oninput="calculate()"></div>
-                    <div class="input-group"><label>Prestations (€)</label><input type="number" id="c_prest" value="1000" oninput="calculate()"></div>
-                    <div class="input-group"><label>Formations (€)</label><input type="number" id="c_form" value="3000" oninput="calculate()"></div>
                 </div>
-                <div class="mt-auto pt-4 border-t border-slate-100">
-                    <div class="total-badge bg-red-50 text-red-600">COÛT TOTAL : <span id="total-costs-display">0 €</span></div>
+                <div class="text-right no-print">
+                    <button onclick="exportationPDF()" class="bg-slate-900 text-white px-8 py-3 rounded-xl font-bold hover:bg-black transition-all shadow-lg">Exporter en PDF</button>
                 </div>
-            </div>
+            </header>
 
-            <div class="flex flex-col gap-6">
-                <div class="result-hero">
-                    <span class="text-[10px] font-bold uppercase tracking-[0.2em] opacity-60">Performance Économique Globale</span>
-                    <div id="roi-display" class="text-7xl font-black my-2">0%</div>
-                    <div id="net-display" class="text-sm font-mono opacity-80 uppercase">0 € Gain Net</div>
-                </div>
-
-                <div class="card">
-                    <h2 id="radar-title">Impact sur les acteurs</h2>
-                    <div class="h-64 mb-6">
-                        <canvas id="radarChart"></canvas>
+            <div class="main-grid">
+                <div class="card flex flex-col">
+                    <h2>Coût de l'action</h2>
+                    <div class="space-y-4">
+                        <div class="bg-slate-50 p-3 rounded-lg border border-slate-200">
+                            <label class="text-[9px] font-black text-slate-500 uppercase">Taux Journalier Moyen (TJM €)</label>
+                            <input type="number" id="tjm_val" value="450" oninput="calculate()" class="w-full bg-transparent border-none p-0 text-lg font-bold focus:ring-0">
+                        </div>
+                        <div class="input-group"><label>Accompagnement RH (Jours)</label><input type="number" id="c_rh" value="5" oninput="calculate()"></div>
+                        <div class="input-group"><label>Logistique (€)</label><input type="number" id="c_log" value="500" oninput="calculate()"></div>
+                        <div class="input-group"><label>Aides Financières (€)</label><input type="number" id="c_aides" value="1500" oninput="calculate()"></div>
+                        <div class="input-group"><label>Prestations (€)</label><input type="number" id="c_prest" value="1000" oninput="calculate()"></div>
+                        <div class="input-group"><label>Formations (€)</label><input type="number" id="c_form" value="3000" oninput="calculate()"></div>
                     </div>
+                    <div class="mt-auto pt-4 border-t border-slate-100">
+                        <div class="total-badge bg-red-50 text-red-600">COÛT TOTAL : <span id="total-costs-display">0 €</span></div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col gap-6">
+                    <div class="result-hero">
+                        <span class="text-[10px] font-bold uppercase tracking-[0.2em] opacity-60">Performance Économique Globale</span>
+                        <div id="roi-display" class="text-7xl font-black my-2">0%</div>
+                        <div id="net-display" class="text-sm font-mono opacity-80 uppercase">0 € Gain Net</div>
+                    </div>
+
+                    <div class="card">
+                        <h2 id="radar-title">Impact sur les acteurs</h2>
+                        <div class="h-64 mb-6">
+                            <canvas id="radarChart"></canvas>
+                        </div>
+                        
+                        <div id="radar-sliders" class="space-y-4 no-print"></div>
+
+                        <div class="mt-6 pt-4 border-t border-slate-100">
+                            <p class="text-[10px] text-slate-500 leading-relaxed italic">
+                                <strong>Note sur l'impact qualitatif :</strong> Ces indicateurs mesurent la valeur immatérielle générée. 
+                                Alors que la satisfaction et l'efficacité valident l'adhésion immédiate, la collaboration et l'inclusion 
+                                (ou la part de marché) mesurent l'ancrage de l'action dans la durée et sa capacité à transformer 
+                                positivement l'écosystème des acteurs concernés.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card border-t-4 border-slate-900 flex flex-col">
+                    <h2 id="gain-title">Gains pour la Société</h2>
                     
-                    <div id="radar-sliders" class="space-y-4 no-print"></div>
-
-                    <div class="mt-6 pt-4 border-t border-slate-100">
-                        <p class="text-[10px] text-slate-500 leading-relaxed italic">
-                            <strong>Note sur l'impact qualitatif :</strong> Ces indicateurs mesurent la valeur immatérielle générée. 
-                            Alors que la satisfaction et l'efficacité valident l'adhésion immédiate, la collaboration et l'inclusion 
-                            (ou la part de marché) mesurent l'ancrage de l'action dans la durée et sa capacité à transformer 
-                            positivement l'écosystème des acteurs concernés.
-                        </p>
+                    <div class="bg-slate-50 p-4 rounded-lg border border-slate-200 mb-4">
+                        <label class="text-[10px] font-black text-blue-600 uppercase mb-1 block">Nombre de bénéficiaires</label>
+                        <input type="number" id="nb_benef" value="10" min="1" oninput="calculate()" class="w-full text-2xl font-black focus:ring-0 text-slate-900 p-0 border-none bg-transparent">
                     </div>
-                </div>
-            </div>
 
-            <div class="card border-t-4 border-slate-900 flex flex-col">
-                <h2 id="gain-title">Gains pour la Société</h2>
-                
-                <div class="bg-slate-50 p-4 rounded-lg border border-slate-200 mb-4">
-                    <label class="text-[10px] font-black text-blue-600 uppercase mb-1 block">Nombre de bénéficiaires</label>
-                    <input type="number" id="nb_benef" value="10" min="1" oninput="calculate()" class="w-full text-2xl font-black focus:ring-0 text-slate-900 p-0 border-none bg-transparent">
-                </div>
+                    <div class="border-2 border-dashed border-slate-200 rounded-xl p-4 bg-white mb-4">
+                        <h3 class="text-[10px] font-bold text-slate-400 uppercase mb-4 text-center tracking-widest leading-tight">
+                            Paramètres unitaires appliqués au nombre de bénéficiaires
+                        </h3>
+                        <div id="dynamic-inputs" class="space-y-4"></div>
+                    </div>
 
-                <div class="border-2 border-dashed border-slate-200 rounded-xl p-4 bg-white mb-4">
-                    <h3 class="text-[10px] font-bold text-slate-400 uppercase mb-4 text-center tracking-widest leading-tight">
-                        Paramètres unitaires appliqués au nombre de bénéficiaires
-                    </h3>
-                    <div id="dynamic-inputs" class="space-y-4"></div>
-                </div>
+                    <div class="total-badge bg-emerald-50 text-emerald-600 self-start mb-4">GAINS BRUTS : <span id="total-gains-display">0 €</span></div>
 
-                <div class="total-badge bg-emerald-50 text-emerald-600 self-start mb-4">GAINS BRUTS : <span id="total-gains-display">0 €</span></div>
-
-                <div id="explanation-box" class="p-4 bg-blue-50 rounded-lg border border-blue-100 mt-auto">
-                    <p class="text-[10px] font-bold text-blue-400 uppercase mb-2 italic">Détail du calcul automatique</p>
-                    <div id="explanation-text" class="text-xs text-blue-900 font-medium leading-relaxed"></div>
+                    <div id="explanation-box" class="p-4 bg-blue-50 rounded-lg border border-blue-100 mt-auto">
+                        <p class="text-[10px] font-bold text-blue-400 uppercase mb-2 italic">Détail du calcul automatique</p>
+                        <div id="explanation-text" class="text-xs text-blue-900 font-medium leading-relaxed"></div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <script>
+        function exportationPDF() {
+            const element = document.getElementById('capture-zone');
+            const options = {
+                margin:       0.2,
+                filename:     'Simulateur-ROI.pdf',
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2, useCORS: true },
+                jsPDF:        { unit: 'in', format: 'a4', orientation: 'landscape' }
+            };
+            html2pdf().set(options).from(element).save();
+        }
+    </script>
+
     <script src="script.js"></script>
 </body>
 </html>
