@@ -71,11 +71,32 @@ input[type="number"] {
 }
 
 @media print {
-    @page { size: A4 landscape; margin: 5mm; }
-    body { background: white; padding: 0; }
-    #app { max-width: 100% !important; width: 100% !important; height: 100vh !important; justify-content: center !important; padding: 0 !important; }
-    .no-print { display: none !important; }
-    .card { border: 1px solid #e2e8f0 !important; box-shadow: none !important; }
-    .bg-slate-50 { background-color: #f8fafc !important; -webkit-print-color-adjust: exact; }
-    .bg-blue-50 { background-color: #eff6ff !important; -webkit-print-color-adjust: exact; }
+    /* 1. Force l'orientation paysage et définit les marges */
+    @page {
+        size: A4 landscape;
+        margin: 1cm; /* Réduis la marge si besoin de plus de place */
+    }
+
+    /* 2. Ajuste le contenu pour qu'il tienne sur la largeur */
+    body {
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        background: white;
+    }
+
+    /* 3. L'astuce pour tout faire tenir sur UNE page */
+    #ton-conteneur-principal {
+        width: 100%;
+        max-height: 100%;
+        overflow: hidden;
+        /* Si c'est encore trop grand, on réduit l'échelle globale */
+        transform: scale(0.85); 
+        transform-origin: top center;
+    }
+
+    /* 4. Masquer les éléments inutiles (boutons, menu, favicon) */
+    .btn-imprimer, footer, nav {
+        display: none !important;
+    }
 }
