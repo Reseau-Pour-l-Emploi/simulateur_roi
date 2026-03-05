@@ -18,19 +18,10 @@ body {
     padding: 20px;
 }
 
-/* --- CORRECTION RESPONSIVE --- */
 .main-grid {
     display: grid;
-    /* On passe en 1 colonne par défaut (mobile) */
-    grid-template-columns: 1fr; 
+    grid-template-columns: 1fr 1.2fr 1fr;
     gap: 20px;
-}
-
-/* On repasse en 3 colonnes seulement sur les grands écrans */
-@media (min-width: 1024px) {
-    .main-grid {
-        grid-template-columns: 1fr 1.2fr 1fr;
-    }
 }
 
 .card {
@@ -79,23 +70,7 @@ input[type="number"] {
     text-transform: uppercase;
 }
 
-/* --- AJUSTEMENT POUR L'EXPORT PDF --- */
-#capture-zone {
-    background-color: #f8fafc;
-    padding: 10px;
-}
-
+/* Uniquement pour cacher le bouton sur le PDF */
 @media print {
-    /* Suppression des marges pour que html2pdf gère tout seul */
-    body { background: white; }
-    
-    /* On force la grille en 3 colonnes sur le PDF même si l'écran est petit */
-    .main-grid {
-        grid-template-columns: 1fr 1.2fr 1fr !important;
-        display: grid !important;
-    }
-    
-    .no-print {
-        display: none !important;
-    }
+    .no-print { display: none !important; }
 }
