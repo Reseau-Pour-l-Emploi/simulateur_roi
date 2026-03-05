@@ -18,10 +18,19 @@ body {
     padding: 20px;
 }
 
+/* --- CORRECTION RESPONSIVE --- */
 .main-grid {
     display: grid;
-    grid-template-columns: 1fr 1.2fr 1fr;
+    /* On passe en 1 colonne par défaut (mobile) */
+    grid-template-columns: 1fr; 
     gap: 20px;
+}
+
+/* On repasse en 3 colonnes seulement sur les grands écrans */
+@media (min-width: 1024px) {
+    .main-grid {
+        grid-template-columns: 1fr 1.2fr 1fr;
+    }
 }
 
 .card {
@@ -70,39 +79,23 @@ input[type="number"] {
     text-transform: uppercase;
 }
 
+/* --- AJUSTEMENT POUR L'EXPORT PDF --- */
+#capture-zone {
+    background-color: #f8fafc;
+    padding: 10px;
+}
+
 @media print {
-    /* 1. Force le format paysage et supprime les marges parasites du navigateur */
-    @page {
-        size: A4 landscape;
-        margin: 10mm;
+    /* Suppression des marges pour que html2pdf gère tout seul */
+    body { background: white; }
+    
+    /* On force la grille en 3 colonnes sur le PDF même si l'écran est petit */
+    .main-grid {
+        grid-template-columns: 1fr 1.2fr 1fr !important;
+        display: grid !important;
     }
-
-    /* 2. Reset pour le papier */
-    body {
-        background: white !important;
-        font-size: 12pt;
-        color: black;
-    }
-
-    /* 3. L'astuce "Ajustement Automatique" */
-    #ton-conteneur-principal {
-        width: 100% !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        display: block;
-        float: none;
-        /* Force le contenu à tenir dans la largeur sans déborder */
-        page-break-inside: avoid; 
-    }
-
-    /* 4. Cache tout ce qui pollue le PDF */
-    button, .no-print, nav, footer, .favicon-img {
+    
+    .no-print {
         display: none !important;
-    }
-
-    /* 5. Force les couleurs de fond (graphiques, barres) */
-    * {
-        -webkit-print-color-adjust: exact !important;
-        print-color-adjust: exact !important;
     }
 }
