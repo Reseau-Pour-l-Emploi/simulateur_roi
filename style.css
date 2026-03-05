@@ -71,32 +71,38 @@ input[type="number"] {
 }
 
 @media print {
-    /* 1. Force l'orientation paysage et définit les marges */
+    /* 1. Force le format paysage et supprime les marges parasites du navigateur */
     @page {
         size: A4 landscape;
-        margin: 1cm; /* Réduis la marge si besoin de plus de place */
+        margin: 10mm;
     }
 
-    /* 2. Ajuste le contenu pour qu'il tienne sur la largeur */
+    /* 2. Reset pour le papier */
     body {
-        width: 100%;
-        margin: 0;
-        padding: 0;
-        background: white;
+        background: white !important;
+        font-size: 12pt;
+        color: black;
     }
 
-    /* 3. L'astuce pour tout faire tenir sur UNE page */
+    /* 3. L'astuce "Ajustement Automatique" */
     #ton-conteneur-principal {
-        width: 100%;
-        max-height: 100%;
-        overflow: hidden;
-        /* Si c'est encore trop grand, on réduit l'échelle globale */
-        transform: scale(0.85); 
-        transform-origin: top center;
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        display: block;
+        float: none;
+        /* Force le contenu à tenir dans la largeur sans déborder */
+        page-break-inside: avoid; 
     }
 
-    /* 4. Masquer les éléments inutiles (boutons, menu, favicon) */
-    .btn-imprimer, footer, nav {
+    /* 4. Cache tout ce qui pollue le PDF */
+    button, .no-print, nav, footer, .favicon-img {
         display: none !important;
+    }
+
+    /* 5. Force les couleurs de fond (graphiques, barres) */
+    * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
     }
 }
