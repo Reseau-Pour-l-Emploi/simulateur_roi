@@ -8,11 +8,11 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <button class="print-btn" onclick="window.print()">🖨️ Imprimer Rapport d'Impact A4</button>
+    <button class="print-btn" onclick="window.print()">🖨️ Imprimer Rapport A4</button>
     
     <header>
         <h1>⚡ Impact de mon action</h1>
-        <p class="subtitle">Une aide pour évaluer l'impact de mon action pour l'emploi</p>
+        <p class="subtitle">Simulateur contrefactuel et évaluation financière (Vue Claire)</p>
     </header>
 
     <div class="switcher">
@@ -24,53 +24,51 @@
         <aside class="sidebar">
             <h3>🔬 Calibration Scientifique</h3>
             <div class="field">
-                <label title="Nombre total de personnes ayant intégré le parcours ou l'action.">Volume Bénéficiaires (N)</label>
+                <label>Bénéficiaires (N) <span class="help" title="Nombre total de personnes ayant intégré l'action.">(?)</span></label>
                 <input type="number" id="n" value="100" oninput="update()">
             </div>
             <div class="field">
-                <label title="Taux de réussite brut (sorties positives) observé à la fin de l'action.">Taux de Succès Brut (%)</label>
+                <label>Succès Brut (%) <span class="help" title="Taux de réussite observé en fin d'action.">(?)</span></label>
                 <input type="range" id="s" value="45" min="0" max="100" oninput="update()">
             </div>
             <div class="field">
-                <label title="Effet d'Aubaine : Part des bénéficiaires qui auraient retrouvé un emploi sans aucune intervention extérieure.">Biais d'Aubaine (%)</label>
+                <label>Biais d'Aubaine (%) <span class="help" title="Part des bénéficiaires qui auraient réussi sans aucune aide.">(?)</span></label>
                 <input type="range" id="a" value="20" min="0" max="100" oninput="update()">
             </div>
             <div class="field">
-                <label title="Biais de Sélection : Tendance à accompagner les profils initialement plus proches de l'emploi (écrémage).">Biais de Sélection (%)</label>
+                <label>Biais de Sélection (%) <span class="help" title="Tendance à accompagner les profils initialement plus faciles à insérer.">(?)</span></label>
                 <input type="range" id="sel" value="15" min="0" max="100" oninput="update()">
             </div>
 
             <hr>
-            <h3>💰 Modèle Économique Global</h3>
+            <h3>💰 Modèle Économique</h3>
             <div class="field">
-                <label title="Budget total consommé pour réaliser l'action (salaires, locaux, logistique).">Coût Global de l'Action (€)</label>
+                <label>Coût Global Action (€) <span class="help" title="Budget total consommé (salaires, locaux, logistique).">(?)</span></label>
                 <input type="number" id="cout-global" value="25000" oninput="update()">
             </div>
 
             <div id="fields-demandeur">
-                <h3>👤 Spécificités Demandeur</h3>
                 <div class="field">
-                    <label title="Gain moyen de revenus (salaire net) pour l'individu sur une année de maintien en poste.">Gain Insertion Individuel (€)</label>
+                    <label>Gain Insertion Individu (€) <span class="help" title="Gain de salaire net moyen annuel pour l'individu.">(?)</span></label>
                     <input type="number" id="gain-indiv" value="12000" oninput="update()">
                 </div>
                 <div class="field">
-                    <label title="Économies réalisées par la société (allocations chômage ou RSA non versés).">Économie Sociale / État (€)</label>
+                    <label>Économie Sociale / État (€) <span class="help" title="Allocations chômage/RSA non versées sur un an.">(?)</span></label>
                     <input type="number" id="gain-soc" value="5000" oninput="update()">
                 </div>
                 <div class="field">
-                    <label title="Évolution moyenne constatée sur l'échelle de Rosenberg (0 à 10 points de progression).">Évolution Score Rosenberg</label>
+                    <label>Évol. Score Rosenberg <span class="help" title="Progression moyenne de l'estime de soi (0 à 10).">(?)</span></label>
                     <input type="number" id="rosenberg" value="7" min="0" max="10" oninput="update()">
                 </div>
             </div>
 
             <div id="fields-entreprise" style="display:none;">
-                <h3>🏢 Spécificités Entreprise</h3>
                 <div class="field">
-                    <label title="Valeur ajoutée nette produite par le nouveau salarié pour l'entreprise sur un an.">Gain de Productivité Brut (€)</label>
+                    <label>Gain Productivité Brut (€) <span class="help" title="Valeur ajoutée créée par le nouveau salarié.">(?)</span></label>
                     <input type="number" id="gain-prod" value="8500" oninput="update()">
                 </div>
                 <div class="field">
-                    <label title="Économies réalisées sur les frais de cabinet de recrutement ou le temps RH interne.">Économie de Recrutement (€)</label>
+                    <label>Économie Recrutement (€) <span class="help" title="Économies sur les frais de cabinet ou temps RH interne.">(?)</span></label>
                     <input type="number" id="gain-recrut" value="3500" oninput="update()">
                 </div>
             </div>
@@ -78,75 +76,52 @@
 
         <main class="content">
             <div class="kpi-grid">
-                <div class="card card-blue">
-                    <span>Impact Net (Réel)</span>
-                    <h2 id="net">0</h2>
-                    <p>Succès imputables à l'action</p>
-                </div>
-                <div class="card card-cyan">
-                    <span>Gains Financiers Global</span>
-                    <h2 id="gain-global">0 €</h2>
-                    <p>Valeur brute créée par l'impact</p>
-                </div>
-                <div class="card card-green">
-                    <span>Gain Financier Net</span>
-                    <h2 id="gain-net-pur">0 €</h2>
-                    <p>Gains globaux - Coûts de l'action</p>
-                </div>
-                <div class="card card-purple">
-                    <span>ROI Social</span>
-                    <h2 id="roi">0.00x</h2>
-                    <p>Coefficient d'efficience sociale</p>
-                </div>
+                <div class="card card-blue"><span>Impact Net (Réel)</span><h2 id="net">0</h2><p>Succès imputables</p></div>
+                <div class="card card-cyan"><span>Gains Globaux</span><h2 id="gain-global">0 €</h2><p>Valeur brute créée</p></div>
+                <div class="card card-green"><span>Gain Net Pur</span><h2 id="gain-net-pur">0 €</h2><p>Gains - Coûts</p></div>
+                <div class="card card-purple"><span>ROI Social</span><h2 id="roi">0.00x</h2><p>Efficience</p></div>
             </div>
 
-            <div class="synthesis-container">
-                <h3>📝 Synthèse de l'Analyse des Résultats</h3>
-                <div id="dynamic-synthesis" class="synthesis-text"></div>
-            </div>
-
-            <div class="charts-grid">
-                <div class="chart-box">
-                    <h3>📉 Décomposition Décursive de l'Impact</h3>
-                    <canvas id="waterfallChart"></canvas>
-                </div>
-                <div class="chart-box">
-                    <h3>📊 Performance Qualitative des Acteurs</h3>
-                    <canvas id="radarChart"></canvas>
-                </div>
-            </div>
-
-            <div class="table-container">
-                <h3>📋 Détail des Gains Financiers (Impact Société)</h3>
+            <div class="highlight-gains">
+                <h3>💰 Récapitulatif Détaillé des Gains (Biais Déduits)</h3>
                 <table id="gains-table">
                     <thead>
                         <tr>
-                            <th>Type de Bénéficiaire</th>
-                            <th>Valeur Unitaire (€)</th>
-                            <th>Impact Net Global (€)</th>
+                            <th>Bénéficiaire / Acteur</th>
+                            <th>Valeur Unitaire</th>
+                            <th>Impact Net Financier</th>
                         </tr>
                     </thead>
                     <tbody id="table-body"></tbody>
                 </table>
             </div>
 
-            <div class="analysis-box">
-                <h4>🧠 Analyse de l'Estime de soi (Échelle de Rosenberg)</h4>
-                <p>
-                    L'évolution du score de Rosenberg est un indicateur de la "force de retour à l'emploi". Une progression positive démontre que l'action ne se limite pas à un placement, mais renforce l'autonomie et la résilience du candidat. 
-                    <a href="https://fr.wikipedia.org/wiki/Estime_de_soi" target="_blank">En savoir plus sur l'estime de soi.</a>
-                </p>
+            <div class="charts-grid">
+                <div class="chart-box">
+                    <h3>📉 Décomposition des Biais</h3>
+                    
+                    <canvas id="waterfallChart"></canvas>
+                </div>
+                <div class="chart-box">
+                    <h3>📊 Performance Qualitative</h3>
+                    
+                    <canvas id="radarChart"></canvas>
+                </div>
+            </div>
+
+            <div class="analysis-section">
+                <div class="synthesis-container">
+                    <h3>📝 Synthèse Dynamique des Résultats</h3>
+                    <div id="dynamic-synthesis" class="synthesis-text"></div>
+                </div>
+
+                <div class="analysis-box">
+                    <h4>🧠 Focus : Échelle de Rosenberg</h4>
+                    <p>L'évolution de l'estime de soi (score Rosenberg) est indispensable pour valider la pérennité du retour à l'emploi. Un score élevé diminue les risques d'abandon de poste. <a href="https://fr.wikipedia.org/wiki/Estime_de_soi" target="_blank">En savoir plus.</a></p>
+                </div>
             </div>
         </main>
     </div>
-
-    <footer class="methodology">
-        <p>
-            <b>Note Méthodologique :</b> L'impact net est calculé via une approche contrefactuelle. 
-            <i>Impact Net = N × S × (1 - Aubaine) × (1 - Sélection)</i>. 
-            Le ROI Social est le ratio entre les gains financiers générés et l'investissement initial.
-        </p>
-    </footer>
 
     <script src="script.js"></script>
 </body>
