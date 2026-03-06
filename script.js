@@ -1,104 +1,83 @@
-let waterfallChart, radarChart;
+let currentView = 'demandeur';
+let waterChart, radarChart;
 
-// Fonction utilitaire pour récupérer la valeur d'un input
-function getVal(id) {
-    const el = document.getElementById(id);
-    return el ? parseFloat(el.value) || 0 : 0;
+function setView(view) {
+    currentView = view;
+    document.getElementById('fields-demandeur').style.display = view === 'demandeur' ? 'block' : 'none';
+    document.getElementById('fields-entreprise').style.display = view === 'entreprise' ? 'block' : 'none';
+    document.getElementById('btn-demandeur').className = view === 'demandeur' ? 'active' : '';
+    document.getElementById('btn-entreprise').className = view === 'entreprise' ? 'active' : '';
+    update();
 }
 
 function update() {
-    // 1. Mise à jour de TOUS les labels (Span) dynamiques
-    const rangeIds = ['t_act', 't_cont', 'b_aub', 'b_sel', 'b_sub', 'b_dur', 'a_sat', 'a_syn', 'a_not', 'a_eff'];
-    rangeIds.forEach(id => {
-        const span = document.getElementById(id + '_val');
-        const input = document.getElementById(id);
-        if (span && input) span.innerText = input.value;
-    });
+    const n = parseFloat(document.getElementById('n').value) || 0;
+    const s = parseFloat(document.getElementById('s').value) / 100;
+    const a = parseFloat(document.getElementById('a').value) / 100;
+    const sel = parseFloat(document.getElementById('sel').value) / 100;
+    const coutGlobal = parseFloat(document.getElementById('cout-global').value) || 0;
 
-    // 2. CALCULS
-    const total_cost = (getVal('tjm') * getVal('rh_jours')) + getVal('log') + getVal('aides') + getVal('presta') + getVal('form');
-    const n = getVal('n');
-    const t_act = getVal('t_act') / 100;
-    const t_cont = getVal('t_cont') / 100;
+    const impactNet = n * s * (1 - a) * (1 - sel);
     
-    let brut = n * (t_act - t_cont);
-    
-    // Correction des biais
-    const b_aub_val = brut * (getVal('b_aub') / 100);
-    const b_sel_val = (brut - b_aub_val) * (getVal('b_sel') / 100);
-    const b_sub_val = (brut - b_aub_val - b_sel_val) * (getVal('b_sub') / 100);
-    const b_dur_val = (brut - b_aub_val - b_sel_val - b_sub_val) * (getVal('b_dur') / 100);
-    
-    let net = Math.max(0, brut - b_aub_val - b_sel_val - b_sub_val - b_dur_val);
-
-    // 3. MISE À JOUR UI
-    document.getElementById('total_cost').innerText = Math.round(total_cost).toLocaleString() + " €";
-    document.getElementById('net_impact').innerText = net.toFixed(1);
-    
-    // 4. RENDU GRAPHIQUES
-    try {
-        renderWaterfall(brut, b_aub_val, b_sel_val, b_sub_val, b_dur_val, net);
-        renderRadar([getVal('a_sat'), getVal('a_syn'), getVal('a_not'), getVal('a_eff')]);
-    } catch (e) {
-        console.error("Erreur de rendu graphique :", e);
+    let gainGlobal = 0;
+    if (currentView === 'demandeur') {
+        gainGlobal = impactNet * (parseFloat(document.getElementById('gain-indiv').value) + parseFloat(document.getElementById('gain-soc').value));
+    } else {
+        gainGlobal = impactNet * (parseFloat(document.getElementById('gain-prod').value) + parseFloat(document.getElementById('gain-recrut').value));
     }
-    // --- CALCULS ADDITIONNELS POUR LES GAINS ---
-const g_alloc = n * t_act * 400; // Exemple : 400€ économisés par personne
-const g_cotis = n * t_act * 200; // Exemple : 200€ de cotisations
-const g_total_fin = g_alloc + g_cotis;
-const sroi = total_cost > 0 ? (g_total_fin / total_cost).toFixed(2) : 0;
 
-// --- MISE À JOUR DU DOM ---
-document.getElementById('g_alloc').innerText = Math.round(g_alloc).toLocaleString() + " €";
-document.getElementById('g_cotis').innerText = Math.round(g_cotis).toLocaleString() + " €";
-document.getElementById('g_total_fin').innerText = Math.round(g_total_fin).toLocaleString() + " €";
-document.getElementById('sroi').innerText = sroi + "x";
+    const gainNetPur = gainGlobal - coutGlobal;
+    const roi = coutGlobal > 0 ? (gainGlobal / coutGlobal) : 0;
 
-// Gains Qualitatifs (Bénéficiaires)
-document.getElementById('ui_ros').innerText = getVal('q_ros') + "/40";
-document.getElementById('ui_rev').innerText = "+" + getVal('q_rev').toLocaleString() + " €";
-document.getElementById('ui_eff_ben').innerText = "+" + getVal('q_eff_ben') + "%";
+    // UI Update
+    document.getElementById('net').innerText = Math.round(impactNet);
+    document.getElementById('gain-global').innerText = Math.round(gainGlobal).toLocaleString() + " €";
+    document.getElementById('gain-net-pur').innerText = Math.round(gainNetPur).toLocaleString() + " €";
+    document.getElementById('roi').innerText = roi.toFixed(2) + "x";
+
+    renderCharts(n * s, n * s * a, n * s * sel, impactNet);
 }
 
-// Fonction du Waterfall Chart avec données simples
-function renderWaterfall(brut, aub, sel, sub, dur, net) {
-    const ctx = document.getElementById('waterfallChart').getContext('2d');
-    if (waterfallChart) waterfallChart.destroy();
-    
-    waterfallChart = new Chart(ctx, {
+function renderCharts(brut, aubaine, selection, net) {
+    const ctxW = document.getElementById('waterfallChart').getContext('2d');
+    if (waterChart) waterChart.destroy();
+    waterChart = new Chart(ctxW, {
         type: 'bar',
         data: {
-            labels: ['Brut', 'Aub', 'Sel', 'Sub', 'Dur', 'Net'],
+            labels: ['Brut', 'Aubaine', 'Sélection', 'Net'],
             datasets: [{
-                data: [brut, aub, sel, sub, dur, net],
-                backgroundColor: ['#0ea5e9', '#ef4444', '#f97316', '#f43f5e', '#8b5cf6', '#10b981'],
-                borderRadius: 4
+                data: [brut, -aubaine, -selection, net],
+                backgroundColor: ['#3b82f6', '#ef4444', '#f59e0b', '#00ff88'],
+                borderRadius: 5
             }]
         },
-        options: { 
-            responsive: true, maintainAspectRatio: false, 
+        options: {
             plugins: { legend: { display: false } },
-            scales: { y: { beginAtZero: true } }
+            scales: { y: { grid: { color: '#333' } } }
+        }
+    });
+
+    const ctxR = document.getElementById('radarChart').getContext('2d');
+    if (radarChart) radarChart.destroy();
+    const rosen = parseFloat(document.getElementById('rosenberg').value) || 0;
+
+    radarChart = new Chart(ctxR, {
+        type: 'radar',
+        data: {
+            labels: ['Confiance', 'Évol. Rosenberg', 'NPS', 'Matching', 'Autonomie'],
+            datasets: [{
+                label: 'Performance Acteurs',
+                data: [8, rosen, 7, 9, 6],
+                borderColor: '#00f2ff',
+                backgroundColor: 'rgba(0, 242, 255, 0.2)',
+                pointBackgroundColor: '#00f2ff'
+            }]
+        },
+        options: {
+            scales: { r: { suggestedMax: 10, grid: { color: '#333' }, pointLabels: { color: '#888' }, ticks: { display: false } } },
+            plugins: { legend: { display: false } }
         }
     });
 }
 
-function renderRadar(data) {
-    const ctx = document.getElementById('radarChart').getContext('2d');
-    if (radarChart) radarChart.destroy();
-    radarChart = new Chart(ctx, {
-        type: 'radar',
-        data: {
-            labels: ['Satisfaction', 'Synergie', 'Notoriété', 'Efficacité'],
-            datasets: [{ 
-                data: data, 
-                borderColor: '#1e40af', 
-                backgroundColor: 'rgba(30, 64, 175, 0.15)',
-                borderWidth: 2
-            }]
-        },
-        options: { responsive: true, maintainAspectRatio: false, scales: { r: { min: 0, max: 100 } } }
-    });
-}
-
-window.onload = update;
+window.onload = () => update();
