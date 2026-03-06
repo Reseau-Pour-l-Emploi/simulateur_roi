@@ -1,57 +1,66 @@
 :root {
-    --primary: #2563eb; --secondary: #0ea5e9; --success: #10b981;
-    --bg-light: #f1f5f9; --sidebar-bg: #ffffff; --text: #1e293b; --border: #e2e8f0;
+    --primary: #1d4ed8; --secondary: #0284c7; --success: #15803d;
+    --bg-light: #f8fafc; --sidebar-bg: #ffffff; --text: #1e293b; --border: #cbd5e1;
 }
 
-body { background: var(--bg-light); color: var(--text); font-family: 'Inter', system-ui, sans-serif; margin: 0; padding: 20px; }
-header { text-align: center; margin-bottom: 25px; border-bottom: 2px solid var(--border); padding-bottom: 15px; }
-h1 { color: var(--primary); margin: 0; text-transform: uppercase; letter-spacing: -0.5px; }
-.subtitle { color: #64748b; font-weight: 500; font-style: italic; }
+body { background: var(--bg-light); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; margin: 0; padding: 20px; }
+header { text-align: center; margin-bottom: 25px; }
+h1 { color: var(--primary); margin: 0; font-size: 2.2rem; }
+.subtitle { color: #475569; font-weight: 500; }
 
-.switcher { display: flex; justify-content: center; margin: 20px 0; gap: 10px; }
-.switcher button { background: #fff; border: 2px solid var(--border); padding: 10px 24px; border-radius: 12px; cursor: pointer; font-weight: 600; color: #64748b; transition: all 0.3s ease; }
-.switcher button.active { background: var(--primary); color: white; border-color: var(--primary); box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2); }
+.switcher { display: flex; justify-content: center; margin-bottom: 25px; gap: 10px; }
+.switcher button { background: #fff; border: 2px solid var(--border); padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 1rem; color: #475569; }
+.switcher button.active { background: var(--primary); color: white; border-color: var(--primary); }
 
-.main-layout { display: grid; grid-template-columns: 320px 1fr; gap: 30px; max-width: 1500px; margin: 0 auto; }
-.sidebar { background: #fff; border: 1px solid var(--border); padding: 25px; border-radius: 16px; height: fit-content; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
-.sidebar h3 { font-size: 0.85rem; color: var(--primary); text-transform: uppercase; letter-spacing: 1px; margin-top: 25px; border-bottom: 2px solid var(--bg-light); padding-bottom: 8px; }
+.main-layout { display: grid; grid-template-columns: 300px 1fr; gap: 25px; max-width: 1400px; margin: 0 auto; }
+.sidebar { background: #fff; border: 1px solid var(--border); padding: 20px; border-radius: 12px; height: fit-content; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+.sidebar h3 { font-size: 0.9rem; color: var(--primary); text-transform: uppercase; margin-top: 20px; border-bottom: 2px solid #f1f5f9; padding-bottom: 5px; }
 
-.field { margin-bottom: 18px; }
-label { display: block; font-size: 0.8rem; font-weight: 700; color: #475569; margin-bottom: 6px; cursor: help; }
-input[type="number"] { width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 8px; font-size: 0.9rem; }
-input[type="range"] { width: 100%; margin-top: 5px; cursor: pointer; }
+.field { margin-bottom: 15px; }
+label { display: flex; align-items: center; font-size: 0.85rem; font-weight: 600; color: #334155; margin-bottom: 5px; }
+.help { margin-left: 5px; color: var(--primary); cursor: help; font-size: 0.8rem; font-weight: bold; background: #eff6ff; padding: 2px 6px; border-radius: 50%; }
+input[type="number"] { width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 6px; font-size: 0.95rem; box-sizing: border-box; }
+input[type="range"] { width: 100%; cursor: pointer; }
 
-.kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 30px; }
-.card { background: #fff; padding: 20px; border-radius: 16px; border: 1px solid var(--border); text-align: center; border-bottom: 5px solid #cbd5e1; transition: transform 0.2s; }
+/* KPIs */
+.kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 25px; }
+.card { background: #fff; padding: 20px; border-radius: 12px; border: 1px solid var(--border); text-align: center; border-bottom: 5px solid #cbd5e1; }
 .card h2 { font-size: 1.8rem; margin: 10px 0; color: #0f172a; }
-.card span { font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: #64748b; }
-.card p { font-size: 0.7rem; color: #94a3b8; font-weight: 500; }
+.card span { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: #64748b; }
+.card p { font-size: 0.75rem; color: #64748b; margin: 0; }
 .card-blue { border-bottom-color: var(--primary); }
 .card-cyan { border-bottom-color: var(--secondary); }
 .card-green { border-bottom-color: var(--success); }
-.card-purple { border-bottom-color: #a855f7; }
+.card-purple { border-bottom-color: #9333ea; }
 
-.synthesis-container { background: #fff; border: 1px solid var(--border); padding: 25px; border-radius: 16px; margin-bottom: 30px; }
-.synthesis-text { line-height: 1.7; color: #334155; font-size: 1rem; border-left: 5px solid var(--primary); padding-left: 20px; }
+/* Gains Hyper Visibles */
+.highlight-gains { background: #fff; border: 2px solid var(--success); padding: 20px; border-radius: 12px; margin-bottom: 25px; box-shadow: 0 4px 6px rgba(21, 128, 61, 0.1); }
+.highlight-gains h3 { margin-top: 0; color: var(--success); font-size: 1.2rem; text-align: center; }
+table { width: 100%; border-collapse: collapse; font-size: 1rem; }
+th { text-align: left; padding: 12px; background: #f0fdf4; color: var(--success); border-bottom: 2px solid var(--success); }
+td { padding: 15px 12px; border-bottom: 1px solid var(--border); }
+.total-row td { background: var(--success); color: white; font-weight: bold; font-size: 1.1rem; border: none; }
 
-.charts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-bottom: 30px; }
-.chart-box { background: #fff; border: 1px solid var(--border); padding: 20px; border-radius: 16px; }
+/* Graphiques & Analyse */
+.charts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 25px; }
+.chart-box { background: #fff; border: 1px solid var(--border); padding: 15px; border-radius: 12px; }
+.chart-box h3 { font-size: 1rem; color: #334155; margin-top: 0; text-align: center; }
 
-.table-container { background: #fff; border: 1px solid var(--border); padding: 25px; border-radius: 16px; }
-table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-th { text-align: left; padding: 14px; background: #f8fafc; color: var(--primary); font-size: 0.85rem; text-transform: uppercase; }
-td { padding: 14px; border-bottom: 1px solid #f1f5f9; font-size: 0.95rem; }
+.analysis-section { display: grid; grid-template-columns: 1.5fr 1fr; gap: 20px; }
+.synthesis-container { background: #fff; border: 1px solid var(--border); padding: 20px; border-radius: 12px; }
+.synthesis-container h3 { margin-top: 0; color: var(--primary); }
+.synthesis-text { line-height: 1.6; color: #334155; border-left: 4px solid var(--primary); padding-left: 15px; font-size: 0.95rem; }
 
-.analysis-box { background: #eff6ff; border-left: 5px solid var(--primary); padding: 20px; border-radius: 12px; margin-top: 30px; }
-.analysis-box a { color: var(--primary); font-weight: 700; text-decoration: none; }
+.analysis-box { background: #eff6ff; border: 1px solid #bfdbfe; padding: 20px; border-radius: 12px; }
+.analysis-box h4 { margin-top: 0; color: var(--primary); }
+.analysis-box a { color: var(--primary); font-weight: bold; }
 
-.methodology { font-size: 0.8rem; color: #64748b; margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border); text-align: center; }
-.print-btn { position: fixed; bottom: 30px; right: 30px; background: #0f172a; color: white; padding: 14px 28px; border-radius: 50px; font-weight: 700; border: none; cursor: pointer; box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
+.print-btn { position: fixed; bottom: 20px; right: 20px; background: #0f172a; color: white; padding: 12px 24px; border-radius: 50px; font-weight: bold; cursor: pointer; border: none; }
 
 @media print {
     .sidebar, .switcher, .print-btn { display: none; }
     .main-layout { display: block; }
     body { padding: 0; background: white; }
-    .card, .chart-box, .synthesis-container, .table-container { border: 1px solid #eee; margin-bottom: 25px; page-break-inside: avoid; }
+    .card, .highlight-gains, .chart-box { page-break-inside: avoid; margin-bottom: 20px; }
     @page { size: landscape; margin: 10mm; }
 }
