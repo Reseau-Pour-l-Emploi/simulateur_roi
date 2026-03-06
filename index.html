@@ -226,8 +226,8 @@ tbody tr:hover td{background:#f8fafc}
     </div>
   </div>
   <div class="header-right">
-    <span class="mode-badge de" id="mode-badge-switch-de" onclick="applyMode('de')" title="Basculer vers le simulateur DE" style="display:none">👥 Simulateur DE ↺</span>
     <span class="mode-badge de" id="mode-badge" title="Mode actif">👥 Mode Demandeurs d'Emploi</span>
+    <span class="mode-badge ent" id="mode-switch-btn" onclick="toggleMode()" title="Basculer de mode" style="cursor:pointer">🔄 Basculer vers Entreprises</span>
     <button class="print-btn" onclick="printReport()">🖨️ Rapport A4</button>
   </div>
 </header>
@@ -418,6 +418,13 @@ tbody tr:hover td{background:#f8fafc}
       <div class="block-body">
         <div class="block-desc">Correction séquentielle pour isoler la contribution réelle de l'action sur les recrutements.</div>
 
+        <div class="biais-mode-toggle">
+          <button class="mode-btn active" id="btn-detail-ent" onclick="setBiaisModeEnt('detail')">🔬 Détailler chaque biais</button>
+          <button class="mode-btn" id="btn-confiance-ent" onclick="setBiaisModeEnt('confiance')">🎚️ Niveau de confiance</button>
+        </div>
+
+        <div class="mode-detail visible" id="mode-detail-panel-ent">
+
         <!-- Aubaine ENT -->
         <div class="field"><label>
           <span class="label-left">Effet d'Aubaine
@@ -477,6 +484,23 @@ tbody tr:hover td{background:#f8fafc}
         </label>
         <input type="range" id="b_dur_ent" value="10" min="0" max="100" oninput="syncBadge('b_dur_ent','v_b_dur_ent','%');update()">
         </div>
+
+        </div><!-- /mode-detail-panel-ent -->
+
+        <div class="mode-confiance" id="mode-confiance-panel-ent">
+          <div class="block-desc" style="margin-top:8px">Le niveau de confiance synthétise les 4 biais en un seul paramètre selon la qualité de votre évaluation méthodologique.</div>
+          <div class="field">
+            <label><span class="label-left">Niveau de confiance (%)</span><span class="val-badge" id="v_confiance_ent">50%</span></label>
+            <input type="range" id="confiance_ent" value="50" min="0" max="100" oninput="syncBadge('confiance_ent','v_confiance_ent','%');updateConfianceChipsEnt();update()">
+          </div>
+          <div class="conf-level" id="conf-chips-ent">
+            <div class="conf-chip low" id="chip-low-ent">Faible</div>
+            <div class="conf-chip med active-med" id="chip-med-ent">Modéré</div>
+            <div class="conf-chip high" id="chip-high-ent">Élevé</div>
+          </div>
+          <div class="conf-desc" id="conf-desc-ent">Confiance modérée (correction ≈ 25%) — évaluation standard sans groupe témoin formalisé.</div>
+        </div>
+
       </div>
     </div>
   </div>
@@ -806,16 +830,21 @@ function closeModal() {
   mo.style.opacity = '0'; mo.style.transition = 'opacity .2s ease';
   setTimeout(() => mo.remove(), 220);
 }
+/* ── Toggle mode ── */
+function toggleMode() {
+  applyMode(appMode === 'de' ? 'ent' : 'de');
+}
 /* ── Apply mode ── */
 function applyMode(m) {
   appMode = m;
   document.body.classList.toggle('mode-ent', m === 'ent');
   const badge     = document.getElementById('mode-badge');
-  const switchBtn = document.getElementById('mode-badge-switch-de');
+  const switchBtn = document.getElementById('mode-switch-btn');
   if (m === 'de') {
     badge.className = 'mode-badge de';
     badge.textContent = '👥 Mode Demandeurs d\'Emploi';
-    switchBtn.style.display = 'none';
+    switchBtn.className = 'mode-badge ent';
+    switchBtn.textContent = '🔄 Basculer vers Entreprises';
     document.getElementById('header-tagline').textContent = 'Évaluation financière, qualitative & contrefactuelle';
     document.getElementById('kpi_net_label').textContent = 'Impact Net Réel';
     document.getElementById('kpi_net_sub').textContent = 'Bénéficiaires insérés nets de biais';
@@ -826,7 +855,8 @@ function applyMode(m) {
   } else {
     badge.className = 'mode-badge ent';
     badge.textContent = '🏢 Mode Entreprises';
-    switchBtn.style.display = 'inline-flex';
+    switchBtn.className = 'mode-badge de';
+    switchBtn.textContent = '🔄 Basculer vers DE';
     document.getElementById('header-tagline').textContent = 'Évaluation de l\'impact sur les recrutements & le marché du travail';
     document.getElementById('kpi_net_label').textContent = 'Recrutements Nets';
     document.getElementById('kpi_net_sub').textContent = 'Recrutements réussis nets de biais';
@@ -866,6 +896,30 @@ function setBiaisMode(m) {
   document.getElementById('mode-detail-panel').classList.toggle('visible', m === 'detail');
   document.getElementById('mode-confiance-panel').classList.toggle('visible', m === 'confiance');
   update();
+}
+
+/* ── Biais mode (ENT) ── */
+let biaisModeEnt = 'detail';
+function setBiaisModeEnt(m) {
+  biaisModeEnt = m;
+  document.getElementById('btn-detail-ent').classList.toggle('active', m === 'detail');
+  document.getElementById('btn-confiance-ent').classList.toggle('active', m === 'confiance');
+  document.getElementById('mode-detail-panel-ent').classList.toggle('visible', m === 'detail');
+  document.getElementById('mode-confiance-panel-ent').classList.toggle('visible', m === 'confiance');
+  update();
+}
+function updateConfianceChipsEnt(){
+  const pct = v('confiance_ent');
+  const isLow = pct <= 33, isHigh = pct >= 67;
+  document.getElementById('chip-low-ent').className  = 'conf-chip low'  + (isLow              ? ' active-low'  : '');
+  document.getElementById('chip-med-ent').className  = 'conf-chip med'  + (!isLow && !isHigh  ? ' active-med'  : '');
+  document.getElementById('chip-high-ent').className = 'conf-chip high' + (isHigh             ? ' active-high' : '');
+  const descs = {
+    low:  'Confiance faible (correction ≈ 40–50%) — peu de données disponibles, pas de groupe témoin.',
+    med:  'Confiance modérée (correction ≈ 25%) — évaluation standard sans groupe témoin formalisé.',
+    high: 'Confiance élevée (correction ≈ 8–15%) — suivi rigoureux, groupe de comparaison solide.'
+  };
+  document.getElementById('conf-desc-ent').textContent = isLow ? descs.low : isHigh ? descs.high : descs.med;
 }
 function confToCorrection(pct){
   if(pct <= 20) return 0.50;
@@ -988,13 +1042,23 @@ function updateENT(){
   const base_impact = Math.max(0, recruts_brut - recruts_contre);
 
   // 4 biais entreprise (cascade)
-  const e_aub = v('e_aub_ent')/100, b_sel = v('b_sel_ent')/100;
-  const b_prox = v('b_prox')/100,   b_dur = v('b_dur_ent')/100;
-  const a1 = base_impact*(1-e_aub);
-  const a2 = a1*(1-b_sel);
-  const a3 = a2*(1-b_prox);
-  const impactNet = a3*(1-b_dur);
-  const val_aub = base_impact-a1, val_sel=a1-a2, val_prox=a2-a3, val_dur=a3-impactNet;
+  let impactNet, val_aub, val_sel, val_prox, val_dur, biaisLabelEnt;
+  if (biaisModeEnt === 'detail') {
+    const e_aub = v('e_aub_ent')/100, b_sel = v('b_sel_ent')/100;
+    const b_prox = v('b_prox')/100,   b_dur = v('b_dur_ent')/100;
+    const a1 = base_impact*(1-e_aub);
+    const a2 = a1*(1-b_sel);
+    const a3 = a2*(1-b_prox);
+    impactNet = a3*(1-b_dur);
+    val_aub = base_impact-a1; val_sel=a1-a2; val_prox=a2-a3; val_dur=a3-impactNet;
+    biaisLabelEnt = `4 biais séquentiels — correction : ${base_impact>0?Math.round((1-impactNet/base_impact)*100):0}%`;
+  } else {
+    const corr = confToCorrection(v('confiance_ent'));
+    impactNet = base_impact*(1-corr);
+    const lost = base_impact-impactNet;
+    val_aub=lost*.28; val_sel=lost*.22; val_prox=lost*.18; val_dur=lost*.32;
+    biaisLabelEnt = `Niveau confiance ${v('confiance_ent')}% — correction : ${Math.round(corr*100)}%`;
+  }
 
   // ── Gains entreprise ──
   const g_rate  = v('g_recrut_rate');
@@ -1063,9 +1127,10 @@ function updateENT(){
     <tr class="spacer-row"><td colspan="4"></td></tr>
     <tr class="${isPos?'balance-pos':'balance-neg'}"><td colspan="3">⚖️ GAIN NET PUR (Ent. + Société − Coûts)</td><td class="nb tr">${isPos?'+ ':''}${fmt(gainNetPur)}</td></tr>`;
 
-  document.getElementById('bias-chips').innerHTML =
-    [['Aubaine',val_aub],['Sélection',val_sel],['Proximité',val_prox],['Durabilité',val_dur]]
-    .map(([nm,val])=>`<div class="bias-chip"><span class="cn">${nm}</span><span class="cp">−${base_impact>0?Math.round(val/base_impact*100):0}%</span></div>`).join('');
+  document.getElementById('bias-chips').innerHTML = biaisModeEnt === 'detail'
+    ? [['Aubaine',val_aub],['Sélection',val_sel],['Proximité',val_prox],['Durabilité',val_dur]]
+      .map(([nm,val])=>`<div class="bias-chip"><span class="cn">${nm}</span><span class="cp">−${base_impact>0?Math.round(val/base_impact*100):0}%</span></div>`).join('')
+    : `<div class="bias-chip" style="background:#f0fdfa;border-color:#99f6e4"><span class="cn" style="color:var(--teal)">${biaisLabelEnt}</span></div>`;
 
   renderCharts(
     ['Recrutements Bruts','− Contrefactuel','− Aubaine','− Sélection','− Proximité','− Durabilité','Recrutements Nets'],
@@ -1262,7 +1327,9 @@ window.onload = () => {
   const ds = new Date().toLocaleDateString('fr-FR',{day:'numeric',month:'long',year:'numeric'});
   if(document.getElementById('report-date')) document.getElementById('report-date').textContent = ds;
   updateConfianceChips();
+  updateConfianceChipsEnt();
   setBiaisMode('detail');
+  setBiaisModeEnt('detail');
   initTooltips();
   update();
 };
