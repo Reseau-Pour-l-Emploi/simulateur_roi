@@ -2,9 +2,10 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Impact Lab - Analyse d'Impact Social</title>
+    <title>Impact Lab - Analyse d'Additionnalité</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 <body>
     <header class="no-print">
@@ -17,50 +18,59 @@
     <div class="dashboard-container">
         <aside class="sidebar no-print">
             <section>
-                <h3>💰 STRUCTURE DES COÛTS</h3>
+                <h3>💰 COÛTS DE L'ACTION</h3>
                 <div class="input-grid">
-                    <label title="Taux Journalier Moyen">TJM (€) <input type="number" id="tjm" value="550" oninput="update()"></label>
-                    <label title="Nombre de jours d'accompagnement">Jours RH <input type="number" id="rh_jours" value="12" oninput="update()"></label>
-                    <label>Logistique (€) <input type="number" id="log" value="1200" oninput="update()"></label>
-                    <label>Aides (€) <input type="number" id="aides" value="1500" oninput="update()"></label>
-                    <label>Prestations (€) <input type="number" id="presta" value="800" oninput="update()"></label>
-                    <label>Formations (€) <input type="number" id="form" value="2500" oninput="update()"></label>
+                    <label title="Taux Journalier Moyen de l'intervenant en euros">TJM (€) <input type="number" id="tjm" value="550" oninput="update()"></label>
+                    <label title="Nombre de jours de travail dédiés au dispositif">Jours RH <input type="number" id="rh_jours" value="12" oninput="update()"></label>
+                    <label title="Frais de salle, matériel, déplacements">Logistique (€) <input type="number" id="log" value="1200" oninput="update()"></label>
+                    <label title="Aides directes versées aux bénéficiaires (ex: mobilité)">Aides (€) <input type="number" id="aides" value="1500" oninput="update()"></label>
+                    <label title="Prestations intellectuelles ou techniques externes">Prestations (€) <input type="number" id="presta" value="800" oninput="update()"></label>
+                    <label title="Coûts d'ingénierie et d'animation des formations">Formations (€) <input type="number" id="form" value="2500" oninput="update()"></label>
                 </div>
             </section>
 
             <section>
-                <h3>📈 RÉSULTATS (6 MOIS)</h3>
-                <label>Nb Bénéficiaires <input type="number" id="n" value="60" oninput="update()"></label>
-                <label>Taux Accès Action (%) <input type="range" id="t_act" value="75" oninput="update()"></label>
-                <label>Taux Contrefactuel (%) <input type="range" id="t_cont" value="45" oninput="update()"></label>
+                <h3>📈 RÉSULTATS (ACCÈS À 6 MOIS)</h3>
+                <label title="Nombre total de personnes ayant suivi l'action">Nb de Bénéficiaires <input type="number" id="n" value="60" oninput="update()"></label>
+                <label title="Proportion de bénéficiaires en emploi 6 mois après l'action">Taux Accès Action (%) <input type="range" id="t_act" value="75" min="0" max="100" oninput="update()"></label>
+                <label title="Taux d'emploi estimé pour ces mêmes profils s'ils n'avaient PAS fait l'action">Taux Contrefactuel (%) <input type="range" id="t_cont" value="45" min="0" max="100" oninput="update()"></label>
             </section>
 
             <section>
                 <h3>⚖️ CORRECTION DES BIAIS</h3>
-                <label title="Succès sans aide">Aubaine (%) <input type="range" id="b_aub" value="20" oninput="update()"></label>
-                <label title="Profils déjà employables">Sélection (%) <input type="range" id="b_sel" value="15" oninput="update()"></label>
-                <label title="Déplacement d'emploi">Substitution (%) <input type="range" id="b_sub" value="10" oninput="update()"></label>
-                <label title="Stabilité contrat">Durabilité (%) <input type="range" id="b_dur" value="15" oninput="update()"></label>
+                <label title="Spontanéité : Le candidat aurait-il trouvé un emploi seul, dans le même délai ?">Aubaine (%) <input type="range" id="b_aub" value="20" min="0" max="100" oninput="update()"></label>
+                <label title="Crémage : Ai-je sélectionné les profils les plus proches de l'emploi pour booster mes résultats ?">Sélection (%) <input type="range" id="b_sel" value="15" min="0" max="100" oninput="update()"></label>
+                <label title="Déplacement : Mon intervention a-t-elle simplement déplacé le chômage vers un autre candidat ?">Substitution (%) <input type="range" id="b_sub" value="10" min="0" max="100" oninput="update()"></label>
+                <label title="Pérennité : L'emploi obtenu est-il stable ou s'agit-il d'un contrat précaire de très courte durée ?">Durabilité (%) <input type="range" id="b_dur" value="15" min="0" max="100" oninput="update()"></label>
             </section>
 
             <section>
-                <h3>🤝 GAINS ACTEURS (Qualitatif)</h3>
-                <label>Satisfaction Clients <input type="range" id="q_sat" value="85" oninput="update()"></label>
-                <label>Synergie Acteurs <input type="range" id="q_syn" value="70" oninput="update()"></label>
-                <label>Notoriété <input type="range" id="q_not" value="60" oninput="update()"></label>
-                <label>Sentiment d'Efficacité <input type="range" id="q_eff" value="80" oninput="update()"></label>
+                <h3>✨ GAINS QUALITATIFS (Bénéficiaires)</h3>
+                <label title="Mesure de l'estime de soi post-action via l'échelle scientifique de Rosenberg (0 à 40)">Score Rosenberg (0-40) <input type="number" id="q_ros" value="32" min="0" max="40" oninput="update()"></label>
+                <label title="Écart mensuel moyen entre le nouveau salaire et les anciennes allocations">Écart Revenu/Allocations (€) <input type="number" id="q_rev" value="550" oninput="update()"></label>
+                <label title="Hausse déclarée du sentiment de capacité d'action chez le bénéficiaire">Sentiment d'Efficacité (%) <input type="number" id="q_eff_ben" value="28" oninput="update()"></label>
+            </section>
+
+            <section>
+                <h3>🤝 GAINS ACTEURS (Radar)</h3>
+                <div class="input-grid">
+                    <label title="Amélioration de la satisfaction des clients/financeurs">Satisfaction <input type="range" id="a_sat" value="85" oninput="update()"></label>
+                    <label title="Amélioration de la synergie entre les différents acteurs locaux">Synergie <input type="range" id="a_syn" value="70" oninput="update()"></label>
+                    <label title="Amélioration de la notoriété du dispositif">Notoriété <input type="range" id="a_not" value="60" oninput="update()"></label>
+                    <label title="Augmentation du sentiment d'efficacité de l'équipe encadrante">Efficacité Équipe <input type="range" id="a_eff" value="80" oninput="update()"></label>
+                </div>
             </section>
         </aside>
 
         <main class="report-area">
+            
             <div id="dynamic-summary" class="summary-box">
-                Chargement de la synthèse...
-            </div>
+                </div>
 
             <div class="kpi-grid">
-                <div class="kpi-card"><span>Coût Global</span><b id="total_cost">0 €</b></div>
-                <div class="kpi-card blue"><span>Impact Net (Pers.)</span><b id="net_impact">0</b></div>
-                <div class="kpi-card green"><span>ROI Social (SROI)</span><b id="sroi">0x</b></div>
+                <div class="kpi-card"><span class="label">Coût Global de l'Action</span><b id="total_cost">0 €</b></div>
+                <div class="kpi-card highlight"><span class="label">Impact Net (Personnes insérées)</span><b id="net_impact">0</b></div>
+                <div class="kpi-card highlight-alt"><span class="label">ROI Social (SROI)</span><b id="sroi">0x</b></div>
             </div>
 
             <div class="charts-grid">
@@ -76,23 +86,23 @@
 
             <div class="gains-grid">
                 <div class="gain-col">
-                    <h4>💶 Gains Financiers (Société)</h4>
-                    <div class="gain-item">Économie d'allocations <b id="g_alloc">0 €</b></div>
-                    <div class="gain-item">Cotisations supplémentaires <b id="g_cotis">0 €</b></div>
-                    <div class="gain-item total">Total : <b id="g_total_fin">0 €</b></div>
+                    <h4>💶 Gains Financiers (Impact Société)</h4>
+                    <div class="gain-item"><span>Économie d'allocations</span><b id="g_alloc">0 €</b></div>
+                    <div class="gain-item"><span>Cotisations supplémentaires générées</span><b id="g_cotis">0 €</b></div>
+                    <div class="gain-item total"><span>Bénéfice Net Financier</span><b id="g_total_fin">0 €</b></div>
                 </div>
                 <div class="gain-col">
                     <h4>🌱 Gains Qualitatifs (Bénéficiaires)</h4>
-                    <div class="gain-item">Score Rosenberg (Bien-être) <b>32/40</b></div>
-                    <div class="gain-item">Écart Revenu/Allocations <b id="g_rev">+550 €</b></div>
-                    <div class="gain-item">Sentiment d'Efficacité <b id="eff_display" class="success">+28%</b></div>
+                    <div class="gain-item"><span>Score Rosenberg (Bien-être psychologique)</span><b id="ui_ros">0/40</b></div>
+                    <div class="gain-item"><span>Écart de Revenu (Salaire vs Allocations)</span><b id="ui_rev" class="success">+0 €</b></div>
+                    <div class="gain-item"><span>Sentiment d'Efficacité Personnel</span><b id="ui_eff_ben" class="success">+0%</b></div>
                 </div>
             </div>
 
             <footer class="note-methedo">
-                <strong>Note Méthodologique :</strong> L'impact net est calculé via l'équation : 
-                $$Impact_{Net} = [N \times (T_{action} - T_{cont})] \times \prod (1 - Biais_{i})$$. 
-                Ce modèle soustrait la réussite naturelle et corrige les effets de structure pour isoler la valeur ajoutée réelle.
+                <strong>Note Méthodologique :</strong> L'impact net est calculé via l'approche contrefactuelle corrigée :
+                $$ Impact_{Net} = \left[ N \times (Tx_{Action} - Tx_{Contrefactuel}) \right] \times \prod_{i} (1 - Biais_{i}) $$
+                Ce modèle soustrait la réussite naturelle et corrige les effets de structure (Aubaine, Sélection, Substitution, Durabilité) pour isoler la valeur d'additionnalité pure créée par l'action.
             </footer>
         </main>
     </div>
