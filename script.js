@@ -65,7 +65,9 @@ function update() {
     renderWaterfall(brut, b_aub, b_sel, b_sub, b_dur, net);
     renderRadar(qual_acteurs);
 }
-
+function updateRangeVal(id, val) {
+    document.getElementById(id).innerText = val;
+}
 // Fonction du Waterfall Chart avec des barres flottantes (Floating Bars)
 function renderWaterfall(brut, aub, sel, sub, dur, net) {
     const ctx = document.getElementById('waterfallChart').getContext('2d');
