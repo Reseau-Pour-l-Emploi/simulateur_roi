@@ -42,6 +42,22 @@ function update() {
     } catch (e) {
         console.error("Erreur de rendu graphique :", e);
     }
+    // --- CALCULS ADDITIONNELS POUR LES GAINS ---
+const g_alloc = n * t_act * 400; // Exemple : 400€ économisés par personne
+const g_cotis = n * t_act * 200; // Exemple : 200€ de cotisations
+const g_total_fin = g_alloc + g_cotis;
+const sroi = total_cost > 0 ? (g_total_fin / total_cost).toFixed(2) : 0;
+
+// --- MISE À JOUR DU DOM ---
+document.getElementById('g_alloc').innerText = Math.round(g_alloc).toLocaleString() + " €";
+document.getElementById('g_cotis').innerText = Math.round(g_cotis).toLocaleString() + " €";
+document.getElementById('g_total_fin').innerText = Math.round(g_total_fin).toLocaleString() + " €";
+document.getElementById('sroi').innerText = sroi + "x";
+
+// Gains Qualitatifs (Bénéficiaires)
+document.getElementById('ui_ros').innerText = getVal('q_ros') + "/40";
+document.getElementById('ui_rev').innerText = "+" + getVal('q_rev').toLocaleString() + " €";
+document.getElementById('ui_eff_ben').innerText = "+" + getVal('q_eff_ben') + "%";
 }
 
 // Fonction du Waterfall Chart avec données simples
