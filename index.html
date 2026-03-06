@@ -2,86 +2,102 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Impact Lab - Dashboard DE</title>
+    <title>Impact Lab - Analyse d'Impact Social</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <div class="no-print header">
-        <button class="btn-print" onclick="window.print()">🖨️ Exporter Rapport A4 Paysage</button>
-        <h1>⚡ IMPACT LAB : ANALYSE DEMANDEURS D'EMPLOI</h1>
-    </div>
+    <header class="no-print">
+        <div class="header-content">
+            <h1>🔬 IMPACT LAB <span class="subtitle">| Évaluation Scientifique de l'Impact Social</span></h1>
+            <button class="btn-print" onclick="window.print()">🖨️ Générer le Rapport A4 Paysage</button>
+        </div>
+    </header>
 
-    <main class="dashboard-grid">
-        <aside class="sidebar">
+    <div class="dashboard-container">
+        <aside class="sidebar no-print">
             <section>
-                <h3>💰 Structure des Coûts</h3>
-                <div class="input-group">
-                    <label>TJM Humain (€): <input type="number" id="tjm" value="500" oninput="update()"></label>
-                    <label>Accomp. (Jours): <input type="number" id="rh_jours" value="10" oninput="update()"></label>
-                    <label>Logistique (€): <input type="number" id="logistique" value="1500" oninput="update()"></label>
-                    <label>Aides Fin. (€): <input type="number" id="aides" value="2000" oninput="update()"></label>
-                    <label>Prestations (€): <input type="number" id="presta" value="1000" oninput="update()"></label>
-                    <label>Formations (€): <input type="number" id="form" value="3000" oninput="update()"></label>
+                <h3>💰 COÛTS DE L'ACTION</h3>
+                <div class="input-grid">
+                    <label>TJM Humain (€) <input type="number" id="tjm" value="550" oninput="update()"></label>
+                    <label>Accomp. RH (Jours) <input type="number" id="rh_jours" value="12" oninput="update()"></label>
+                    <label>Logistique (€) <input type="number" id="logistique" value="1200" oninput="update()"></label>
+                    <label>Aides Financières (€) <input type="number" id="aides" value="1500" oninput="update()"></label>
+                    <label>Prestations (€) <input type="number" id="presta" value="800" oninput="update()"></label>
+                    <label>Formations (€) <input type="number" id="form" value="2500" oninput="update()"></label>
                 </div>
             </section>
 
             <section>
-                <h3>📈 Résultats Bruts</h3>
-                <div class="input-group">
-                    <label>Nb Bénéficiaires: <input type="number" id="n" value="50" oninput="update()"></label>
-                    <label>Taux Accès Action (%): <input type="range" id="taux_act" value="70" oninput="update()"></label>
-                    <label>Taux Contrefactuel (%): <input type="range" id="taux_cont" value="40" oninput="update()"></label>
+                <h3>📈 RÉSULTATS D'ACCÈS</h3>
+                <div class="input-stack">
+                    <label>Nombre de bénéficiaires <input type="number" id="n" value="60" oninput="update()"></label>
+                    <label>Taux d'accès à l'emploi à 6 mois (%) <input type="range" id="taux_act" value="75" oninput="update()"></label>
+                    <label>Taux d'accès à l'emploi à 6 mois contrefactuel (%) <input type="range" id="taux_cont" value="45" oninput="update()"></label>
                 </div>
             </section>
 
             <section>
-                <h3>🔬 Correction des Biais</h3>
-                <div class="input-group">
-                    <label title="Recrutements naturels">Aubaine (%): <input type="range" id="b_aub" value="20" oninput="update()"></label>
-                    <label title="Profils déjà aptes">Sélection (%): <input type="range" id="b_sel" value="15" oninput="update()"></label>
-                    <label title="Déplacement du chômage">Substitution (%): <input type="range" id="b_sub" value="10" oninput="update()"></label>
-                    <label title="Fragilité du contrat">Durabilité (%): <input type="range" id="b_dur" value="15" oninput="update()"></label>
+                <h3>⚖️ CORRECTION DES BIAIS <span class="info-icon" title="Ajustements nécessaires pour isoler l'impact réel propre à votre action.">ⓘ</span></h3>
+                <div class="input-stack">
+                    <label>Aubaine (%) <input type="range" id="b_aub" value="20" oninput="update()"></label>
+                    <label>Sélection (%) <input type="range" id="b_sel" value="15" oninput="update()"></label>
+                    <label>Substitution (%) <input type="range" id="b_sub" value="10" oninput="update()"></label>
+                    <label>Durabilité (%) <input type="range" id="b_dur" value="15" oninput="update()"></label>
                 </div>
             </section>
         </aside>
 
-        <div class="main-content">
-            <div class="kpi-row">
-                <div class="card"><h4>Coût Total</h4><p id="total_cost">0 €</p></div>
-                <div class="card cyan"><h4>Impact Net (Indiv.)</h4><p id="net_impact">0</p></div>
-                <div class="card gold"><h4>SROI (Social ROI)</h4><p id="sroi">0x</p></div>
+        <main class="report-area">
+            <div class="kpi-grid">
+                <div class="kpi-card">
+                    <span class="label">Coût Global de l'Action</span>
+                    <span class="value" id="total_cost">0 €</span>
+                </div>
+                <div class="kpi-card highlight">
+                    <span class="label">Impact Net Réel (Personnes)</span>
+                    <span class="value" id="net_impact">0</span>
+                </div>
+                <div class="kpi-card highlight-alt">
+                    <span class="label">ROI Social (SROI)</span>
+                    <span class="value" id="sroi">0x</span>
+                </div>
             </div>
 
-            <div class="charts-row">
-                <div class="chart-container">
-                    <h5>Cascade d'Impact (Nettoyage des Biais)</h5>
+            <div class="charts-grid">
+                <div class="chart-box">
+                    <h4>Cascade d'Impact (Nettoyage des Biais)</h4>
+                    
                     <canvas id="waterfallChart"></canvas>
                 </div>
-                <div class="chart-container">
-                    <h5>Radar d'Équilibre (Valeur Multidimensionnelle)</h5>
+                <div class="chart-box">
+                    <h4>Radar d'Équilibre Multidimensionnel</h4>
+                    
                     <canvas id="radarChart"></canvas>
                 </div>
             </div>
 
-            <div class="qualitative-row">
-                <div class="qual-box">
-                    <h5>Gains Bénéficiaires</h5>
-                    <ul>
-                        <li>Différentiel Revenu/Alloc: <b id="gain_rev">0 €</b></li>
-                        <li>Score Rosenberg (Bien-être): <b id="score_ros">0/40</b></li>
-                    </ul>
+            <div class="gains-grid">
+                <div class="gains-column">
+                    <h4>💶 Gains Financiers (Société)</h4>
+                    <div class="gain-item"><span>Économie d'allocations</span><b id="g_alloc">0 €</b></div>
+                    <div class="gain-item"><span>Cotisations supplémentaires</span><b id="g_cotis">0 €</b></div>
+                    <div class="gain-item total"><span>Bénéfice Net Financier</span><b id="g_total_fin">0 €</b></div>
                 </div>
-                <div class="qual-box">
-                    <h5>Gains Acteurs</h5>
-                    <ul>
-                        <li>Satisfaction Clients: <b>8.2/10</b></li>
-                        <li>Sentiment d'Efficacité: <b>+24%</b></li>
-                    </ul>
+                <div class="gains-column">
+                    <h4>🌱 Gains Qualitatifs (Bénéficiaires & Acteurs)</h4>
+                    <div class="gain-item"><span>Score Rosenberg (Bien-être)</span><b>32/40</b></div>
+                    <div class="gain-item"><span>Différentiel Revenu/Mois</span><b id="g_diff_rev">0 €</b></div>
+                    <div class="gain-item"><span>Sentiment d'Efficacité</span><b class="success">+28%</b></div>
+                    <div class="gain-item"><span>Satisfaction Partenaires</span><b>8.5/10</b></div>
                 </div>
             </div>
-        </div>
-    </main>
+
+            <footer class="methodology-note">
+                <p><strong>Note Méthodologique :</strong> Cette analyse utilise une approche <strong>contrefactuelle</strong> corrigée. L'Impact Net est calculé en soustrayant le taux d'accès spontané (groupe de contrôle) du taux observé, puis en appliquant quatre filtres de biais : l'<em>Aubaine</em> (succès sans aide), la <em>Sélection</em> (profils favorisés), la <em>Substitution</em> (déplacement d'emploi) et la <em>Durabilité</em> (stabilité du poste). Les gains financiers sont estimés sur une base annuelle de retour à l'emploi.</p>
+            </footer>
+        </main>
+    </div>
 
     <script src="script.js"></script>
 </body>
