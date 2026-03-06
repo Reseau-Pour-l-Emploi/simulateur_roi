@@ -17,22 +17,33 @@ h1 { font-size: 1.25rem; margin: 0; color: var(--primary); }
 
 .dashboard-container { display: flex; gap: 20px; max-width: 1500px; margin: 20px auto; padding: 0 20px; align-items: flex-start; }
 
-/* SIDEBAR */
-.sidebar { width: 300px; background: var(--bg-card); padding: 20px; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); max-height: 85vh; overflow-y: auto; flex-shrink: 0; }
+/* SIDEBAR - LARGEUR ELARGIE */
+.sidebar { width: 450px; background: var(--bg-card); padding: 20px; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); max-height: 85vh; overflow-y: auto; flex-shrink: 0; }
 .sidebar::-webkit-scrollbar { width: 6px; }
 .sidebar::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 3px; }
 .sidebar h3 { font-size: 0.75rem; color: var(--text-muted); border-bottom: 1px solid var(--border); padding-bottom: 6px; margin: 20px 0 10px 0; text-transform: uppercase; letter-spacing: 0.5px; }
 .sidebar h3:first-child { margin-top: 0; }
 .input-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.sidebar label { display: flex; justify-content: space-between; align-items: center; }
+.sidebar label { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    font-weight: 600; 
+    margin: 10px 0; 
+    color: var(--text-main); 
+    font-size: 0.8rem; 
+    cursor: help;
+    white-space: nowrap; 
+}
 .val-display { 
     background: var(--primary); 
     color: white; 
     padding: 2px 6px; 
     border-radius: 4px; 
     font-size: 0.7rem; 
-    min-width: 25px; 
+    min-width: 30px; 
     text-align: center; 
+    margin-left: 10px;
 }
 input[type="number"], input[type="range"] { width: 100%; border: 1px solid #cbd5e1; border-radius: 6px; padding: 5px; box-sizing: border-box; background: #f8fafc; transition: border 0.2s; }
 input[type="number"]:focus { border-color: var(--secondary); outline: none; }
@@ -49,7 +60,7 @@ input[type="number"]:focus { border-color: var(--secondary); outline: none; }
 .kpi-card.highlight { border-bottom: 4px solid var(--secondary); }
 .kpi-card.highlight-alt { border-bottom: 4px solid var(--success); }
 
-/* GRAPHIQUES - LE SECRET EST ICI (.canvas-holder) */
+/* GRAPHIQUES */
 .charts-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 18px; }
 .chart-box { background: var(--bg-card); padding: 20px; border-radius: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.04); }
 .chart-box h4 { margin: 0 0 15px 0; font-size: 0.95rem; color: var(--primary); text-align: center; }
@@ -66,72 +77,20 @@ input[type="number"]:focus { border-color: var(--secondary); outline: none; }
 .btn-print { background: var(--primary); color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.9rem; transition: background 0.2s; }
 .btn-print:hover { background: #172554; }
 
-/* DESIGN DU GUIDE DEPLIANT (ACCORDEON) */
-.guide-accordion {
-    margin-bottom: 20px;
-    background: #f8fafc;
-    border: 1px solid #cbd5e1;
-    border-radius: 8px;
-    overflow: hidden;
-}
+/* GUIDE DEPLIANT */
+.guide-accordion { margin-bottom: 20px; background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 8px; overflow: hidden; }
+.guide-accordion details summary { padding: 12px 15px; font-weight: 600; font-size: 0.85rem; color: var(--primary); cursor: pointer; list-style: none; display: flex; align-items: center; transition: background 0.2s; }
+.guide-accordion details summary::before { content: "▼"; font-size: 0.7rem; margin-right: 8px; transition: transform 0.3s ease; }
+.guide-accordion details[open] summary::before { transform: rotate(180deg); }
+.guide-accordion details summary:hover { background: #eff6ff; }
+.guide-accordion .guide-content { padding: 0 15px 15px 15px; font-size: 0.75rem; color: var(--text-muted); line-height: 1.5; border-top: 1px solid #e2e8f0; margin-top: 5px; padding-top: 10px; }
 
-.guide-accordion details summary {
-    padding: 12px 15px;
-    font-weight: 600;
-    font-size: 0.85rem;
-    color: var(--primary);
-    cursor: pointer;
-    list-style: none; /* Cache la flèche par défaut sur certains navigateurs */
-    display: flex;
-    align-items: center;
-    transition: background 0.2s;
-}
-
-/* Ajout d'une flèche personnalisée */
-.guide-accordion details summary::before {
-    content: "▼";
-    font-size: 0.7rem;
-    margin-right: 8px;
-    transition: transform 0.3s ease;
-}
-
-.guide-accordion details[open] summary::before {
-    transform: rotate(180deg);
-}
-
-.guide-accordion details summary:hover {
-    background: #eff6ff;
-}
-
-.guide-accordion .guide-content {
-    padding: 0 15px 15px 15px;
-    font-size: 0.75rem;
-    color: var(--text-muted);
-    line-height: 1.5;
-    border-top: 1px solid #e2e8f0;
-    margin-top: 5px;
-    padding-top: 10px;
-}
-
-.guide-accordion .guide-content p {
-    margin: 0 0 10px 0;
-}
-
-.guide-accordion .guide-content p:last-child {
-    margin-bottom: 0;
-}
-
-.guide-accordion strong {
-    color: var(--text-main);
-}
-
-/* IMPRESSION A4 PAYSAGE */
 @media print {
     .no-print { display: none !important; }
     body { background: white; }
     .dashboard-container { margin: 0; padding: 0; max-width: 100%; display: block; }
     .report-area { gap: 10px; }
-    .canvas-holder { height: 220px; } /* Légèrement réduit pour tenir sur la page */
+    .canvas-holder { height: 220px; }
     .kpi-card, .chart-box, .gain-col { box-shadow: none; border: 1px solid #cbd5e1; }
     @page { size: landscape; margin: 10mm; }
 }
