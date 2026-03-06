@@ -6,6 +6,19 @@ function getVal(id) {
 }
 
 function update() {
+    
+    // 1. MISE À JOUR VISUELLE DES CURSEURS (Le "Span Display")
+    document.getElementById('t_act_val').innerText = document.getElementById('t_act').value;
+    document.getElementById('t_cont_val').innerText = document.getElementById('t_cont').value;
+    document.getElementById('b_aub_val').innerText = document.getElementById('b_aub').value;
+    document.getElementById('b_sel_val').innerText = document.getElementById('b_sel').value;
+    document.getElementById('b_sub_val').innerText = document.getElementById('b_sub').value;
+    document.getElementById('b_dur_val').innerText = document.getElementById('b_dur').value;
+    document.getElementById('a_sat_val').innerText = document.getElementById('a_sat').value;
+    document.getElementById('a_syn_val').innerText = document.getElementById('a_syn').value;
+    document.getElementById('a_not_val').innerText = document.getElementById('a_not').value;
+    document.getElementById('a_eff_val').innerText = document.getElementById('a_eff').value;
+
     // 1. COÛTS
     const total_cost = (getVal('tjm') * getVal('rh_jours')) + 
                        getVal('log') + getVal('aides') + 
