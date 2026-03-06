@@ -2,58 +2,133 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Impact Lab Pro - Light Edition</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <button class="print-btn" onclick="window.print()">🖨️ Imprimer Rapport A4</button>
-    <h1>⚡ IMPACT LAB : ANALYSE SCIENTIFIQUE</h1>
-
-    <div class="switcher">
-        <button id="btn-demandeur" class="active" onclick="setView('demandeur')">Vue Demandeur</button>
-        <button id="btn-entreprise" onclick="setView('entreprise')">Vue Entreprise</button>
+    <div class="header-action">
+        <button class="print-btn" onclick="window.print()">🖨️ Imprimer le rapport</button>
     </div>
-
-    <div class="sidebar">
-        <h3>⚙️ Calibration</h3>
-        <label>Bénéficiaires: <input type="number" id="n" value="100" oninput="update()"></label>
-        <label>Succès Brut (%): <input type="range" id="s" value="45" oninput="update()"></label>
-        <label>Aubaine (%): <input type="range" id="a" value="20" title="Succès sans intervention" oninput="update()"></label>
-        <label>Sélection (%): <input type="range" id="sel" value="15" title="Profils déjà aptes" oninput="update()"></label>
-        
-        <hr>
-        <div id="fields-demandeur">
-            <h3>👤 Paramètres Demandeur</h3>
-            <label>Gain Insertion (€): <input type="number" id="gain-indiv" value="12000" oninput="update()"></label>
-            <label>Économie Sociale (€): <input type="number" id="gain-soc" value="5000" oninput="update()"></label>
+    
+    <header>
+        <h1>⚡ IMPACT LAB : ANALYSE SCIENTIFIQUE</h1>
+        <div class="switcher">
+            <button id="btn-demandeur" class="active" onclick="setView('demandeur')">Vue Demandeur d'Emploi</button>
+            <button id="btn-entreprise" onclick="setView('entreprise')">Vue Entreprise</button>
         </div>
-        <div id="fields-entreprise" style="display:none;">
-            <h3>🏢 Paramètres Entreprise</h3>
-            <label>Gain Productivité (€): <input type="number" id="gain-prod" value="8000" oninput="update()"></label>
-            <label>Économie Recrutement (€): <input type="number" id="gain-recrut" value="3000" oninput="update()"></label>
+    </header>
+
+    <main>
+        <div class="sidebar">
+            <div class="panel">
+                <h3>⚙️ Calibration</h3>
+                <div class="input-group">
+                    <label>Bénéficiaires: <span id="val-n">100</span></label>
+                    <input type="range" id="n" min="1" max="1000" value="100" oninput="update()">
+                </div>
+                <div class="input-group">
+                    <label>Succès Brut (%): <span id="val-s">45</span>%</label>
+                    <input type="range" id="s" min="0" max="100" value="45" oninput="update()">
+                </div>
+                <div class="input-group">
+                    <label title="Succès qui serait arrivé sans aide">Effet Aubaine (%): <span id="val-a">20</span>%</label>
+                    <input type="range" id="a" min="0" max="100" value="20" oninput="update()">
+                </div>
+                <div class="input-group">
+                    <label title="Biais lié au profil initial des candidats">Biais Sélection (%): <span id="val-sel">15</span>%</label>
+                    <input type="range" id="sel" min="0" max="100" value="15" oninput="update()">
+                </div>
+            </div>
+
+            <div id="fields-demandeur" class="panel panel-blue">
+                <h3>👤 Paramètres Demandeur</h3>
+                <div class="input-group">
+                    <label>Gain Insertion (€)</label>
+                    <input type="number" id="gain-indiv" value="12000" oninput="update()">
+                </div>
+                <div class="input-group">
+                    <label>Économie Sociale (€)</label>
+                    <input type="number" id="gain-soc" value="5000" oninput="update()">
+                </div>
+            </div>
+
+            <div id="fields-entreprise" class="panel panel-green" style="display:none;">
+                <h3>🏢 Paramètres Entreprise</h3>
+                <div class="input-group">
+                    <label>Gain Productivité (€)</label>
+                    <input type="number" id="gain-prod" value="8000" oninput="update()">
+                </div>
+                <div class="input-group">
+                    <label>Économie Recrutement (€)</label>
+                    <input type="number" id="gain-recrut" value="3000" oninput="update()">
+                </div>
+            </div>
+        </div>
+
+        <div class="content">
+            <div class="kpi-grid">
+                <div class="kpi-card">
+                    <small>Impact Net</small>
+                    <h2 id="net">0</h2>
+                </div>
+                <div class="kpi-card highlight">
+                    <small>Gain Net Financier</small>
+                    <h2 id="gain-financier">0 €</h2>
+                </div>
+                <div class="kpi-card">
+                    <small>ROI Social</small>
+                    <h2 id="roi">0.00x</h2>
+                </div>
+            </div>
+
+            <div class="charts-container">
+                <div class="chart-box">
+                    <h4>Décomposition de l'Impact</h4>
+                    <canvas id="waterfallChart"></canvas>
+                </div>
+                <div class="chart-box">
+                    <h4>Répartition des Gains</h4>
+                    <canvas id="pieChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </main>
+<div class="input-group">
+    <label>
+        Effet Aubaine (%) 
+        <span class="info-icon" title="Ce qui serait arrivé de toute façon sans l'intervention (ex: retour à l'emploi spontané).">ⓘ</span>
+        : <span id="val-a">20</span>%
+    </label>
+    <input type="range" id="a" min="0" max="100" value="20" oninput="update()">
+</div>
+
+<div class="input-group">
+    <label>
+        Biais Sélection (%) 
+        <span class="info-icon" title="Correction liée au fait que l'action attire naturellement les profils les plus aptes au succès.">ⓘ</span>
+        : <span id="val-sel">15</span>%
+    </label>
+    <input type="range" id="sel" min="0" max="100" value="15" oninput="update()">
+</div>
+
+<section class="methodology-box">
+    <h3>🔬 Rigueur Méthodologique & Glossaire</h3>
+    <div class="method-grid">
+        <div>
+            <h4>Analyse Contrefactuelle</h4>
+            <p>L'impact net est calculé selon la formule : <code>Y = Brut × (1 - Aubaine) × (1 - Sélection)</code>. Cette approche permet d'isoler la valeur ajoutée réelle de l'action par rapport à un scénario où elle n'existerait pas.</p>
+        </div>
+        <div>
+            <h4>Valorisation des Gains</h4>
+            <p>Les gains sont calculés sur une base annuelle. Pour les <strong>demandeurs</strong>, ils incluent les revenus nets et les économies de prestations. Pour les <strong>entreprises</strong>, ils mesurent les coûts de vacance de poste évités et la productivité marginale.</p>
         </div>
     </div>
-
-    <div class="kpi-container">
-        <div class="card"><h3>Impact Net</h3><h2 id="net">0</h2></div>
-        <div class="card"><h3>Gain Net Fin.</h3><h2 id="gain-financier">0 €</h2></div>
-        <div class="card"><h3>ROI Social</h3><h2 id="roi">0.00x</h2></div>
-    </div>
-
-    <div class="charts-container">
-        <div class="chart-box">
-            
-            <canvas id="waterfallChart"></canvas>
-        </div>
-        <div class="chart-box">
-            
-            <canvas id="radarChart"></canvas>
-        </div>
-    </div>
-
-    <div class="footer">
-        <p><b>Méthodologie :</b> Approche contrefactuelle corrigée. <i>Aubaine</i> = Succès spontané. <i>Sélection</i> = Biais sur les publics faciles.</p>
-    </div>
+</section>
+    <footer>
+        <b>Méthodologie :</b> Analyse contrefactuelle corrigée des biais. ROI calculé sur une base de coût fixe de 25 000 €.
+    </footer>
     <script src="script.js"></script>
 </body>
 </html>
