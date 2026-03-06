@@ -46,16 +46,16 @@
             <section>
                 <h3>📈 RÉSULTATS (ACCÈS À 6 MOIS)</h3>
                 <label title="Nombre total de personnes ayant suivi l'action">Nb de Bénéficiaires <input type="number" id="n" value="60" oninput="update()"></label>
-                <label title="Proportion de bénéficiaires en emploi 6 mois après l'action">Taux Accès Action (%) <input type="range" id="t_act" value="75" min="0" max="100" oninput="update()"></label>
-                <label title="Taux d'emploi estimé pour ces mêmes profils s'ils n'avaient PAS fait l'action">Taux Contrefactuel (%) <input type="range" id="t_cont" value="45" min="0" max="100" oninput="update()"></label>
+                <label title="Proportion de bénéficiaires en emploi 6 mois après l'action">Taux Accès Action (%) <input type="range" id="t_act" value="75" min="0" max="100" oninput="update()"><span id="t_act_val" class="val-display">75</span></label>
+                <label title="Taux d'emploi estimé pour ces mêmes profils s'ils n'avaient PAS fait l'action">Taux Contrefactuel (%) <input type="range" id="t_cont" value="45" min="0" max="100" oninput="update()"><span id="t_act_val" class="val-display">75</span></label>
             </section>
 
             <section>
                 <h3>⚖️ CORRECTION DES BIAIS</h3>
-                <label title="Spontanéité : Le candidat aurait-il trouvé un emploi seul, dans le même délai ?">Aubaine (%) <input type="range" id="b_aub" value="20" min="0" max="100" oninput="update()"></label>
-                <label title="Crémage : Ai-je sélectionné les profils les plus proches de l'emploi pour booster mes résultats ?">Sélection (%) <input type="range" id="b_sel" value="15" min="0" max="100" oninput="update()"></label>
-                <label title="Déplacement : Mon intervention a-t-elle simplement déplacé le chômage vers un autre candidat ?">Substitution (%) <input type="range" id="b_sub" value="10" min="0" max="100" oninput="update()"></label>
-                <label title="Pérennité : L'emploi obtenu est-il stable ou s'agit-il d'un contrat précaire de très courte durée ?">Durabilité (%) <input type="range" id="b_dur" value="15" min="0" max="100" oninput="update()"></label>
+                <label title="Spontanéité : Le candidat aurait-il trouvé un emploi seul, dans le même délai ?">Aubaine (%) <input type="range" id="b_aub" value="20" min="0" max="100" oninput="update()"><span id="t_act_val" class="val-display">75</span></label>
+                <label title="Crémage : Ai-je sélectionné les profils les plus proches de l'emploi pour booster mes résultats ?">Sélection (%) <input type="range" id="b_sel" value="15" min="0" max="100" oninput="update()"><span id="t_act_val" class="val-display">75</span></label>
+                <label title="Déplacement : Mon intervention a-t-elle simplement déplacé le chômage vers un autre candidat ?">Substitution (%) <input type="range" id="b_sub" value="10" min="0" max="100" oninput="update()"><span id="t_act_val" class="val-display">75</span></label>
+                <label title="Pérennité : L'emploi obtenu est-il stable ou s'agit-il d'un contrat précaire de très courte durée ?">Durabilité (%) <input type="range" id="b_dur" value="15" min="0" max="100" oninput="update()"><span id="t_act_val" class="val-display">75</span></label>
             </section>
 
             <section>
@@ -68,10 +68,10 @@
             <section>
                 <h3>🤝 GAINS ACTEURS (Radar)</h3>
                 <div class="input-grid">
-                    <label title="Amélioration de la satisfaction des clients/financeurs">Satisfaction <input type="range" id="a_sat" value="85" oninput="update()"></label>
-                    <label title="Amélioration de la synergie entre les différents acteurs locaux">Synergie <input type="range" id="a_syn" value="70" oninput="update()"></label>
-                    <label title="Amélioration de la notoriété du dispositif">Notoriété <input type="range" id="a_not" value="60" oninput="update()"></label>
-                    <label title="Augmentation du sentiment d'efficacité de l'équipe encadrante">Efficacité Équipe <input type="range" id="a_eff" value="80" oninput="update()"></label>
+                    <label title="Amélioration de la satisfaction des clients/financeurs">Satisfaction <input type="range" id="a_sat" value="85" oninput="update()"><span id="t_act_val" class="val-display">75</span></label>
+                    <label title="Amélioration de la synergie entre les différents acteurs locaux">Synergie <input type="range" id="a_syn" value="70" oninput="update()"><span id="t_act_val" class="val-display">75</span></label>
+                    <label title="Amélioration de la notoriété du dispositif">Notoriété <input type="range" id="a_not" value="60" oninput="update()"><span id="t_act_val" class="val-display">75</span></label>
+                    <label title="Augmentation du sentiment d'efficacité de l'équipe encadrante">Efficacité Équipe <input type="range" id="a_eff" value="80" oninput="update()"><span id="t_act_val" class="val-display">75</span></label>
                 </div>
             </section>
         </aside>
