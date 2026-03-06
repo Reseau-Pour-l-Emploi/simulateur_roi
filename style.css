@@ -57,6 +57,65 @@ input[type="number"]:focus { border-color: var(--secondary); outline: none; }
 .btn-print { background: var(--primary); color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.9rem; transition: background 0.2s; }
 .btn-print:hover { background: #172554; }
 
+/* DESIGN DU GUIDE DEPLIANT (ACCORDEON) */
+.guide-accordion {
+    margin-bottom: 20px;
+    background: #f8fafc;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.guide-accordion details summary {
+    padding: 12px 15px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: var(--primary);
+    cursor: pointer;
+    list-style: none; /* Cache la flèche par défaut sur certains navigateurs */
+    display: flex;
+    align-items: center;
+    transition: background 0.2s;
+}
+
+/* Ajout d'une flèche personnalisée */
+.guide-accordion details summary::before {
+    content: "▼";
+    font-size: 0.7rem;
+    margin-right: 8px;
+    transition: transform 0.3s ease;
+}
+
+.guide-accordion details[open] summary::before {
+    transform: rotate(180deg);
+}
+
+.guide-accordion details summary:hover {
+    background: #eff6ff;
+}
+
+.guide-accordion .guide-content {
+    padding: 0 15px 15px 15px;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+    border-top: 1px solid #e2e8f0;
+    margin-top: 5px;
+    padding-top: 10px;
+}
+
+.guide-accordion .guide-content p {
+    margin: 0 0 10px 0;
+}
+
+.guide-accordion .guide-content p:last-child {
+    margin-bottom: 0;
+}
+
+.guide-accordion strong {
+    color: var(--text-main);
+}
+
 /* IMPRESSION A4 PAYSAGE */
 @media print {
     .no-print { display: none !important; }
