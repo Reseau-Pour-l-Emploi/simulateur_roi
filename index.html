@@ -7,32 +7,37 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root {
-  --ink:#0d1117; --ink-2:#1c2333; --ink-3:#2d3748;
-  --slate:#64748b; --muted:#94a3b8; --border:#e2e8f0;
-  --bg:#f7f9fc; --white:#fff;
-  --blue:#2563eb; --cyan:#0891b2; --green:#059669;
-  --green-light:#d1fae5; --purple:#7c3aed;
-  --amber:#d97706; --red:#dc2626;
-  --sidebar-w:354px;
+:root{
+  --ink:#0d1117;--ink-2:#1c2333;--ink-3:#2d3748;
+  --slate:#64748b;--muted:#94a3b8;--border:#e2e8f0;
+  --bg:#f7f9fc;--white:#fff;
+  --blue:#2563eb;--cyan:#0891b2;--green:#059669;
+  --green-light:#d1fae5;--purple:#7c3aed;
+  --amber:#d97706;--red:#dc2626;--teal:#0f766e;
+  --sidebar-w:358px;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Manrope',system-ui,sans-serif;background:var(--bg);color:var(--ink);font-size:13px;line-height:1.5}
 
-/* HEADER */
-.app-header{background:var(--ink);color:white;padding:12px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;border-bottom:3px solid var(--blue)}
+/* ── HEADER ── */
+.app-header{background:var(--ink);color:white;padding:11px 22px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;border-bottom:3px solid var(--blue)}
 .logo{display:flex;align-items:center;gap:10px}
-.logo-icon{width:30px;height:30px;background:var(--blue);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:15px}
-.app-header h1{font-family:'Aptos','Aptos Display','Calibri',system-ui,sans-serif;font-size:1rem;font-weight:800;letter-spacing:-.01em}
-.tagline{font-size:.66rem;color:var(--muted);font-weight:400}
-.print-btn{background:var(--blue);color:white;border:none;padding:6px 14px;border-radius:6px;font-family:'Manrope',sans-serif;font-size:.72rem;font-weight:700;cursor:pointer}
+.logo-icon{width:30px;height:30px;background:var(--blue);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.app-header h1{font-family:'Aptos','Aptos Display','Calibri',system-ui,sans-serif;font-size:.97rem;font-weight:800;letter-spacing:-.01em}
+.tagline{font-size:.64rem;color:var(--muted);font-weight:400}
+.header-right{display:flex;align-items:center;gap:10px}
+.mode-badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:20px;font-size:.65rem;font-weight:800;border:1.5px solid;cursor:pointer;transition:opacity .15s;white-space:nowrap}
+.mode-badge:hover{opacity:.8}
+.mode-badge.de{background:rgba(37,99,235,.18);border-color:rgba(37,99,235,.4);color:#93c5fd}
+.mode-badge.ent{background:rgba(15,118,110,.18);border-color:rgba(15,118,110,.4);color:#5eead4}
+.print-btn{background:var(--blue);color:white;border:none;padding:6px 14px;border-radius:6px;font-family:'Manrope',sans-serif;font-size:.71rem;font-weight:700;cursor:pointer}
 .print-btn:hover{background:#1d4ed8}
 
-/* LAYOUT */
-.app-body{display:grid;grid-template-columns:var(--sidebar-w) 1fr;min-height:calc(100vh - 57px)}
+/* ── LAYOUT ── */
+.app-body{display:grid;grid-template-columns:var(--sidebar-w) 1fr;min-height:calc(100vh - 56px)}
 
-/* SIDEBAR */
-.sidebar{background:var(--ink-2);color:white;overflow-y:auto;padding:13px 12px 40px;position:sticky;top:57px;height:calc(100vh - 57px)}
+/* ── SIDEBAR ── */
+.sidebar{background:var(--ink-2);color:white;overflow-y:auto;padding:12px 11px 40px;position:sticky;top:56px;height:calc(100vh - 56px)}
 .sidebar::-webkit-scrollbar{width:3px}
 .sidebar::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:3px}
 
@@ -43,115 +48,108 @@ body{font-family:'Manrope',system-ui,sans-serif;background:var(--bg);color:var(-
 .block-header{display:flex;align-items:center;gap:7px;padding:8px 11px;cursor:pointer;user-select:none;transition:background .15s;border-radius:8px}
 .block-header:hover{background:rgba(255,255,255,.04)}
 .block-icon{font-size:12px}
-.block-title{font-size:.72rem;font-weight:700;color:#e2e8f0;flex:1}
+.block-title{font-size:.71rem;font-weight:700;color:#e2e8f0;flex:1}
 .block-toggle{font-size:9px;color:var(--muted);transition:transform .2s}
 .block.open .block-toggle{transform:rotate(180deg)}
 .block-body{display:none;padding:0 11px 11px;border-top:1px solid rgba(255,255,255,.05)}
 .block.open .block-body{display:block}
-.block-desc{font-size:.67rem;color:var(--muted);font-style:italic;margin:8px 0 10px;line-height:1.4;padding-bottom:8px;border-bottom:1px dashed rgba(255,255,255,.08)}
+.block-desc{font-size:.66rem;color:var(--muted);font-style:italic;margin:8px 0 10px;line-height:1.4;padding-bottom:8px;border-bottom:1px dashed rgba(255,255,255,.08)}
 
-/* Text inputs (titre/territoire) */
-input[type="text"]{width:100%;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:5px;color:white;padding:6px 9px;font-family:'Manrope',sans-serif;font-size:.8rem;font-weight:500}
-input[type="text"]::placeholder{color:rgba(255,255,255,.25)}
+/* Mode visibility */
+.de-only{display:block}.ent-only{display:none}
+body.mode-ent .de-only{display:none}
+body.mode-ent .ent-only{display:block}
+
+input[type="text"]{width:100%;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:5px;color:white;padding:5px 9px;font-family:'Manrope',sans-serif;font-size:.78rem;font-weight:500}
+input[type="text"]::placeholder{color:rgba(255,255,255,.22)}
 input[type="text"]:focus{outline:none;border-color:var(--blue)}
 
-/* Fields */
 .field{margin-bottom:8px}
-.field label{display:flex;align-items:center;justify-content:space-between;font-size:.68rem;font-weight:600;color:#94a3b8;margin-bottom:4px;gap:4px}
+.field label{display:flex;align-items:center;justify-content:space-between;font-size:.67rem;font-weight:600;color:#94a3b8;margin-bottom:4px;gap:4px}
 .label-left{display:flex;align-items:center;gap:4px;flex:1;min-width:0;line-height:1.3}
-.val-badge{background:rgba(37,99,235,.28);color:#93c5fd;font-size:.63rem;font-weight:700;padding:1px 6px;border-radius:20px;min-width:36px;text-align:center;flex-shrink:0}
+.val-badge{background:rgba(37,99,235,.28);color:#93c5fd;font-size:.62rem;font-weight:700;padding:1px 6px;border-radius:20px;min-width:36px;text-align:center;flex-shrink:0}
 
-/* TOOLTIP — fixed positioning via JS, escapes sidebar overflow */
+/* TOOLTIP */
 .tip-btn{color:#7dd3fc;cursor:pointer;font-size:.57rem;font-weight:800;background:rgba(37,99,235,.2);border:1px solid rgba(37,99,235,.3);padding:1px 5px;border-radius:4px;white-space:nowrap;user-select:none}
 .tip-btn:hover{background:rgba(37,99,235,.38)}
-/* tip-panel is now appended to body, position:fixed */
 #tip-floating{display:none;position:fixed;width:280px;background:#0f172a;border:1px solid rgba(37,99,235,.5);border-radius:9px;padding:13px 15px;z-index:2000;box-shadow:0 12px 32px rgba(0,0,0,.6);pointer-events:none}
 #tip-floating.visible{display:block}
 #tip-floating::after{content:'';position:absolute;top:100%;left:12px;border:5px solid transparent;border-top-color:rgba(37,99,235,.5)}
 #tip-floating.below::after{display:none}
 #tip-floating.below::before{content:'';position:absolute;bottom:100%;left:12px;border:5px solid transparent;border-bottom-color:rgba(37,99,235,.5)}
-/* tip-panel divs are hidden — content is cloned into #tip-floating by JS */
 .tip-panel{display:none!important}
-.tip-title{font-size:.67rem;font-weight:800;color:#93c5fd;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}
-.tip-row{margin-bottom:7px}
-.tip-row:last-child{margin-bottom:0}
-.tip-key{font-size:.59rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:#475569;margin-bottom:2px}
-.tip-val{font-size:.67rem;color:#cbd5e1;line-height:1.45}
+.tip-title{font-size:.66rem;font-weight:800;color:#93c5fd;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}
+.tip-row{margin-bottom:7px}.tip-row:last-child{margin-bottom:0}
+.tip-key{font-size:.58rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:#475569;margin-bottom:2px}
+.tip-val{font-size:.66rem;color:#cbd5e1;line-height:1.45}
 .tip-tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}
 .tip-tag{background:rgba(37,99,235,.18);color:#93c5fd;border-radius:4px;padding:1px 7px;font-size:.57rem;font-weight:700}
 
-input[type="number"]{width:100%;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.09);border-radius:5px;color:white;padding:5px 9px;font-family:'Manrope',sans-serif;font-size:.78rem;font-weight:500}
+input[type="number"]{width:100%;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.09);border-radius:5px;color:white;padding:5px 9px;font-family:'Manrope',sans-serif;font-size:.77rem;font-weight:500}
 input[type="number"]:focus{outline:none;border-color:var(--blue)}
 input[type="range"]{-webkit-appearance:none;width:100%;height:4px;border-radius:2px;background:rgba(255,255,255,.12);cursor:pointer}
 input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;width:13px;height:13px;border-radius:50%;background:var(--blue);border:2px solid white;box-shadow:0 0 0 2px rgba(37,99,235,.3)}
 
 .computed-row{display:flex;align-items:center;justify-content:space-between;background:rgba(37,99,235,.1);border:1px solid rgba(37,99,235,.22);border-radius:6px;padding:6px 10px;margin:7px 0 3px}
-.computed-row .lc{font-size:.64rem;color:#93c5fd;font-weight:600}
-.computed-row .vc{font-size:.8rem;font-weight:800;color:white}
+.computed-row .lc{font-size:.63rem;color:#93c5fd;font-weight:600}
+.computed-row .vc{font-size:.79rem;font-weight:800;color:white}
+.cost-total{display:flex;align-items:center;justify-content:space-between;background:linear-gradient(135deg,rgba(37,99,235,.22),rgba(124,58,237,.14));border:1px solid rgba(37,99,235,.3);border-radius:7px;padding:8px 11px;margin-top:6px}
+.cost-total .lc{font-size:.64rem;color:#bfdbfe;font-weight:700}
+.cost-total .vc{font-size:.88rem;font-weight:800;color:white}
 
-.cost-total{display:flex;align-items:center;justify-content:space-between;background:linear-gradient(135deg,rgba(37,99,235,.24),rgba(124,58,237,.16));border:1px solid rgba(37,99,235,.32);border-radius:7px;padding:9px 12px;margin-top:6px}
-.cost-total .lc{font-size:.66rem;color:#bfdbfe;font-weight:700}
-.cost-total .vc{font-size:.9rem;font-weight:800;color:white}
-
-/* BIAIS MODE TOGGLE */
-.biais-mode-toggle{display:flex;gap:6px;margin-bottom:12px}
-.mode-btn{flex:1;padding:6px 4px;border-radius:6px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.05);color:#94a3b8;font-family:'Manrope',sans-serif;font-size:.67rem;font-weight:700;cursor:pointer;text-align:center;transition:all .2s;line-height:1.3}
-.mode-btn.active{background:rgba(37,99,235,.3);border-color:rgba(37,99,235,.5);color:#93c5fd}
+/* BIAIS MODE */
+.biais-mode-toggle{display:flex;gap:5px;margin-bottom:11px}
+.mode-btn{flex:1;padding:5px 4px;border-radius:6px;border:1px solid rgba(255,255,255,.11);background:rgba(255,255,255,.04);color:#94a3b8;font-family:'Manrope',sans-serif;font-size:.65rem;font-weight:700;cursor:pointer;text-align:center;transition:all .2s;line-height:1.3}
+.mode-btn.active{background:rgba(37,99,235,.28);border-color:rgba(37,99,235,.45);color:#93c5fd}
 .mode-detail,.mode-confiance{display:none}
 .mode-detail.visible,.mode-confiance.visible{display:block}
-
-/* Confidence level display */
 .conf-level{display:flex;gap:5px;margin-top:8px;margin-bottom:4px}
-.conf-chip{flex:1;padding:5px 4px;border-radius:5px;text-align:center;font-size:.63rem;font-weight:700;border:1px solid transparent;transition:all .2s;cursor:default}
-.conf-chip.low{background:rgba(220,38,38,.12);border-color:rgba(220,38,38,.25);color:#fca5a5}
-.conf-chip.med{background:rgba(217,119,6,.12);border-color:rgba(217,119,6,.25);color:#fcd34d}
-.conf-chip.high{background:rgba(5,150,105,.12);border-color:rgba(5,150,105,.25);color:#6ee7b7}
-.conf-chip.active-low{background:rgba(220,38,38,.3);border-color:rgba(220,38,38,.5);color:#fca5a5}
-.conf-chip.active-med{background:rgba(217,119,6,.3);border-color:rgba(217,119,6,.5);color:#fcd34d}
-.conf-chip.active-high{background:rgba(5,150,105,.3);border-color:rgba(5,150,105,.5);color:#6ee7b7}
-.conf-desc{font-size:.65rem;color:var(--muted);font-style:italic;line-height:1.4;margin-top:6px;padding:7px 9px;background:rgba(255,255,255,.04);border-radius:5px;border-left:2px solid rgba(37,99,235,.4)}
+.conf-chip{flex:1;padding:4px;border-radius:5px;text-align:center;font-size:.62rem;font-weight:700;border:1px solid transparent;cursor:default}
+.conf-chip.low{background:rgba(220,38,38,.1);border-color:rgba(220,38,38,.22);color:#fca5a5}
+.conf-chip.med{background:rgba(217,119,6,.1);border-color:rgba(217,119,6,.22);color:#fcd34d}
+.conf-chip.high{background:rgba(5,150,105,.1);border-color:rgba(5,150,105,.22);color:#6ee7b7}
+.conf-chip.active-low{background:rgba(220,38,38,.28);border-color:rgba(220,38,38,.5);color:#fca5a5}
+.conf-chip.active-med{background:rgba(217,119,6,.28);border-color:rgba(217,119,6,.5);color:#fcd34d}
+.conf-chip.active-high{background:rgba(5,150,105,.28);border-color:rgba(5,150,105,.5);color:#6ee7b7}
+.conf-desc{font-size:.63rem;color:var(--muted);font-style:italic;line-height:1.4;margin-top:5px;padding:6px 9px;background:rgba(255,255,255,.03);border-radius:5px;border-left:2px solid rgba(37,99,235,.35)}
 
-/* CONTENT */
+/* ── CONTENT ── */
 .content{padding:16px 20px 40px;overflow-x:hidden}
-
-/* Report title bar (screen only) */
-.report-meta{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--border)}
-.report-title-display{font-family:'Aptos','Aptos Display','Calibri',system-ui,sans-serif;font-size:1.05rem;font-weight:800;color:var(--ink);letter-spacing:-.01em}
-.report-title-display.placeholder{color:var(--muted);font-style:italic;font-weight:400;font-family:'Manrope',sans-serif;font-size:.8rem}
-.report-territory{font-size:.72rem;color:var(--slate);font-weight:600;margin-top:2px}
-.report-date{font-size:.67rem;color:var(--muted);font-weight:400;white-space:nowrap;margin-left:16px}
+.report-meta{display:flex;align-items:center;justify-content:space-between;margin-bottom:13px;padding-bottom:11px;border-bottom:1px solid var(--border)}
+.report-title-display{font-family:'Aptos','Aptos Display','Calibri',system-ui,sans-serif;font-size:1.02rem;font-weight:800;color:var(--ink);letter-spacing:-.01em}
+.report-title-display.placeholder{color:var(--muted);font-style:italic;font-weight:400;font-family:'Manrope',sans-serif;font-size:.79rem}
+.report-territory{font-size:.7rem;color:var(--slate);font-weight:600;margin-top:2px}
+.report-date{font-size:.65rem;color:var(--muted);font-weight:400;white-space:nowrap;margin-left:16px}
 
 /* KPI */
-.kpi-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:16px}
-.kpi-card{background:var(--white);border:1px solid var(--border);border-radius:9px;padding:12px 14px;position:relative;overflow:hidden;transition:transform .15s,box-shadow .15s}
-.kpi-card:hover{transform:translateY(-1px);box-shadow:0 5px 16px rgba(0,0,0,.07)}
+.kpi-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:15px}
+.kpi-card{background:var(--white);border:1px solid var(--border);border-radius:9px;padding:12px 13px;position:relative;overflow:hidden;transition:transform .15s,box-shadow .15s}
+.kpi-card:hover{transform:translateY(-1px);box-shadow:0 4px 14px rgba(0,0,0,.07)}
 .kpi-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px}
-.kpi-card.blue::after{background:var(--blue)}
-.kpi-card.amber::after{background:var(--amber)}
-.kpi-card.cyan::after{background:var(--cyan)}
-.kpi-card.green::after{background:var(--green)}
-.kpi-card.purple::after{background:var(--purple)}
-.kpi-label{font-size:.59rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:var(--slate);margin-bottom:4px}
-.kpi-value{font-family:'Manrope',sans-serif;font-size:1.2rem;font-weight:800;line-height:1.1;color:var(--ink);margin-bottom:3px;letter-spacing:-.025em}
-.kpi-sub{font-size:.61rem;color:var(--muted);font-weight:400;line-height:1.3}
+.kpi-card.blue::after{background:var(--blue)}.kpi-card.amber::after{background:var(--amber)}
+.kpi-card.cyan::after{background:var(--cyan)}.kpi-card.green::after{background:var(--green)}
+.kpi-card.purple::after{background:var(--purple)}.kpi-card.teal::after{background:var(--teal)}
+.kpi-label{font-size:.58rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:var(--slate);margin-bottom:5px}
+.kpi-value{font-family:'Manrope',system-ui,sans-serif;font-size:1.22rem;font-weight:800;line-height:1.1;color:var(--ink);margin-bottom:3px;letter-spacing:-.025em}
+.kpi-sub{font-size:.6rem;color:var(--muted);font-weight:400;line-height:1.3}
 .kpi-icon{position:absolute;top:10px;right:11px;font-size:17px;opacity:.1}
 
 /* Panels */
 .panel{background:var(--white);border:1px solid var(--border);border-radius:9px;margin-bottom:14px;overflow:hidden}
 .panel-header{padding:10px 15px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:7px}
-.panel-header h2{font-family:'Aptos','Aptos Display','Calibri',system-ui,sans-serif;font-size:.77rem;font-weight:800;color:var(--ink)}
+.panel-header h2{font-family:'Aptos','Aptos Display','Calibri',system-ui,sans-serif;font-size:.76rem;font-weight:800;color:var(--ink)}
 .panel-icon{font-size:13px}
 
 /* Tables */
 table{width:100%;border-collapse:collapse;font-size:.77rem}
-thead th{background:#f1f5f9;padding:7px 11px;text-align:left;font-size:.61rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--slate);border-bottom:2px solid var(--border)}
+thead th{background:#f1f5f9;padding:7px 11px;text-align:left;font-size:.6rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--slate);border-bottom:2px solid var(--border)}
 tbody td{padding:7px 11px;border-bottom:1px solid var(--border);color:var(--ink-3);font-weight:500}
 tbody tr:last-child td{border-bottom:none}
 tbody tr:hover td{background:#f8fafc}
-.sep-row td{background:#f8fafc!important;color:var(--slate)!important;font-size:.59rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em;padding:5px 11px;border-bottom:1px solid var(--border)}
-.total-row td{background:var(--green)!important;color:white!important;font-weight:800;font-size:.79rem}
-.balance-pos td{background:#0c4a6e!important;color:white!important;font-weight:800;font-size:.8rem}
-.balance-neg td{background:#7f1d1d!important;color:white!important;font-weight:800;font-size:.8rem}
+.sep-row td{background:#f8fafc!important;color:var(--slate)!important;font-size:.58rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em;padding:4px 11px;border-bottom:1px solid var(--border)}
+.total-row td{background:var(--green)!important;color:white!important;font-weight:800;font-size:.78rem}
+.balance-pos td{background:#0c4a6e!important;color:white!important;font-weight:800;font-size:.79rem}
+.balance-neg td{background:#7f1d1d!important;color:white!important;font-weight:800;font-size:.79rem}
 .spacer-row td{height:5px;background:var(--bg)!important;padding:0!important;border:none!important}
 .num{font-variant-numeric:tabular-nums}
 .nb{font-variant-numeric:tabular-nums;font-weight:800}
@@ -160,48 +158,61 @@ tbody tr:hover td{background:#f8fafc}
 /* Charts */
 .charts-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:14px;margin-bottom:14px}
 .chart-wrap{position:relative;height:255px}
-
-/* Bias chips */
 .bias-chips{display:flex;gap:5px;flex-wrap:wrap;margin-top:8px}
-.bias-chip{display:flex;align-items:center;gap:4px;background:#fff7ed;border:1px solid #fed7aa;border-radius:5px;padding:2px 8px;font-size:.63rem}
+.bias-chip{display:flex;align-items:center;gap:4px;background:#fff7ed;border:1px solid #fed7aa;border-radius:5px;padding:2px 8px;font-size:.62rem}
 .bias-chip .cn{color:var(--amber);font-weight:700}
 .bias-chip .cp{color:var(--ink);font-weight:800}
 
 /* Synthesis */
-.synthesis-text{font-size:.77rem;line-height:1.7;color:var(--ink-3);border-left:3px solid var(--blue);padding-left:13px}
-.synthesis-text p{margin-bottom:7px}
-.synthesis-text p:last-child{margin-bottom:0}
+.synthesis-text{font-size:.76rem;line-height:1.7;color:var(--ink-3);border-left:3px solid var(--blue);padding-left:13px}
+.synthesis-text p{margin-bottom:7px}.synthesis-text p:last-child{margin-bottom:0}
 .synthesis-text strong{color:var(--ink);font-weight:700}
-.verdict-pill{display:inline-block;padding:2px 8px;border-radius:20px;font-size:.63rem;font-weight:800;margin-left:4px}
+.verdict-pill{display:inline-block;padding:2px 8px;border-radius:20px;font-size:.62rem;font-weight:800;margin-left:4px}
 .verdict-pos{background:var(--green-light);color:var(--green)}
 .verdict-neg{background:#fee2e2;color:var(--red)}
 
-/* Print handled via dedicated window — suppress UI chrome if native print used */
-@media print {
-  .modal-overlay, #tip-floating, .print-btn { display: none !important; }
-}
+/* ── WELCOME MODAL ── */
+.modal-overlay{position:fixed;inset:0;background:rgba(10,14,26,.75);z-index:1000;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(5px);animation:fadeOv .25s ease}
+@keyframes fadeOv{from{opacity:0}to{opacity:1}}
+.modal-box{background:#fff;border-radius:14px;max-width:580px;width:calc(100% - 32px);overflow:hidden;box-shadow:0 24px 60px rgba(0,0,0,.32);animation:slideU .28s ease}
+@keyframes slideU{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+.modal-top{background:var(--ink);padding:20px 24px 16px}
+.modal-top-icon{font-size:26px;margin-bottom:7px}
+.modal-top h2{font-family:'Aptos','Aptos Display','Calibri',system-ui,sans-serif;font-size:1.1rem;font-weight:800;color:#fff;letter-spacing:-.01em;margin-bottom:3px}
+.modal-top p{font-size:.71rem;color:var(--muted);font-weight:400;line-height:1.4}
+.modal-body{padding:18px 22px 20px}
 
-/* ── LAUNCH MODAL ── */
-.modal-overlay{position:fixed;inset:0;background:rgba(10,14,26,.72);z-index:1000;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px);animation:fadeInOverlay .25s ease}
-@keyframes fadeInOverlay{from{opacity:0}to{opacity:1}}
-.modal-box{background:#fff;border-radius:14px;padding:0;max-width:520px;width:calc(100% - 40px);overflow:hidden;box-shadow:0 24px 60px rgba(0,0,0,.3);animation:slideUp .3s ease}
-@keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-.modal-top{background:var(--ink);padding:22px 26px 18px;position:relative}
-.modal-top-icon{font-size:28px;margin-bottom:8px}
-.modal-top h2{font-family:'Aptos','Aptos Display','Calibri',system-ui,sans-serif;font-size:1.15rem;font-weight:800;color:#fff;letter-spacing:-.01em;margin-bottom:4px}
-.modal-top p{font-size:.73rem;color:var(--muted);font-weight:400;line-height:1.4}
-.modal-body{padding:20px 26px}
-.modal-steps{display:flex;flex-direction:column;gap:11px;margin-bottom:18px}
-.modal-step{display:flex;gap:12px;align-items:flex-start}
-.step-num{width:24px;height:24px;border-radius:50%;background:var(--blue);color:white;font-size:.65rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
-.step-text strong{display:block;font-size:.78rem;font-weight:700;color:var(--ink);margin-bottom:2px}
-.step-text span{font-size:.71rem;color:var(--slate);line-height:1.4}
-.modal-note{background:#f8fafc;border:1px solid var(--border);border-left:3px solid var(--blue);border-radius:6px;padding:9px 12px;font-size:.69rem;color:var(--slate);line-height:1.5;margin-bottom:18px}
-.modal-cta{width:100%;background:var(--blue);color:white;border:none;padding:12px;border-radius:8px;font-family:'Aptos','Aptos Display','Calibri',system-ui,sans-serif;font-size:.85rem;font-weight:800;cursor:pointer;letter-spacing:.01em;transition:background .2s}
-.modal-cta:hover{background:#1d4ed8}
+/* Mode selection step */
+.mode-select-label{font-size:.68rem;font-weight:700;color:var(--slate);margin-bottom:10px}
+.mode-cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.mode-card{border:2px solid var(--border);border-radius:10px;padding:16px 14px;cursor:pointer;transition:all .2s;text-align:left;background:#fafbfc}
+.mode-card:hover{border-color:var(--blue);background:#f0f7ff}
+.mode-card.selected{border-color:var(--blue);background:#eff6ff;box-shadow:0 0 0 3px rgba(37,99,235,.12)}
+.mode-card.selected-ent{border-color:var(--teal);background:#f0fdfa;box-shadow:0 0 0 3px rgba(15,118,110,.1)}
+.mode-card-icon{font-size:24px;margin-bottom:8px}
+.mode-card-title{font-family:'Aptos','Aptos Display','Calibri',system-ui,sans-serif;font-size:.85rem;font-weight:800;color:var(--ink);margin-bottom:4px}
+.mode-card-desc{font-size:.7rem;color:var(--slate);line-height:1.4}
+
+/* Guide step */
+.modal-guide{display:none}
+.modal-guide.visible{display:block}
+.guide-steps{display:flex;flex-direction:column;gap:9px;margin-bottom:14px}
+.guide-step{display:flex;gap:10px;align-items:flex-start}
+.step-num{width:22px;height:22px;border-radius:50%;background:var(--blue);color:white;font-size:.63rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.step-num.teal{background:var(--teal)}
+.step-text strong{display:block;font-size:.76rem;font-weight:700;color:var(--ink);margin-bottom:1px}
+.step-text span{font-size:.69rem;color:var(--slate);line-height:1.4}
+.modal-note{background:#f8fafc;border:1px solid var(--border);border-left:3px solid var(--blue);border-radius:6px;padding:8px 11px;font-size:.67rem;color:var(--slate);line-height:1.5;margin-bottom:15px}
+.modal-cta{width:100%;color:white;border:none;padding:11px;border-radius:8px;font-family:'Aptos','Aptos Display','Calibri',system-ui,sans-serif;font-size:.82rem;font-weight:800;cursor:pointer;transition:background .2s}
+.modal-cta.de{background:var(--blue)}.modal-cta.de:hover{background:#1d4ed8}
+.modal-cta.ent{background:var(--teal)}.modal-cta.ent:hover{background:#0d6960}
+.modal-back{background:none;border:none;color:var(--slate);font-size:.7rem;font-weight:600;cursor:pointer;margin-bottom:10px;display:flex;align-items:center;gap:4px;padding:0}
+.modal-back:hover{color:var(--ink)}
 
 /* Print */
-.print-title-block { display: none; }
+@media print{
+  .modal-overlay,#tip-floating,.print-btn,.mode-badge{display:none!important}
+}
 </style>
 </head>
 <body>
@@ -211,10 +222,14 @@ tbody tr:hover td{background:#f8fafc}
     <div class="logo-icon">⚡</div>
     <div>
       <h1>Simulateur d'Impact — Actions Emploi</h1>
-      <div class="tagline">Évaluation financière, qualitative &amp; contrefactuelle</div>
+      <div class="tagline" id="header-tagline">Évaluation financière, qualitative &amp; contrefactuelle</div>
     </div>
   </div>
-  <button class="print-btn" onclick="printReport()">🖨️ Rapport A4</button>
+  <div class="header-right">
+    <span class="mode-badge de" id="mode-badge-switch-de" onclick="applyMode('de')" title="Basculer vers le simulateur DE" style="display:none">👥 Simulateur DE ↺</span>
+    <span class="mode-badge de" id="mode-badge" title="Mode actif">👥 Mode Demandeurs d'Emploi</span>
+    <button class="print-btn" onclick="printReport()">🖨️ Rapport A4</button>
+  </div>
 </header>
 
 <div class="app-body">
@@ -222,25 +237,20 @@ tbody tr:hover td{background:#f8fafc}
 <!-- ══ SIDEBAR ══ -->
 <aside class="sidebar">
 
+  <!-- 0 · Identification (commun) -->
   <div class="section-label">0 · Identification</div>
   <div class="block" id="block-meta">
     <div class="block-header" onclick="toggleBlock('block-meta')">
       <span class="block-icon">🏷️</span><span class="block-title">Titre &amp; Territoire</span><span class="block-toggle">▼</span>
     </div>
     <div class="block-body">
-      <div class="field">
-        <label>Titre de l'action</label>
-        <input type="text" id="titre_action" placeholder="Ex : Parcours Emploi 2024" oninput="updateMeta()">
-      </div>
-      <div class="field">
-        <label>Territoire</label>
-        <input type="text" id="territoire" placeholder="Ex : Marseille — Bouches-du-Rhône" oninput="updateMeta()">
-      </div>
+      <div class="field"><label>Titre de l'action</label><input type="text" id="titre_action" placeholder="Ex : Parcours Emploi 2024" oninput="updateMeta()"></div>
+      <div class="field"><label>Territoire</label><input type="text" id="territoire" placeholder="Ex : Marseille — Bouches-du-Rhône" oninput="updateMeta()"></div>
     </div>
   </div>
 
+  <!-- 1 · Coûts (commun) -->
   <div class="section-label">1 · Coûts de l'Action</div>
-
   <div class="block" id="block-rh">
     <div class="block-header" onclick="toggleBlock('block-rh')">
       <span class="block-icon">👤</span><span class="block-title">Ressources Humaines</span><span class="block-toggle">▼</span>
@@ -248,13 +258,9 @@ tbody tr:hover td{background:#f8fafc}
     <div class="block-body">
       <div class="field"><label>TJM (€/jour)</label><input type="number" id="tjm" value="350" min="0" oninput="update()"></div>
       <div class="field"><label>Accompagnement RH (jours)</label><input type="number" id="jours_rh" value="20" min="0" oninput="update()"></div>
-      <div class="computed-row">
-        <span class="lc">Coût RH = TJM × Jours</span>
-        <span class="vc" id="cout_rh_calc">7 000 €</span>
-      </div>
+      <div class="computed-row"><span class="lc">Coût RH = TJM × Jours</span><span class="vc" id="cout_rh_calc">7 000 €</span></div>
     </div>
   </div>
-
   <div class="block" id="block-autres-couts">
     <div class="block-header" onclick="toggleBlock('block-autres-couts')">
       <span class="block-icon">📦</span><span class="block-title">Autres Postes de Coût</span><span class="block-toggle">▼</span>
@@ -264,178 +270,393 @@ tbody tr:hover td{background:#f8fafc}
       <div class="field"><label>Aides financières (€)</label><input type="number" id="cout_aides" value="5000" min="0" oninput="update()"></div>
       <div class="field"><label>Prestations (€)</label><input type="number" id="cout_prestations" value="3000" min="0" oninput="update()"></div>
       <div class="field"><label>Formations (€)</label><input type="number" id="cout_formations" value="8000" min="0" oninput="update()"></div>
-      <div class="cost-total">
-        <span class="lc">COÛT TOTAL DE L'ACTION</span>
-        <span class="vc" id="cout_total_display">25 000 €</span>
-      </div>
+      <div class="cost-total"><span class="lc">COÛT TOTAL DE L'ACTION</span><span class="vc" id="cout_total_display">25 000 €</span></div>
     </div>
   </div>
 
-  <div class="section-label">2 · Résultats Observés</div>
-
-  <div class="block" id="block-base">
-    <div class="block-header" onclick="toggleBlock('block-base')">
-      <span class="block-icon">📈</span><span class="block-title">Données de Base</span><span class="block-toggle">▼</span>
-    </div>
-    <div class="block-body">
-      <div class="block-desc">Volumétrie et taux de réussite bruts vs. groupe contrefactuel.</div>
-      <div class="field"><label>Nombre de bénéficiaires (N)</label><input type="number" id="n" value="100" min="0" oninput="update()"></div>
-      <div class="field">
-        <label><span class="label-left">Taux emploi — Action (%)</span><span class="val-badge" id="v_t_action">60%</span></label>
-        <input type="range" id="t_action" value="60" min="0" max="100" oninput="syncBadge('t_action','v_t_action','%');update()">
+  <!-- 2 · Données de base — DE -->
+  <div class="de-only">
+    <div class="section-label">2 · Résultats Observés</div>
+    <div class="block" id="block-base-de">
+      <div class="block-header" onclick="toggleBlock('block-base-de')">
+        <span class="block-icon">📈</span><span class="block-title">Données de Base — DE</span><span class="block-toggle">▼</span>
       </div>
-      <div class="field">
-        <label><span class="label-left">Taux emploi — Contrefactuel (%)</span><span class="val-badge" id="v_t_contre">30%</span></label>
-        <input type="range" id="t_contre" value="30" min="0" max="100" oninput="syncBadge('t_contre','v_t_contre','%');update()">
-      </div>
-    </div>
-  </div>
-
-  <div class="section-label">3 · Biais Correctifs</div>
-
-  <div class="block" id="block-biais">
-    <div class="block-header" onclick="toggleBlock('block-biais')">
-      <span class="block-icon">🔍</span><span class="block-title">Correction des Biais</span><span class="block-toggle">▼</span>
-    </div>
-    <div class="block-body">
-      <div class="block-desc">Choisissez votre mode de saisie selon la disponibilité de vos données.</div>
-
-      <div class="biais-mode-toggle">
-        <button class="mode-btn active" id="btn-detail" onclick="setBiaisMode('detail')">🔬 Détailler chaque biais</button>
-        <button class="mode-btn" id="btn-confiance" onclick="setBiaisMode('confiance')">🎚️ Niveau de confiance</button>
-      </div>
-
-      <!-- MODE DÉTAIL -->
-      <div class="mode-detail visible" id="mode-detail-panel">
-
+      <div class="block-body">
+        <div class="block-desc">Volumétrie et taux de réussite bruts vs. groupe contrefactuel.</div>
+        <div class="field"><label>Nombre de bénéficiaires (N)</label><input type="number" id="n_de" value="100" min="0" oninput="update()"></div>
         <div class="field">
-          <label>
+          <label><span class="label-left">Taux emploi — Action (%)</span><span class="val-badge" id="v_t_action">60%</span></label>
+          <input type="range" id="t_action" value="60" min="0" max="100" oninput="syncBadge('t_action','v_t_action','%');update()">
+        </div>
+        <div class="field">
+          <label><span class="label-left">Taux emploi — Contrefactuel (%)</span><span class="val-badge" id="v_t_contre">30%</span></label>
+          <input type="range" id="t_contre" value="30" min="0" max="100" oninput="syncBadge('t_contre','v_t_contre','%');update()">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2 · Données de base — Entreprise -->
+  <div class="ent-only">
+    <div class="section-label">2 · Résultats Observés</div>
+    <div class="block" id="block-base-ent">
+      <div class="block-header" onclick="toggleBlock('block-base-ent')">
+        <span class="block-icon">🏢</span><span class="block-title">Données de Base — Entreprises</span><span class="block-toggle">▼</span>
+      </div>
+      <div class="block-body">
+        <div class="block-desc">Recrutements accompagnés et taux de pourvoi des offres comparé au marché sans action.</div>
+        <div class="field"><label>Nombre de recrutements accompagnés (N)</label><input type="number" id="n_ent" value="50" min="0" oninput="update()"></div>
+        <div class="field">
+          <label><span class="label-left">Taux de pourvoi — Avec action (%)</span><span class="val-badge" id="v_pourvoi_action">75%</span></label>
+          <input type="range" id="pourvoi_action" value="75" min="0" max="100" oninput="syncBadge('pourvoi_action','v_pourvoi_action','%');update()">
+        </div>
+        <div class="field">
+          <label><span class="label-left">Taux de pourvoi — Contrefactuel (%)</span><span class="val-badge" id="v_pourvoi_contre">45%</span></label>
+          <input type="range" id="pourvoi_contre" value="45" min="0" max="100" oninput="syncBadge('pourvoi_contre','v_pourvoi_contre','%');update()">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3 · Biais — DE -->
+  <div class="de-only">
+    <div class="section-label">3 · Biais Correctifs</div>
+    <div class="block" id="block-biais-de">
+      <div class="block-header" onclick="toggleBlock('block-biais-de')">
+        <span class="block-icon">🔍</span><span class="block-title">4 Biais — Demandeurs d'Emploi</span><span class="block-toggle">▼</span>
+      </div>
+      <div class="block-body">
+        <div class="block-desc">Correction séquentielle pour isoler la contribution réelle de l'action.</div>
+        <div class="biais-mode-toggle">
+          <button class="mode-btn active" id="btn-detail" onclick="setBiaisMode('detail')">🔬 Détailler chaque biais</button>
+          <button class="mode-btn" id="btn-confiance" onclick="setBiaisMode('confiance')">🎚️ Niveau de confiance</button>
+        </div>
+
+        <div class="mode-detail visible" id="mode-detail-panel">
+          <!-- Sélection DE -->
+          <div class="field"><label>
             <span class="label-left">Biais de Sélection
-              <div class="tip-wrap"><span class="tip-btn">? Aide</span>
-                <div class="tip-panel">
-                  <div class="tip-title">🎯 Biais de Sélection (Cream-skimming)</div>
-                  <div class="tip-row"><div class="tip-key">Définition</div><div class="tip-val">L'action a ciblé des candidats structurellement plus proches de l'emploi que la population générale des DE, gonflant artificiellement les résultats.</div></div>
-                  <div class="tip-row"><div class="tip-key">Question clé</div><div class="tip-val">Mon public est-il représentatif de la population générale des DE, ou ai-je privilégié les profils les plus «employables» ?</div></div>
-                  <div class="tip-row"><div class="tip-key">Comment mesurer</div><div class="tip-val">Comparer les caractéristiques d'entrée (diplôme, durée de chômage, âge) à celles de la population de référence France Travail. Plus votre public est qualifié et récemment inscrit, plus ce biais est élevé.</div></div>
-                  <div class="tip-row"><div class="tip-key">Valeurs de référence</div><div class="tip-tags"><span class="tip-tag">Public vulnérable : 0–5%</span><span class="tip-tag">Public mixte : 10–20%</span><span class="tip-tag">Public qualifié : 25–40%</span></div></div>
-                </div>
-              </div>
-            </span>
+              <div class="tip-wrap"><span class="tip-btn">? Aide</span><div class="tip-panel">
+                <div class="tip-title">🎯 Biais de Sélection (Cream-skimming)</div>
+                <div class="tip-row"><div class="tip-key">Définition</div><div class="tip-val">L'action a ciblé des candidats structurellement plus proches de l'emploi que la population générale, gonflant artificiellement les résultats.</div></div>
+                <div class="tip-row"><div class="tip-key">Question clé</div><div class="tip-val">Mon public est-il représentatif, ou ai-je privilégié les profils les plus «employables» ?</div></div>
+                <div class="tip-row"><div class="tip-key">Comment mesurer</div><div class="tip-val">Comparer les caractéristiques d'entrée (diplôme, durée de chômage, âge) à la population de référence France Travail. Plus votre public est qualifié et récemment inscrit, plus ce biais est élevé.</div></div>
+                <div class="tip-row"><div class="tip-key">Valeurs de référence</div><div class="tip-tags"><span class="tip-tag">Public vulnérable : 0–5%</span><span class="tip-tag">Mixte : 10–20%</span><span class="tip-tag">Qualifié : 25–40%</span></div></div>
+              </div></div></span>
             <span class="val-badge" id="v_b_sel">10%</span>
           </label>
           <input type="range" id="b_sel" value="10" min="0" max="100" oninput="syncBadge('b_sel','v_b_sel','%');update()">
-        </div>
-
-        <div class="field">
-          <label>
+          </div>
+          <!-- Substitution DE -->
+          <div class="field"><label>
             <span class="label-left">Effet de Substitution
-              <div class="tip-wrap"><span class="tip-btn">? Aide</span>
-                <div class="tip-panel">
-                  <div class="tip-title">🔄 Effet de Substitution (Déplacement)</div>
-                  <div class="tip-row"><div class="tip-key">Définition</div><div class="tip-val">L'insertion d'un bénéficiaire s'est faite au détriment d'un autre DE non accompagné : le chômage a été «déplacé» plutôt que réduit.</div></div>
-                  <div class="tip-row"><div class="tip-key">Question clé</div><div class="tip-val">Le poste occupé existait-il avant l'action ou a-t-il été créé grâce à elle ? L'employeur aurait-il recruté sans votre mise en relation ?</div></div>
-                  <div class="tip-row"><div class="tip-key">Comment mesurer</div><div class="tip-val">Enquête employeurs : «Auriez-vous pourvu ce poste avec un autre candidat si notre service n'avait pas existé ?» Taux de substitution = % de réponses «oui». Données sectorielles DARES disponibles.</div></div>
-                  <div class="tip-row"><div class="tip-key">Valeurs de référence</div><div class="tip-tags"><span class="tip-tag">Marché tendu : 5–10%</span><span class="tip-tag">Équilibré : 10–20%</span><span class="tip-tag">Saturé : 20–40%</span></div></div>
-                </div>
-              </div>
-            </span>
+              <div class="tip-wrap"><span class="tip-btn">? Aide</span><div class="tip-panel">
+                <div class="tip-title">🔄 Effet de Substitution (Déplacement)</div>
+                <div class="tip-row"><div class="tip-key">Définition</div><div class="tip-val">L'insertion d'un bénéficiaire s'est faite au détriment d'un autre DE non accompagné : le chômage a été déplacé plutôt que réduit.</div></div>
+                <div class="tip-row"><div class="tip-key">Question clé</div><div class="tip-val">L'employeur aurait-il recruté un autre candidat sans votre mise en relation ?</div></div>
+                <div class="tip-row"><div class="tip-key">Comment mesurer</div><div class="tip-val">Enquête employeurs : «Auriez-vous pourvu ce poste sans notre aide ?» Données sectorielles DARES disponibles.</div></div>
+                <div class="tip-row"><div class="tip-key">Valeurs de référence</div><div class="tip-tags"><span class="tip-tag">Marché tendu : 5–10%</span><span class="tip-tag">Équilibré : 10–20%</span><span class="tip-tag">Saturé : 20–40%</span></div></div>
+              </div></div></span>
             <span class="val-badge" id="v_e_sub">5%</span>
           </label>
           <input type="range" id="e_sub" value="5" min="0" max="100" oninput="syncBadge('e_sub','v_e_sub','%');update()">
-        </div>
-
-        <div class="field">
-          <label>
+          </div>
+          <!-- Durabilité DE -->
+          <div class="field"><label>
             <span class="label-left">Biais de Durabilité
-              <div class="tip-wrap"><span class="tip-btn">? Aide</span>
-                <div class="tip-panel">
-                  <div class="tip-title">⏱️ Biais de Durabilité (Pérennité)</div>
-                  <div class="tip-row"><div class="tip-key">Définition</div><div class="tip-val">L'emploi obtenu est précaire (CDD court, intérim) et un retour rapide au chômage annule une large part des bénéfices financiers.</div></div>
-                  <div class="tip-row"><div class="tip-key">Question clé</div><div class="tip-val">Quelle proportion de vos bénéficiaires sont encore en emploi 6 mois après la sortie ? Le contrat avait-il une durée ≥ 6 mois ?</div></div>
-                  <div class="tip-row"><div class="tip-key">Comment mesurer</div><div class="tip-val">Suivi post-sortie à 3 et 6 mois (enquête téléphonique, SMS ou SI France Travail). Indicateur : taux de maintien en emploi à 6 mois. Correction = 1 − taux de maintien.</div></div>
-                  <div class="tip-row"><div class="tip-key">Valeurs de référence</div><div class="tip-tags"><span class="tip-tag">CDI / CDD long : 5–10%</span><span class="tip-tag">Mix : 15–25%</span><span class="tip-tag">Majorité précaire : 30–50%</span></div></div>
-                </div>
-              </div>
-            </span>
+              <div class="tip-wrap"><span class="tip-btn">? Aide</span><div class="tip-panel">
+                <div class="tip-title">⏱️ Biais de Durabilité (Pérennité)</div>
+                <div class="tip-row"><div class="tip-key">Définition</div><div class="tip-val">L'emploi obtenu est précaire (CDD court, intérim) et un retour rapide au chômage annule une large part des bénéfices financiers.</div></div>
+                <div class="tip-row"><div class="tip-key">Question clé</div><div class="tip-val">Quelle proportion reste en emploi 6 mois après la sortie ? Le contrat avait-il une durée ≥ 6 mois ?</div></div>
+                <div class="tip-row"><div class="tip-key">Comment mesurer</div><div class="tip-val">Suivi post-sortie à 3 et 6 mois. Indicateur : taux de maintien en emploi à 6 mois. Correction = 1 − taux de maintien.</div></div>
+                <div class="tip-row"><div class="tip-key">Valeurs de référence</div><div class="tip-tags"><span class="tip-tag">CDI / CDD long : 5–10%</span><span class="tip-tag">Mix : 15–25%</span><span class="tip-tag">Majorité précaire : 30–50%</span></div></div>
+              </div></div></span>
             <span class="val-badge" id="v_b_dur">15%</span>
           </label>
           <input type="range" id="b_dur" value="15" min="0" max="100" oninput="syncBadge('b_dur','v_b_dur','%');update()">
-        </div>
-
-        <div class="field">
-          <label>
+          </div>
+          <!-- Aubaine DE -->
+          <div class="field"><label>
             <span class="label-left">Effet d'Aubaine
-              <div class="tip-wrap"><span class="tip-btn">? Aide</span>
-                <div class="tip-panel">
-                  <div class="tip-title">🍀 Effet d'Aubaine (Spontanéité)</div>
-                  <div class="tip-row"><div class="tip-key">Définition</div><div class="tip-val">Le bénéficiaire aurait trouvé un emploi par ses propres moyens, dans le même délai, sans l'action. L'accompagnement n'a ici apporté aucune valeur ajoutée causale.</div></div>
-                  <div class="tip-row"><div class="tip-key">Question clé</div><div class="tip-val">Le bénéficiaire était-il déjà en contact actif avec des employeurs avant l'accompagnement ? Avait-il un réseau professionnel solide ?</div></div>
-                  <div class="tip-row"><div class="tip-key">Comment mesurer</div><div class="tip-val">Auto-déclaration à la sortie : «Pensez-vous avoir trouvé cet emploi sans l'accompagnement ?» + analyse du profil d'entrée (ancienneté des démarches, réseau). Croiser avec le délai de retour à l'emploi du groupe contrefactuel.</div></div>
-                  <div class="tip-row"><div class="tip-key">Valeurs de référence</div><div class="tip-tags"><span class="tip-tag">Public éloigné : 5–10%</span><span class="tip-tag">Intermédiaire : 10–20%</span><span class="tip-tag">Autonome : 20–35%</span></div></div>
-                </div>
-              </div>
-            </span>
+              <div class="tip-wrap"><span class="tip-btn">? Aide</span><div class="tip-panel">
+                <div class="tip-title">🍀 Effet d'Aubaine (Spontanéité)</div>
+                <div class="tip-row"><div class="tip-key">Définition</div><div class="tip-val">Le bénéficiaire aurait trouvé un emploi par ses propres moyens, dans le même délai, sans l'action.</div></div>
+                <div class="tip-row"><div class="tip-key">Question clé</div><div class="tip-val">Était-il déjà en contact actif avec des employeurs ? Avait-il un réseau solide avant l'accompagnement ?</div></div>
+                <div class="tip-row"><div class="tip-key">Comment mesurer</div><div class="tip-val">Auto-déclaration : «Pensez-vous avoir trouvé cet emploi sans l'accompagnement ?» + analyse des démarches antérieures.</div></div>
+                <div class="tip-row"><div class="tip-key">Valeurs de référence</div><div class="tip-tags"><span class="tip-tag">Public éloigné : 5–10%</span><span class="tip-tag">Intermédiaire : 10–20%</span><span class="tip-tag">Autonome : 20–35%</span></div></div>
+              </div></div></span>
             <span class="val-badge" id="v_e_aub">10%</span>
           </label>
           <input type="range" id="e_aub" value="10" min="0" max="100" oninput="syncBadge('e_aub','v_e_aub','%');update()">
-        </div>
-      </div>
-
-      <!-- MODE CONFIANCE -->
-      <div class="mode-confiance" id="mode-confiance-panel">
-        <div class="block-desc" style="margin-top:8px">
-          Le niveau de confiance synthétise en un seul paramètre l'ensemble des 4 biais d'évaluation. Il reflète la robustesse méthodologique de votre évaluation : qualité du groupe de comparaison, existence d'un suivi post-sortie, représentativité du public et stabilité des emplois obtenus.
-        </div>
-        <div class="field">
-          <label><span class="label-left">Niveau de confiance (%)</span><span class="val-badge" id="v_confiance">50%</span></label>
-          <input type="range" id="confiance" value="50" min="0" max="100" oninput="syncBadge('confiance','v_confiance','%');updateConfianceChips();update()">
-        </div>
-        <div class="conf-level" id="conf-chips">
-          <div class="conf-chip low" id="chip-low">Faible</div>
-          <div class="conf-chip med active-med" id="chip-med">Modéré</div>
-          <div class="conf-chip high" id="chip-high">Élevé</div>
-        </div>
-        <div class="conf-desc" id="conf-desc">
-          <strong>Confiance modérée (correction ≈ 25%)</strong> — Évaluation standard avec quelques données disponibles : taux d'accès à l'emploi mesuré, mais sans suivi systématique à 6 mois ni groupe témoin formalisé. Convient à la majorité des actions courantes.
-        </div>
-      </div>
-
-    </div>
-  </div>
-
-  <div class="section-label">4 · Gains Financiers (Société)</div>
-
-  <div class="block" id="block-gains-fin">
-    <div class="block-header" onclick="toggleBlock('block-gains-fin')">
-      <span class="block-icon">🏛️</span><span class="block-title">Gains Finances Publiques</span><span class="block-toggle">▼</span>
-    </div>
-    <div class="block-body">
-      <div class="block-desc">Gains unitaires par bénéficiaire inséré net. Servent au calcul du ROI.</div>
-      <div class="field"><label>Réduction allocations versées (€/pers.)</label><input type="number" id="g_alloc" value="6500" oninput="update()"></div>
-      <div class="field"><label>Cotisations salariales supplémentaires (€/pers.)</label><input type="number" id="g_cotis" value="4000" oninput="update()"></div>
-    </div>
-  </div>
-
-  <div class="section-label">5 · Scores Qualitatifs (Acteurs)</div>
-
-  <div class="block" id="block-gains-qual">
-    <div class="block-header" onclick="toggleBlock('block-gains-qual')">
-      <span class="block-icon">🤝</span>
-      <span class="block-title">Scores Qualitatifs
-        <div class="tip-wrap" style="display:inline-flex;margin-left:5px">
-          <span class="tip-btn">? Aide</span>
-          <div class="tip-panel">
-            <div class="tip-title">📊 Scores de Perception</div>
-            <div class="tip-row"><div class="tip-key">Ce que mesurent ces scores</div><div class="tip-val">Ces indicateurs capturent la <strong style="color:#93c5fd">perception subjective</strong> des parties prenantes, et non des résultats objectifs mesurés. Ils ne servent pas au calcul du ROI financier mais complètent le tableau en signalant les effets indirects et la soutenabilité de l'action.</div></div>
-            <div class="tip-row"><div class="tip-key">Comment les obtenir</div><div class="tip-val">Enquêtes de satisfaction (NPS, Likert 1–10) auprès des bénéficiaires, partenaires et équipes en fin d'action. Une note de 7/10 ou plus indique une perception positive forte.</div></div>
-            <div class="tip-row"><div class="tip-key">Interprétation du radar</div><div class="tip-val">Un radar équilibré et élevé signale une action soutenable. Un profil déséquilibré (ex. ROI fort mais scores faibles) peut révéler un risque sur la qualité ou la durabilité.</div></div>
           </div>
         </div>
-      </span>
-      <span class="block-toggle">▼</span>
+
+        <div class="mode-confiance" id="mode-confiance-panel">
+          <div class="block-desc" style="margin-top:8px">Le niveau de confiance synthétise les 4 biais en un seul paramètre selon la qualité de votre évaluation méthodologique.</div>
+          <div class="field">
+            <label><span class="label-left">Niveau de confiance (%)</span><span class="val-badge" id="v_confiance">50%</span></label>
+            <input type="range" id="confiance" value="50" min="0" max="100" oninput="syncBadge('confiance','v_confiance','%');updateConfianceChips();update()">
+          </div>
+          <div class="conf-level" id="conf-chips">
+            <div class="conf-chip low" id="chip-low">Faible</div>
+            <div class="conf-chip med active-med" id="chip-med">Modéré</div>
+            <div class="conf-chip high" id="chip-high">Élevé</div>
+          </div>
+          <div class="conf-desc" id="conf-desc">Confiance modérée (correction ≈ 25%) — évaluation standard sans groupe témoin formalisé.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3 · Biais — Entreprise -->
+  <div class="ent-only">
+    <div class="section-label">3 · Biais Correctifs</div>
+    <div class="block" id="block-biais-ent">
+      <div class="block-header" onclick="toggleBlock('block-biais-ent')">
+        <span class="block-icon">🔍</span><span class="block-title">4 Biais — Entreprises</span><span class="block-toggle">▼</span>
+      </div>
+      <div class="block-body">
+        <div class="block-desc">Correction séquentielle pour isoler la contribution réelle de l'action sur les recrutements.</div>
+
+        <!-- Aubaine ENT -->
+        <div class="field"><label>
+          <span class="label-left">Effet d'Aubaine
+            <div class="tip-wrap"><span class="tip-btn">? Aide</span><div class="tip-panel">
+              <div class="tip-title">🍀 Effet d'Aubaine (Recrutement provisionné)</div>
+              <div class="tip-row"><div class="tip-key">Définition</div><div class="tip-val">L'entreprise avait déjà planifié et engagé ce recrutement avant votre intervention. Votre action n'a pas déclenché le recrutement, elle l'a simplement accompagné.</div></div>
+              <div class="tip-row"><div class="tip-key">Question clé</div><div class="tip-val">L'entreprise avait-elle déjà un budget de recrutement validé ? Le poste était-il déjà publié avant le contact ?</div></div>
+              <div class="tip-row"><div class="tip-key">Comment mesurer</div><div class="tip-val">Enquête entreprise : «Aviez-vous déjà décidé de recruter ce profil avant notre accompagnement ?» + vérification des dates de publication d'offre vs. date de premier contact.</div></div>
+              <div class="tip-row"><div class="tip-key">Valeurs de référence</div><div class="tip-tags"><span class="tip-tag">Petites entreprises peu RH : 5–10%</span><span class="tip-tag">Entreprises structurées : 15–30%</span></div></div>
+            </div></div></span>
+          <span class="val-badge" id="v_e_aub_ent">10%</span>
+        </label>
+        <input type="range" id="e_aub_ent" value="10" min="0" max="100" oninput="syncBadge('e_aub_ent','v_e_aub_ent','%');update()">
+        </div>
+
+        <!-- Sélection ENT -->
+        <div class="field"><label>
+          <span class="label-left">Biais de Sélection
+            <div class="tip-wrap"><span class="tip-btn">? Aide</span><div class="tip-panel">
+              <div class="tip-title">🎯 Biais de Sélection (Entreprises vertueuses)</div>
+              <div class="tip-row"><div class="tip-key">Définition</div><div class="tip-val">Vous ne travaillez qu'avec des entreprises déjà engagées, ouvertes et bienveillantes. Vos résultats ne reflètent pas ce qui se passerait sur les entreprises plus réfractaires ou moins structurées.</div></div>
+              <div class="tip-row"><div class="tip-key">Question clé</div><div class="tip-val">Quelle est la part d'entreprises difficiles à convaincre dans votre portefeuille ? Avez-vous des résultats sur des entreprises initialement sceptiques ?</div></div>
+              <div class="tip-row"><div class="tip-key">Comment mesurer</div><div class="tip-val">Analyser le profil des entreprises accompagnées : taux de PME/TPE, secteurs en tension, expérience préalable en inclusion. Comparer au tissu économique local.</div></div>
+              <div class="tip-row"><div class="tip-key">Valeurs de référence</div><div class="tip-tags"><span class="tip-tag">Portefeuille diversifié : 5–15%</span><span class="tip-tag">Entreprises partenaires fidèles : 20–35%</span></div></div>
+            </div></div></span>
+          <span class="val-badge" id="v_b_sel_ent">12%</span>
+        </label>
+        <input type="range" id="b_sel_ent" value="12" min="0" max="100" oninput="syncBadge('b_sel_ent','v_b_sel_ent','%');update()">
+        </div>
+
+        <!-- Proximité ENT -->
+        <div class="field"><label>
+          <span class="label-left">Biais de Proximité
+            <div class="tip-wrap"><span class="tip-btn">? Aide</span><div class="tip-panel">
+              <div class="tip-title">🤝 Biais de Proximité (Réseau propre)</div>
+              <div class="tip-row"><div class="tip-key">Définition</div><div class="tip-val">L'entreprise aurait recruté ce profil via son propre réseau (cooptation, recommandations, réseaux sociaux) sans votre intermédiation. Votre rôle a été décoratif sur ce recrutement spécifique.</div></div>
+              <div class="tip-row"><div class="tip-key">Question clé</div><div class="tip-val">L'entreprise avait-elle déjà des candidats identifiés en interne ou via son réseau ? Le candidat retenu était-il déjà connu de l'entreprise ?</div></div>
+              <div class="tip-row"><div class="tip-key">Comment mesurer</div><div class="tip-val">Vérifier si le candidat recruté figurait déjà dans les contacts de l'entreprise. Demander si une candidature spontanée était en cours avant l'action.</div></div>
+              <div class="tip-row"><div class="tip-key">Valeurs de référence</div><div class="tip-tags"><span class="tip-tag">Profils rares / spécialisés : 5–10%</span><span class="tip-tag">Profils courants : 15–25%</span></div></div>
+            </div></div></span>
+          <span class="val-badge" id="v_b_prox">8%</span>
+        </label>
+        <input type="range" id="b_prox" value="8" min="0" max="100" oninput="syncBadge('b_prox','v_b_prox','%');update()">
+        </div>
+
+        <!-- Durabilité ENT -->
+        <div class="field"><label>
+          <span class="label-left">Biais de Durabilité du poste
+            <div class="tip-wrap"><span class="tip-btn">? Aide</span><div class="tip-panel">
+              <div class="tip-title">⏱️ Biais de Durabilité (Pérennité du poste)</div>
+              <div class="tip-row"><div class="tip-key">Définition</div><div class="tip-val">Le recrutement effectué ne donne pas lieu à un emploi stable : le salarié quitte le poste dans les 3 mois (période d'essai rompue, CDD non renouvelé). Les bénéfices pour l'entreprise et la société sont alors nuls ou très réduits.</div></div>
+              <div class="tip-row"><div class="tip-key">Question clé</div><div class="tip-val">Le salarié recruté est-il encore en poste 6 mois après l'embauche ? Le contrat initial était-il un CDI ou un CDD long ?</div></div>
+              <div class="tip-row"><div class="tip-key">Comment mesurer</div><div class="tip-val">Suivi post-recrutement à 3 et 6 mois auprès de l'entreprise. Taux de maintien = % de salariés encore en poste à 6 mois. Correction = 1 − taux de maintien.</div></div>
+              <div class="tip-row"><div class="tip-key">Valeurs de référence</div><div class="tip-tags"><span class="tip-tag">CDI / intégration solide : 5–10%</span><span class="tip-tag">Turnover modéré : 15–20%</span><span class="tip-tag">Turnover élevé : 25–40%</span></div></div>
+            </div></div></span>
+          <span class="val-badge" id="v_b_dur_ent">10%</span>
+        </label>
+        <input type="range" id="b_dur_ent" value="10" min="0" max="100" oninput="syncBadge('b_dur_ent','v_b_dur_ent','%');update()">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4 · Gains financiers — DE -->
+  <div class="de-only">
+    <div class="section-label">4 · Gains Financiers (Société)</div>
+    <div class="block" id="block-gains-fin-de">
+      <div class="block-header" onclick="toggleBlock('block-gains-fin-de')">
+        <span class="block-icon">🏛️</span><span class="block-title">Gains Finances Publiques</span><span class="block-toggle">▼</span>
+      </div>
+      <div class="block-body">
+        <div class="block-desc">Gains unitaires par bénéficiaire inséré net. Servent au calcul du ROI.</div>
+        <div class="field"><label>Réduction allocations versées (€/pers.)</label><input type="number" id="g_alloc" value="6500" oninput="update()"></div>
+        <div class="field"><label>Cotisations salariales supplémentaires (€/pers.)</label><input type="number" id="g_cotis" value="4000" oninput="update()"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4 · Gains financiers — Entreprise -->
+  <div class="ent-only">
+    <div class="section-label">4 · Gains Financiers (Entreprise)</div>
+    <div class="block" id="block-gains-fin-ent">
+      <div class="block-header" onclick="toggleBlock('block-gains-fin-ent')">
+        <span class="block-icon">💼</span><span class="block-title">Gains par Recrutement Réussi</span><span class="block-toggle">▼</span>
+      </div>
+      <div class="block-body">
+        <div class="block-desc">Gains unitaires par recrutement abouti net de biais. Servent au calcul du ROI entreprise.</div>
+        <div class="field">
+          <label>Coût évité d'un recrutement raté (€)
+            <div class="tip-wrap"><span class="tip-btn">? Aide</span><div class="tip-panel">
+              <div class="tip-title">💸 Coût d'un recrutement raté</div>
+              <div class="tip-row"><div class="tip-key">Ce que ça inclut</div><div class="tip-val">Coûts directs (annonces, cabinet) + coûts d'intégration (formation, onboarding) + perte de productivité pendant la vacance du poste + coûts managériaux liés au départ. En France, un recrutement raté coûte en moyenne 1,5 à 2,5× le salaire brut annuel du poste.</div></div>
+              <div class="tip-row"><div class="tip-key">Comment estimer</div><div class="tip-val">Durée vacance × (coût horaire manager + perte CA) + coût d'intégration refait. Demandez à la DRH le coût réel d'un turn-over récent comparable.</div></div>
+              <div class="tip-row"><div class="tip-key">Valeurs de référence</div><div class="tip-tags"><span class="tip-tag">Poste peu qualifié : 5 000–10 000 €</span><span class="tip-tag">Cadre : 20 000–50 000 €</span></div></div>
+            </div></div>
+          </label>
+          <input type="number" id="g_recrut_rate" value="8000" oninput="update()">
+        </div>
+        <div class="field">
+          <label>Gain de productivité / CA (€/recrutement)
+            <div class="tip-wrap"><span class="tip-btn">? Aide</span><div class="tip-panel">
+              <div class="tip-title">📈 Gain de productivité</div>
+              <div class="tip-row"><div class="tip-key">Ce que ça mesure</div><div class="tip-val">Augmentation du chiffre d'affaires ou de la capacité de production grâce au nouveau collaborateur, au-delà de ce que génère son salaire. Inclut également la valeur de l'expérience apportée et la réduction de surcharge sur l'équipe existante.</div></div>
+              <div class="tip-row"><div class="tip-key">Comment estimer</div><div class="tip-val">Valeur ajoutée par employé dans le secteur × taux de capture. Ou bien : recettes supplémentaires générées par le poste sur 6 mois − coûts salariaux.</div></div>
+              <div class="tip-row"><div class="tip-key">Valeurs indicatives</div><div class="tip-tags"><span class="tip-tag">Services : 5 000–15 000 €/an</span><span class="tip-tag">Industrie : 15 000–40 000 €/an</span></div></div>
+            </div></div>
+          </label>
+          <input type="number" id="g_productivite" value="6000" oninput="update()">
+        </div>
+        <div class="field">
+          <label>Coût évité de recherche de candidats (€)
+            <div class="tip-wrap"><span class="tip-btn">? Aide</span><div class="tip-panel">
+              <div class="tip-title">🔎 Coût évité de sourcing</div>
+              <div class="tip-row"><div class="tip-key">Ce que ça inclut</div><div class="tip-val">Budget annonces (Indeed, LinkedIn, APEC), éventuels honoraires de cabinet de recrutement (15–25% du salaire annuel), temps RH passé à trier des candidatures non adaptées.</div></div>
+              <div class="tip-row"><div class="tip-key">Comment estimer</div><div class="tip-val">Somme des dépenses habituelles de sourcing pour un poste équivalent (annonces + temps RH + éventuel cabinet). Ce coût est évité si votre action apporte directement le bon profil.</div></div>
+              <div class="tip-row"><div class="tip-key">Valeurs de référence</div><div class="tip-tags"><span class="tip-tag">Sans cabinet : 1 000–3 000 €</span><span class="tip-tag">Avec cabinet : 8 000–20 000 €</span></div></div>
+            </div></div>
+          </label>
+          <input type="number" id="g_sourcing" value="3000" oninput="update()">
+        </div>
+
+        <div style="background:rgba(37,99,235,.07);border:1px solid rgba(37,99,235,.18);border-radius:6px;padding:9px 10px;margin-top:4px">
+          <div style="font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:#93c5fd;margin-bottom:8px">⏱ Réduction du délai d'embauche</div>
+          <div class="field">
+            <label>Jours d'embauche gagnés (j/recrutement)
+              <div class="tip-wrap"><span class="tip-btn">? Aide</span><div class="tip-panel">
+                <div class="tip-title">⏱ Réduction du délai d'embauche</div>
+                <div class="tip-row"><div class="tip-key">Ce que ça mesure</div><div class="tip-val">Votre action réduit le temps entre la décision de recruter et la prise de poste effective. Ce délai évité représente directement du chiffre d'affaires ou de la capacité de production récupérée plus tôt.</div></div>
+                <div class="tip-row"><div class="tip-key">Comment estimer</div><div class="tip-val">Comparez le délai moyen de pourvoi observé sur vos recrutements accompagnés avec le délai moyen dans votre secteur / bassin d'emploi (données DARES, enquête «Besoins en Main d'Œuvre»). La différence est votre gain en jours.</div></div>
+                <div class="tip-row"><div class="tip-key">Valeurs de référence</div><div class="tip-tags"><span class="tip-tag">Profils pénuriques : 15–45 jours</span><span class="tip-tag">Profils courants : 5–15 jours</span><span class="tip-tag">Profils qualifiés : 20–60 jours</span></div></div>
+              </div></div>
+            </label>
+            <input type="number" id="g_jours_gagnes" value="15" min="0" oninput="update()">
+          </div>
+          <div class="field" style="margin-bottom:4px">
+            <label>Manque à gagner évité par jour (€/j)
+              <div class="tip-wrap"><span class="tip-btn">? Aide</span><div class="tip-panel">
+                <div class="tip-title">💰 Manque à gagner journalier</div>
+                <div class="tip-row"><div class="tip-key">Ce que ça représente</div><div class="tip-val">Chaque jour où le poste est vacant, l'entreprise perd de la valeur : CA non réalisé, surcharge des collègues (coût d'opportunité), commandes non traitées, perte de clients. Ce paramètre capture cette perte journalière.</div></div>
+                <div class="tip-row"><div class="tip-key">Comment estimer</div><div class="tip-val">Méthode 1 : CA annuel du service ÷ 220 jours × taux de contribution du poste (10–25%). Méthode 2 : Demandez au manager «Combien ça vous coûte par jour de ne pas avoir ce collaborateur ?»</div></div>
+                <div class="tip-row"><div class="tip-key">Valeurs de référence</div><div class="tip-tags"><span class="tip-tag">Poste support : 100–300 €/j</span><span class="tip-tag">Commercial : 300–800 €/j</span><span class="tip-tag">Expert / Cadre : 500–1 500 €/j</span></div></div>
+              </div></div>
+            </label>
+            <input type="number" id="g_mag_jour" value="250" min="0" oninput="update()">
+          </div>
+          <div class="computed-row" style="margin-top:4px">
+            <span class="lc">Gain délai = Jours × MAG/j × Recrutements nets</span>
+            <span class="vc" id="cout_delai_calc">0 €</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gains Société — Entreprise -->
+    <div class="section-label">4b · Gains Société (Entreprise)</div>
+    <div class="block" id="block-gains-soc-ent">
+      <div class="block-header" onclick="toggleBlock('block-gains-soc-ent')">
+        <span class="block-icon">🌍</span><span class="block-title">Externalités — Marché du Travail</span><span class="block-toggle">▼</span>
+      </div>
+      <div class="block-body">
+        <div class="block-desc">Impact diffus de l'action sur les tensions du marché du travail et sur la création d'emplois nets dans le bassin d'emploi.</div>
+
+        <!-- Gain baisse tensions marché -->
+        <div style="background:rgba(15,118,110,.08);border:1px solid rgba(15,118,110,.2);border-radius:6px;padding:9px 10px;margin-bottom:8px">
+          <div style="font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:#5eead4;margin-bottom:8px">📉 Baisse des tensions du marché</div>
+          <div class="field" style="margin-bottom:4px">
+            <label>Gain marché / baisse tensions (€/recrutement)
+              <div class="tip-wrap"><span class="tip-btn">? Aide</span><div class="tip-panel">
+                <div class="tip-title">📉 Réduction des tensions du marché</div>
+                <div class="tip-row"><div class="tip-key">Raisonnement</div><div class="tip-val">En accélérant le pourvoi des offres, votre action réduit la durée de vacance des postes sur l'ensemble du bassin. Chaque jour gagné représente une capacité de production libérée — bénéfice diffus pour toutes les entreprises locales, pas seulement celles accompagnées.</div></div>
+                <div class="tip-row"><div class="tip-key">Comment estimer</div><div class="tip-val">Reprenez le nombre de jours gagnés (paramètre ci-dessus) × le manque à gagner journalier moyen du secteur. Vous obtenez un gain par recrutement, qui reflète la valeur économique de la réduction de tension.</div></div>
+                <div class="tip-row"><div class="tip-key">Source</div><div class="tip-val">Enquête BMO (Besoins en Main d'Œuvre) Pôle Emploi, études DARES sur les tensions sectorielles. Ce gain est distinct du gain délai déjà comptabilisé dans les gains entreprise.</div></div>
+                <div class="tip-row"><div class="tip-key">Valeurs indicatives</div><div class="tip-tags"><span class="tip-tag">PME services : 300–1 000 €</span><span class="tip-tag">Industrie : 800–2 500 €</span><span class="tip-tag">Métiers en tension : 1 500–5 000 €</span></div></div>
+              </div></div>
+            </label>
+            <input type="number" id="g_tensions" value="1000" oninput="update()">
+          </div>
+          <div class="computed-row" style="margin-top:4px">
+            <span class="lc">Gain marché = €/recr. × recrutements nets</span>
+            <span class="vc" id="gain_tensions_calc">0 €</span>
+          </div>
+        </div>
+
+        <!-- Emplois créés nets -->
+        <div style="background:rgba(5,150,105,.08);border:1px solid rgba(5,150,105,.2);border-radius:6px;padding:9px 10px">
+          <div style="font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:#6ee7b7;margin-bottom:8px">🆕 Créations d'emplois nettes</div>
+          <div class="field">
+            <label>Nombre d'emplois créés nets (N)
+              <div class="tip-wrap"><span class="tip-btn">? Aide</span><div class="tip-panel">
+                <div class="tip-title">🆕 Emplois créés — ce qui n'existait pas avant</div>
+                <div class="tip-row"><div class="tip-key">Définition</div><div class="tip-val">Parmi les recrutements aboutis, combien correspondent à des postes qui n'auraient pas été créés sans votre action ? Ce sont les cas où votre intervention a directement permis le développement de l'activité de l'entreprise ou l'ouverture d'un nouveau service.</div></div>
+                <div class="tip-row"><div class="tip-key">Comment identifier</div><div class="tip-val">Poser la question directement : «Ce poste existait-il avant notre accompagnement, ou a-t-il été créé grâce à notre soutien ?» Un financement incitatif (aide à l'embauche, contrat aidé) est un indicateur fort. Distinguer des «recrutements de remplacement» qui auraient eu lieu de toute façon.</div></div>
+                <div class="tip-row"><div class="tip-key">Impact fiscal</div><div class="tip-val">Chaque emploi créé net génère des gains fiscaux : réduction du nombre d'allocataires (allocations chômage évitées) + nouvelles cotisations salariales et patronales versées. C'est un gain pour les finances publiques, distinct du gain pour l'entreprise.</div></div>
+                <div class="tip-row"><div class="tip-key">Valeurs de référence</div><div class="tip-tags"><span class="tip-tag">Action développement RH : 20–40% des recr.</span><span class="tip-tag">Aide recrutement classique : 5–15%</span></div></div>
+              </div></div>
+            </label>
+            <input type="number" id="g_emplois_nets" value="8" min="0" oninput="update()">
+          </div>
+          <div style="font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:#6ee7b7;margin:8px 0 6px">Gain fiscal — 2 composantes</div>
+          <div class="field">
+            <label>① Gain fiscal par emploi créé (€/emploi)
+              <div class="tip-wrap"><span class="tip-btn">? Aide</span><div class="tip-panel">
+                <div class="tip-title">① Gain fiscal — emploi créé</div>
+                <div class="tip-row"><div class="tip-key">Ce que ça représente</div><div class="tip-val">Pour chaque emploi créé net, l'État et la Sécurité sociale récupèrent : allocations chômage évitées (environ 6 000–9 000 €/an) + cotisations salariales et patronales versées (environ 8 000–18 000 €/an selon le salaire). Total annuel : 14 000–27 000 € selon le profil.</div></div>
+                <div class="tip-row"><div class="tip-key">Comment calibrer</div><div class="tip-val">Utilisez le salaire moyen du poste pour estimer les cotisations (≈ 45–55% du salaire brut) et ajoutez les allocations mensuelles moyennes × 12 mois. Pour un SMIC : environ 10 500 €. Pour un cadre : 20 000–30 000 €.</div></div>
+                <div class="tip-row"><div class="tip-key">Valeurs de référence</div><div class="tip-tags"><span class="tip-tag">SMIC : 10 000–12 000 €</span><span class="tip-tag">Technicien : 14 000–18 000 €</span><span class="tip-tag">Cadre : 20 000–30 000 €</span></div></div>
+              </div></div>
+            </label>
+            <input type="number" id="g_fiscal_emploi" value="10500" oninput="update()">
+          </div>
+          <div class="field" style="margin-bottom:4px">
+            <label>② Gain fiscal / réduction délai recrutement (€/emploi)
+              <div class="tip-wrap"><span class="tip-btn">? Aide</span><div class="tip-panel">
+                <div class="tip-title">② Gain fiscal — réduction du délai</div>
+                <div class="tip-row"><div class="tip-key">Raisonnement</div><div class="tip-val">Pour les emplois créés nets, chaque jour de délai gagné signifie que le futur salarié commence plus tôt à payer des cotisations et à ne plus percevoir d'allocations. Ce gain temporel est distinct du gain total de l'emploi créé, mais s'ajoute à lui : c'est la valeur des jours «gagnés» avant que l'emploi soit pourvu.</div></div>
+                <div class="tip-row"><div class="tip-key">Comment estimer</div><div class="tip-val">Gain journalier fiscal (cotisations + alloc évitées ÷ 220 jours) × jours d'embauche gagnés. Exemple : pour un SMIC, gain journalier ≈ 48 €/j. Pour 15 jours gagnés : 720 € par emploi créé.</div></div>
+                <div class="tip-row"><div class="tip-key">Formule rapide</div><div class="tip-val">Gain fiscal annuel (paramètre ①) ÷ 220 × Jours gagnés (paramètre délai). Ce champ peut donc être calculé ou estimé directement.</div></div>
+                <div class="tip-row"><div class="tip-key">Valeurs indicatives</div><div class="tip-tags"><span class="tip-tag">SMIC + 15 jours : ≈ 720 €</span><span class="tip-tag">Cadre + 30 jours : ≈ 2 700 €</span></div></div>
+              </div></div>
+            </label>
+            <input type="number" id="g_fiscal_delai" value="720" oninput="update()">
+          </div>
+          <div class="computed-row" style="margin-top:4px">
+            <span class="lc">Gain fiscal total = (① + ②) × emplois nets</span>
+            <span class="vc" id="gain_fiscal_calc">0 €</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5 · Scores qualitatifs (commun) -->
+  <div class="section-label">5 · Scores Qualitatifs (Acteurs)</div>
+  <div class="block" id="block-gains-qual">
+    <div class="block-header" onclick="toggleBlock('block-gains-qual')">
+      <span class="block-icon">🤝</span><span class="block-title">Scores de Perception (0 – 10)</span><span class="block-toggle">▼</span>
     </div>
     <div class="block-body">
-      <div class="field"><label>Satisfaction des clients</label><input type="number" id="q_sat" value="8" min="0" max="10" oninput="update()"></div>
+      <div class="field"><label>Satisfaction des clients / employeurs</label><input type="number" id="q_sat" value="8" min="0" max="10" oninput="update()"></div>
       <div class="field"><label>Synergie entre acteurs</label><input type="number" id="q_syn" value="7" min="0" max="10" oninput="update()"></div>
       <div class="field"><label>Notoriété de la structure</label><input type="number" id="q_not" value="6" min="0" max="10" oninput="update()"></div>
       <div class="field"><label>Sentiment d'efficacité des équipes</label><input type="number" id="q_eff" value="8" min="0" max="10" oninput="update()"></div>
@@ -447,17 +668,6 @@ tbody tr:hover td{background:#f8fafc}
 <!-- ══ CONTENT ══ -->
 <main class="content">
 
-  <!-- Print-only title block -->
-  <div class="print-title-block" id="print-title-block">
-    <div class="pt-main" id="pt-main">—</div>
-    <div class="pt-sub">
-      <span id="pt-territoire">—</span>
-      <span class="pt-sep">·</span>
-      <span id="pt-date">—</span>
-    </div>
-  </div>
-
-  <!-- Screen: report meta bar -->
   <div class="report-meta">
     <div>
       <div class="report-title-display placeholder" id="report-title-display">Renseignez le titre de l'action dans le panneau latéral</div>
@@ -468,584 +678,594 @@ tbody tr:hover td{background:#f8fafc}
 
   <!-- KPIs -->
   <div class="kpi-grid">
-    <div class="kpi-card blue"><div class="kpi-icon">🎯</div><div class="kpi-label">Impact Net Réel</div><div class="kpi-value" id="kpi_net">0</div><div class="kpi-sub">Bénéficiaires insérés nets de biais</div></div>
+    <div class="kpi-card blue"><div class="kpi-icon">🎯</div><div class="kpi-label" id="kpi_net_label">Impact Net Réel</div><div class="kpi-value" id="kpi_net">0</div><div class="kpi-sub" id="kpi_net_sub">Bénéficiaires insérés nets de biais</div></div>
     <div class="kpi-card amber"><div class="kpi-icon">🧾</div><div class="kpi-label">Coût Total</div><div class="kpi-value" id="kpi_cout">0 €</div><div class="kpi-sub">Coût global de l'action</div></div>
-    <div class="kpi-card cyan"><div class="kpi-icon">💶</div><div class="kpi-label">Gains Société</div><div class="kpi-value" id="kpi_gain">0 €</div><div class="kpi-sub">Valeur créée pour les finances publiques</div></div>
-    <div class="kpi-card green"><div class="kpi-icon">📊</div><div class="kpi-label">Gain Net Pur</div><div class="kpi-value" id="kpi_net_pur">0 €</div><div class="kpi-sub">Gains société − Coût total</div></div>
-    <div class="kpi-card purple"><div class="kpi-icon">⚡</div><div class="kpi-label">ROI Social</div><div class="kpi-value" id="kpi_roi">0.00×</div><div class="kpi-sub">Efficience financière</div></div>
+    <div class="kpi-card cyan"><div class="kpi-icon">💶</div><div class="kpi-label" id="kpi_gain_label">Gains Société</div><div class="kpi-value" id="kpi_gain">0 €</div><div class="kpi-sub" id="kpi_gain_sub">Valeur créée pour les finances publiques</div></div>
+    <div class="kpi-card green"><div class="kpi-icon">📊</div><div class="kpi-label">Gain Net Pur</div><div class="kpi-value" id="kpi_net_pur">0 €</div><div class="kpi-sub">Gains − Coût total</div></div>
+    <div class="kpi-card purple"><div class="kpi-icon">⚡</div><div class="kpi-label">ROI</div><div class="kpi-value" id="kpi_roi">0.00×</div><div class="kpi-sub">Efficience financière</div></div>
   </div>
 
-  <!-- Main grid (screen: stacked / print: 3 cols) -->
-  <div class="print-main-grid">
+  <!-- Bilan financier -->
+  <div class="panel">
+    <div class="panel-header"><span class="panel-icon">⚖️</span><h2 id="bilan-title">Bilan Financier Consolidé — Coûts &amp; Gains Société</h2></div>
+    <table><thead><tr><th></th><th>Poste</th><th>Base de calcul</th><th style="text-align:right">Montant</th></tr></thead>
+    <tbody id="bilan-table-body"></tbody></table>
+  </div>
 
-    <!-- Col 1: Bilan table -->
-    <div>
-      <div class="panel">
-        <div class="panel-header"><span class="panel-icon">⚖️</span><h2>Bilan Financier Consolidé — Coûts &amp; Gains</h2></div>
-        <table><thead><tr><th></th><th>Poste</th><th>Base de calcul</th><th style="text-align:right">Montant</th></tr></thead>
-        <tbody id="bilan-table-body"></tbody></table>
-      </div>
+  <!-- Charts -->
+  <div class="charts-grid">
+    <div class="panel" style="margin:0">
+      <div class="panel-header"><span class="panel-icon">📉</span><h2 id="waterfall-title">Cascade d'Impact — Décomposition des Biais</h2></div>
+      <div style="padding:12px"><div class="chart-wrap"><canvas id="waterfallChart"></canvas></div><div class="bias-chips" id="bias-chips"></div></div>
     </div>
-
-    <!-- Col 2: Charts -->
-    <div>
-      <div class="charts-grid">
-        <div class="panel" style="margin:0">
-          <div class="panel-header"><span class="panel-icon">📉</span><h2>Cascade d'Impact</h2></div>
-          <div style="padding:12px"><div class="chart-wrap"><canvas id="waterfallChart"></canvas></div><div class="bias-chips" id="bias-chips"></div></div>
-        </div>
-        <div class="panel" style="margin:0">
-          <div class="panel-header"><span class="panel-icon">🕸️</span><h2>Radar Qualitatif</h2></div>
-          <div style="padding:12px"><div class="chart-wrap"><canvas id="radarChart"></canvas></div></div>
-        </div>
-      </div>
+    <div class="panel" style="margin:0">
+      <div class="panel-header"><span class="panel-icon">🕸️</span><h2>Radar d'Équilibre — Qualitatif Acteurs</h2></div>
+      <div style="padding:12px"><div class="chart-wrap"><canvas id="radarChart"></canvas></div></div>
     </div>
+  </div>
 
-    <!-- Col 3: Synthesis -->
-    <div>
-      <div class="panel">
-        <div class="panel-header"><span class="panel-icon">📝</span><h2>Synthèse des Résultats</h2></div>
-        <div style="padding:14px 15px"><div id="dynamic-synthesis" class="synthesis-text"></div></div>
-      </div>
-    </div>
-
+  <!-- Synthesis -->
+  <div class="panel">
+    <div class="panel-header"><span class="panel-icon">📝</span><h2>Synthèse Dynamique des Résultats</h2></div>
+    <div style="padding:14px 15px"><div id="dynamic-synthesis" class="synthesis-text"></div></div>
   </div>
 
 </main>
 </div>
 
+<!-- ══ WELCOME MODAL ══ -->
+<div class="modal-overlay" id="launch-modal">
+  <div class="modal-box">
+    <div class="modal-top">
+      <div class="modal-top-icon">⚡</div>
+      <h2>Simulateur d'Impact — Actions Emploi</h2>
+      <p>Évaluation financière, qualitative &amp; contrefactuelle — choisissez le type d'action à évaluer</p>
+    </div>
+    <div class="modal-body">
+
+      <!-- STEP 1 : Sélection du mode -->
+      <div id="modal-step1">
+        <div class="mode-select-label">Quelle est la cible principale de votre action ?</div>
+        <div class="mode-cards">
+          <div class="mode-card" id="card-de" onclick="selectMode('de')">
+            <div class="mode-card-icon">👥</div>
+            <div class="mode-card-title">Demandeurs d'Emploi</div>
+            <div class="mode-card-desc">Accompagnement vers l'emploi, parcours d'insertion, actions de remobilisation ou de formation.</div>
+          </div>
+          <div class="mode-card" id="card-ent" onclick="selectMode('ent')">
+            <div class="mode-card-icon">🏢</div>
+            <div class="mode-card-title">Entreprises</div>
+            <div class="mode-card-desc">Aide au recrutement, accompagnement RH, GPEC, actions de rapprochement offre / demande.</div>
+          </div>
+        </div>
+        <div style="font-size:.67rem;color:var(--muted);text-align:center">Sélectionnez un mode pour continuer</div>
+      </div>
+
+      <!-- STEP 2 DE -->
+      <div id="modal-step2-de" class="modal-guide">
+        <button class="modal-back" onclick="backToStep1()">← Changer de mode</button>
+        <div class="guide-steps">
+          <div class="guide-step"><div class="step-num">1</div><div class="step-text"><strong>Renseignez les coûts</strong><span>TJM, jours d'accompagnement, logistique, aides, prestations et formations.</span></div></div>
+          <div class="guide-step"><div class="step-num">2</div><div class="step-text"><strong>Saisissez les résultats observés</strong><span>Nombre de bénéficiaires, taux d'accès à l'emploi de l'action et du groupe contrefactuel.</span></div></div>
+          <div class="guide-step"><div class="step-num">3</div><div class="step-text"><strong>Calibrez les 4 biais</strong><span>Sélection, substitution, durabilité et aubaine — chacun documenté avec méthode de mesure.</span></div></div>
+          <div class="guide-step"><div class="step-num">4</div><div class="step-text"><strong>Analysez en temps réel</strong><span>KPIs, bilan financier, cascade d'impact et synthèse mis à jour à chaque saisie.</span></div></div>
+        </div>
+        <div class="modal-note">💡 <strong>Paramètres pliés par défaut.</strong> Dépliez chaque section dans la colonne de gauche. Les valeurs pré-remplies sont indicatives.</div>
+        <button class="modal-cta de" onclick="startApp('de')">Démarrer — Mode Demandeurs d'Emploi →</button>
+      </div>
+
+      <!-- STEP 2 ENT -->
+      <div id="modal-step2-ent" class="modal-guide">
+        <button class="modal-back" onclick="backToStep1()">← Changer de mode</button>
+        <div class="guide-steps">
+          <div class="guide-step"><div class="step-num teal">1</div><div class="step-text"><strong>Renseignez les coûts</strong><span>TJM, logistique, prestations et formations de l'action RH.</span></div></div>
+          <div class="guide-step"><div class="step-num teal">2</div><div class="step-text"><strong>Saisissez les résultats</strong><span>Nombre de recrutements accompagnés, taux de pourvoi avec et sans action.</span></div></div>
+          <div class="guide-step"><div class="step-num teal">3</div><div class="step-text"><strong>Calibrez les 4 biais spécifiques</strong><span>Aubaine, sélection (entreprises vertueuses), proximité et durabilité du poste.</span></div></div>
+          <div class="guide-step"><div class="step-num teal">4</div><div class="step-text"><strong>Gains entreprise + société</strong><span>Coûts évités, productivité, sourcing + externalités (tensions marché, créations d'emplois).</span></div></div>
+        </div>
+        <div class="modal-note">💡 <strong>Paramètres pliés par défaut.</strong> Dépliez chaque section dans la colonne de gauche. Les valeurs pré-remplies sont indicatives.</div>
+        <button class="modal-cta ent" onclick="startApp('ent')">Démarrer — Mode Entreprises →</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
 <script>
 let waterChart, radarChart;
-let biaisMode = 'detail'; // 'detail' | 'confiance'
+let biaisMode = 'detail';
+let appMode   = 'de'; // 'de' | 'ent'
 
-function toggleBlock(id) { document.getElementById(id).classList.toggle('open'); }
-function syncBadge(inputId, badgeId, suffix) {
-  document.getElementById(badgeId).textContent = document.getElementById(inputId).value + suffix;
+/* ── Modal navigation ── */
+function selectMode(m) {
+  document.getElementById('card-de').classList.remove('selected','selected-ent');
+  document.getElementById('card-ent').classList.remove('selected','selected-ent');
+  document.getElementById('modal-step2-de').classList.remove('visible');
+  document.getElementById('modal-step2-ent').classList.remove('visible');
+  if (m === 'de') {
+    document.getElementById('card-de').classList.add('selected');
+    document.getElementById('modal-step2-de').classList.add('visible');
+  } else {
+    document.getElementById('card-ent').classList.add('selected-ent');
+    document.getElementById('modal-step2-ent').classList.add('visible');
+  }
 }
-function fmt(n) { return Math.round(n).toLocaleString('fr-FR') + '\u00a0€'; }
-
-/* ── Biais mode toggle ── */
-function setBiaisMode(mode) {
-  biaisMode = mode;
-  document.getElementById('btn-detail').classList.toggle('active', mode === 'detail');
-  document.getElementById('btn-confiance').classList.toggle('active', mode === 'confiance');
-  document.getElementById('mode-detail-panel').classList.toggle('visible', mode === 'detail');
-  document.getElementById('mode-confiance-panel').classList.toggle('visible', mode === 'confiance');
+function backToStep1() {
+  document.getElementById('modal-step2-de').classList.remove('visible');
+  document.getElementById('modal-step2-ent').classList.remove('visible');
+  document.getElementById('card-de').classList.remove('selected','selected-ent');
+  document.getElementById('card-ent').classList.remove('selected','selected-ent');
+}
+function startApp(m) {
+  appMode = m;
+  applyMode(m);
+  closeModal();
+}
+function closeModal() {
+  const mo = document.getElementById('launch-modal');
+  mo.style.opacity = '0'; mo.style.transition = 'opacity .2s ease';
+  setTimeout(() => mo.remove(), 220);
+}
+/* ── Apply mode ── */
+function applyMode(m) {
+  appMode = m;
+  document.body.classList.toggle('mode-ent', m === 'ent');
+  const badge     = document.getElementById('mode-badge');
+  const switchBtn = document.getElementById('mode-badge-switch-de');
+  if (m === 'de') {
+    badge.className = 'mode-badge de';
+    badge.textContent = '👥 Mode Demandeurs d\'Emploi';
+    switchBtn.style.display = 'none';
+    document.getElementById('header-tagline').textContent = 'Évaluation financière, qualitative & contrefactuelle';
+    document.getElementById('kpi_net_label').textContent = 'Impact Net Réel';
+    document.getElementById('kpi_net_sub').textContent = 'Bénéficiaires insérés nets de biais';
+    document.getElementById('kpi_gain_label').textContent = 'Gains Société';
+    document.getElementById('kpi_gain_sub').textContent = 'Valeur créée pour les finances publiques';
+    document.getElementById('bilan-title').textContent = 'Bilan Financier Consolidé — Coûts & Gains Société';
+    document.getElementById('waterfall-title').textContent = 'Cascade d\'Impact — Décomposition des Biais (DE)';
+  } else {
+    badge.className = 'mode-badge ent';
+    badge.textContent = '🏢 Mode Entreprises';
+    switchBtn.style.display = 'inline-flex';
+    document.getElementById('header-tagline').textContent = 'Évaluation de l\'impact sur les recrutements & le marché du travail';
+    document.getElementById('kpi_net_label').textContent = 'Recrutements Nets';
+    document.getElementById('kpi_net_sub').textContent = 'Recrutements réussis nets de biais';
+    document.getElementById('kpi_gain_label').textContent = 'Gains Totaux';
+    document.getElementById('kpi_gain_sub').textContent = 'Entreprises + Société';
+    document.getElementById('bilan-title').textContent = 'Bilan Financier Consolidé — Coûts & Gains (Ent. + Société)';
+    document.getElementById('waterfall-title').textContent = 'Cascade d\'Impact — Décomposition des Biais (Entreprises)';
+  }
   update();
 }
 
-/* ── Confidence chips ── */
-const CONF_PRESETS = {
-  low:  { label:'Faible (correction ≈ 45%)',  desc:'Évaluation peu documentée : pas de groupe témoin formalisé, pas de suivi post-sortie, public possiblement surreprésenté en profils proches de l\'emploi. Les 4 biais sont probablement tous présents et significatifs. À utiliser quand vous disposez seulement du taux de placement brut.' },
-  med:  { label:'Modéré (correction ≈ 25%)',  desc:'Évaluation standard avec quelques données disponibles : taux d\'accès mesuré, mais sans suivi systématique à 6 mois ni groupe témoin formalisé. Convient à la majorité des actions courantes.' },
-  high: { label:'Élevé (correction ≈ 10%)',   desc:'Évaluation rigoureuse : groupe de comparaison constitué, suivi post-sortie à 6 mois réalisé, représentativité du public vérifiée, enquête employeurs conduite. Les biais résiduels sont faibles et documentés.' }
-};
-// Confidence → global correction factor (1 - this = net impact multiplier)
-// confiance 0% → correction 60%, confiance 100% → correction 0%
-function confToCorrection(pct) {
-  // Non-linear: low confidence = high correction
-  // 0% → 60%, 50% → 25%, 100% → 5%
-  return (0.6 - 0.55 * (pct / 100));
-}
-function updateConfianceChips() {
-  const pct = parseFloat(document.getElementById('confiance').value);
-  const level = pct < 34 ? 'low' : pct < 67 ? 'med' : 'high';
-  ['low','med','high'].forEach(l => {
-    const c = document.getElementById('chip-'+l);
-    c.className = 'conf-chip ' + l + (l === level ? ' active-'+l : '');
-  });
-  const corr = Math.round(confToCorrection(pct) * 100);
-  const preset = CONF_PRESETS[level];
-  document.getElementById('conf-desc').innerHTML = '<strong>' + preset.label + '</strong> — ' + preset.desc;
-}
+/* ── Helpers ── */
+function toggleBlock(id){ document.getElementById(id).classList.toggle('open'); }
+function syncBadge(inputId, badgeId, suffix){ document.getElementById(badgeId).textContent = document.getElementById(inputId).value + suffix; }
+function fmt(n){ return Math.round(n).toLocaleString('fr-FR') + '\u00a0€'; }
+function v(id){ return parseFloat(document.getElementById(id)?.value) || 0; }
 
-/* ── Meta bar ── */
-function updateMeta() {
-  const titre = document.getElementById('titre_action').value.trim();
-  const terr  = document.getElementById('territoire').value.trim();
-  const disp  = document.getElementById('report-title-display');
+/* ── Meta ── */
+function updateMeta(){
+  const titre = v('titre_action') ? document.getElementById('titre_action').value.trim() : '';
+  // titre_action is text not number — manual
+  const titreVal = document.getElementById('titre_action')?.value.trim() || '';
+  const terrVal  = document.getElementById('territoire')?.value.trim() || '';
+  const td = document.getElementById('report-title-display');
+  if (titreVal) { td.textContent = titreVal; td.classList.remove('placeholder'); }
+  else          { td.textContent = 'Renseignez le titre dans le panneau latéral'; td.classList.add('placeholder'); }
   const terrDiv = document.getElementById('report-territory-display');
-  const ptMain = document.getElementById('pt-main');
-  const ptTerr = document.getElementById('pt-territoire');
-
-  if (titre) {
-    disp.textContent = titre;
-    disp.classList.remove('placeholder');
-    ptMain.textContent = titre;
-  } else {
-    disp.textContent = 'Renseignez le titre de l\'action dans le panneau latéral';
-    disp.classList.add('placeholder');
-    ptMain.textContent = '—';
-  }
-  if (terr) {
-    terrDiv.textContent = '📍 ' + terr;
-    terrDiv.style.display = 'block';
-    ptTerr.textContent = '📍 ' + terr;
-  } else {
-    terrDiv.style.display = 'none';
-    ptTerr.textContent = '—';
-  }
+  if (terrVal)  { terrDiv.textContent = '📍 ' + terrVal; terrDiv.style.display = 'block'; }
+  else          { terrDiv.style.display = 'none'; }
 }
 
-/* ── Main calculation ── */
-function update() {
-  const tjm             = parseFloat(document.getElementById('tjm').value) || 0;
-  const jours_rh        = parseFloat(document.getElementById('jours_rh').value) || 0;
-  const cout_rh         = tjm * jours_rh;
-  const cout_logistique = parseFloat(document.getElementById('cout_logistique').value) || 0;
-  const cout_aides      = parseFloat(document.getElementById('cout_aides').value) || 0;
-  const cout_prestations= parseFloat(document.getElementById('cout_prestations').value) || 0;
-  const cout_formations = parseFloat(document.getElementById('cout_formations').value) || 0;
-  const coutTotal = cout_rh + cout_logistique + cout_aides + cout_prestations + cout_formations;
+/* ── Biais mode (DE) ── */
+function setBiaisMode(m) {
+  biaisMode = m;
+  document.getElementById('btn-detail').classList.toggle('active', m === 'detail');
+  document.getElementById('btn-confiance').classList.toggle('active', m === 'confiance');
+  document.getElementById('mode-detail-panel').classList.toggle('visible', m === 'detail');
+  document.getElementById('mode-confiance-panel').classList.toggle('visible', m === 'confiance');
+  update();
+}
+function confToCorrection(pct){
+  if(pct <= 20) return 0.50;
+  if(pct <= 40) return 0.35;
+  if(pct <= 60) return 0.25;
+  if(pct <= 80) return 0.15;
+  return 0.08;
+}
+function updateConfianceChips(){
+  const pct = v('confiance');
+  const isLow = pct <= 33, isHigh = pct >= 67;
+  document.getElementById('chip-low').className  = 'conf-chip low'  + (isLow              ? ' active-low'  : '');
+  document.getElementById('chip-med').className  = 'conf-chip med'  + (!isLow && !isHigh  ? ' active-med'  : '');
+  document.getElementById('chip-high').className = 'conf-chip high' + (isHigh             ? ' active-high' : '');
+  const descs = {
+    low:  'Confiance faible (correction ≈ 40–50%) — peu de données disponibles, pas de groupe témoin.',
+    med:  'Confiance modérée (correction ≈ 25%) — évaluation standard sans groupe témoin formalisé.',
+    high: 'Confiance élevée (correction ≈ 8–15%) — suivi rigoureux, groupe de comparaison solide.'
+  };
+  document.getElementById('conf-desc').textContent = isLow ? descs.low : isHigh ? descs.high : descs.med;
+}
 
-  document.getElementById('cout_rh_calc').textContent      = fmt(cout_rh);
-  document.getElementById('cout_total_display').textContent= fmt(coutTotal);
+/* ── MAIN UPDATE ── */
+function update(){
+  if (appMode === 'de') updateDE(); else updateENT();
+}
 
-  const n        = parseFloat(document.getElementById('n').value) || 0;
-  const t_action = parseFloat(document.getElementById('t_action').value) / 100;
-  const t_contre = parseFloat(document.getElementById('t_contre').value) / 100;
-  const g_alloc  = parseFloat(document.getElementById('g_alloc').value) || 0;
-  const g_cotis  = parseFloat(document.getElementById('g_cotis').value) || 0;
+/* ── UPDATE — Demandeurs d'Emploi ── */
+function updateDE(){
+  const tjm = v('tjm'), jours_rh = v('jours_rh');
+  const cout_rh = tjm * jours_rh;
+  const coutTotal = cout_rh + v('cout_logistique') + v('cout_aides') + v('cout_prestations') + v('cout_formations');
+  document.getElementById('cout_rh_calc').textContent = fmt(cout_rh);
+  document.getElementById('cout_total_display').textContent = fmt(coutTotal);
 
-  const succes_brut   = n * t_action;
-  const succes_contre = n * t_contre;
-  const base_impact   = Math.max(0, succes_brut - succes_contre);
+  const n = v('n_de');
+  const t_action = v('t_action') / 100, t_contre = v('t_contre') / 100;
+  const succes_brut = n * t_action, succes_contre = n * t_contre;
+  const base_impact = Math.max(0, succes_brut - succes_contre);
 
-  let impactNet, val_sel, val_sub, val_dur, val_aub, b_sel, e_sub, b_dur, e_aub;
-  let biaisLabel = '';
-
+  let impactNet, val_sel, val_sub, val_dur, val_aub, biaisLabel;
   if (biaisMode === 'detail') {
-    b_sel = parseFloat(document.getElementById('b_sel').value) / 100;
-    e_sub = parseFloat(document.getElementById('e_sub').value) / 100;
-    b_dur = parseFloat(document.getElementById('b_dur').value) / 100;
-    e_aub = parseFloat(document.getElementById('e_aub').value) / 100;
-
-    const after_sel = base_impact * (1 - b_sel);
-    const after_sub = after_sel   * (1 - e_sub);
-    const after_dur = after_sub   * (1 - b_dur);
-    impactNet = after_dur * (1 - e_aub);
-    val_sel = base_impact - after_sel;
-    val_sub = after_sel   - after_sub;
-    val_dur = after_sub   - after_dur;
-    val_aub = after_dur   - impactNet;
-    const totalBiais = Math.round((1 - impactNet / (base_impact || 1)) * 100);
-    biaisLabel = `Mode détaillé — correction totale : ${totalBiais}%`;
+    const b_sel = v('b_sel')/100, e_sub = v('e_sub')/100, b_dur = v('b_dur')/100, e_aub = v('e_aub')/100;
+    const a1 = base_impact*(1-b_sel), a2=a1*(1-e_sub), a3=a2*(1-b_dur);
+    impactNet = a3*(1-e_aub);
+    val_sel=base_impact-a1; val_sub=a1-a2; val_dur=a2-a3; val_aub=a3-impactNet;
+    biaisLabel = `4 biais séquentiels — correction : ${base_impact>0?Math.round((1-impactNet/base_impact)*100):0}%`;
   } else {
-    const confPct = parseFloat(document.getElementById('confiance').value);
-    const corr    = confToCorrection(confPct);
-    impactNet = base_impact * (1 - corr);
-    const lost = base_impact - impactNet;
-    val_sel = lost * 0.28; val_sub = lost * 0.14; val_dur = lost * 0.34; val_aub = lost * 0.24;
-    b_sel = 0; e_sub = 0; b_dur = 0; e_aub = 0;
-    biaisLabel = `Niveau de confiance ${confPct}% — correction globale : ${Math.round(corr*100)}%`;
+    const corr = confToCorrection(v('confiance'));
+    impactNet = base_impact*(1-corr);
+    const lost = base_impact-impactNet;
+    val_sel=lost*.28;val_sub=lost*.14;val_dur=lost*.34;val_aub=lost*.24;
+    biaisLabel = `Niveau confiance ${v('confiance')}% — correction : ${Math.round(corr*100)}%`;
   }
 
-  const gain_alloc_total = impactNet * g_alloc;
-  const gain_cotis_total = impactNet * g_cotis;
-  const gain_soc_total   = gain_alloc_total + gain_cotis_total;
-  const gainNetPur = gain_soc_total - coutTotal;
-  const roi        = coutTotal > 0 ? gain_soc_total / coutTotal : 0;
+  const g_alloc = v('g_alloc'), g_cotis = v('g_cotis');
+  const gain_alloc = impactNet*g_alloc, gain_cotis = impactNet*g_cotis;
+  const gain_soc = gain_alloc+gain_cotis;
+  const gainNetPur = gain_soc - coutTotal;
+  const roi = coutTotal>0 ? gain_soc/coutTotal : 0;
 
   document.getElementById('kpi_net').textContent     = Math.round(impactNet);
   document.getElementById('kpi_cout').textContent    = fmt(coutTotal);
-  document.getElementById('kpi_gain').textContent    = fmt(gain_soc_total);
+  document.getElementById('kpi_gain').textContent    = fmt(gain_soc);
   document.getElementById('kpi_net_pur').textContent = fmt(gainNetPur);
-  document.getElementById('kpi_roi').textContent     = roi.toFixed(2) + '×';
+  document.getElementById('kpi_roi').textContent     = roi.toFixed(2)+'×';
 
-  updateBilanTable(cout_rh, tjm, jours_rh, cout_logistique, cout_aides, cout_prestations,
-    cout_formations, coutTotal, g_alloc, g_cotis, impactNet,
-    gain_alloc_total, gain_cotis_total, gain_soc_total, gainNetPur);
-
-  updateBiasChips(val_sel, val_sub, val_dur, val_aub, base_impact, biaisLabel);
-  renderCharts(succes_brut, succes_contre, val_sel, val_sub, val_dur, val_aub, impactNet);
-  generateSynthesis(n, impactNet, coutTotal, gainNetPur, roi, base_impact, biaisLabel);
-}
-
-function updateBilanTable(cout_rh, tjm, jours_rh, logistique, aides, prestations, formations,
-    coutTotal, g_alloc, g_cotis, net, gain_alloc, gain_cotis, gain_soc, gainNetPur) {
+  // Bilan table
   const isPos = gainNetPur >= 0;
   document.getElementById('bilan-table-body').innerHTML = `
     <tr class="sep-row"><td colspan="4">📤 COÛTS DE L'ACTION</td></tr>
-    <tr><td style="color:var(--red);font-weight:800;width:18px">−</td><td>Ressources Humaines</td><td style="color:var(--slate);font-size:.68rem">${tjm.toLocaleString('fr-FR')} €/j × ${jours_rh} j</td><td class="num tr">− ${fmt(cout_rh)}</td></tr>
-    <tr><td style="color:var(--red);font-weight:800">−</td><td>Coût logistique</td><td style="color:var(--slate);font-size:.68rem">—</td><td class="num tr">− ${fmt(logistique)}</td></tr>
-    <tr><td style="color:var(--red);font-weight:800">−</td><td>Aides financières</td><td style="color:var(--slate);font-size:.68rem">—</td><td class="num tr">− ${fmt(aides)}</td></tr>
-    <tr><td style="color:var(--red);font-weight:800">−</td><td>Prestations</td><td style="color:var(--slate);font-size:.68rem">—</td><td class="num tr">− ${fmt(prestations)}</td></tr>
-    <tr><td style="color:var(--red);font-weight:800">−</td><td>Formations</td><td style="color:var(--slate);font-size:.68rem">—</td><td class="num tr">− ${fmt(formations)}</td></tr>
+    <tr><td style="color:var(--red);font-weight:800;width:18px">−</td><td>Ressources Humaines</td><td style="color:var(--slate);font-size:.67rem">${v('tjm').toLocaleString('fr-FR')} €/j × ${v('jours_rh')} j</td><td class="num tr">− ${fmt(cout_rh)}</td></tr>
+    <tr><td style="color:var(--red);font-weight:800">−</td><td>Coût logistique</td><td style="color:var(--slate);font-size:.67rem">—</td><td class="num tr">− ${fmt(v('cout_logistique'))}</td></tr>
+    <tr><td style="color:var(--red);font-weight:800">−</td><td>Aides financières</td><td style="color:var(--slate);font-size:.67rem">—</td><td class="num tr">− ${fmt(v('cout_aides'))}</td></tr>
+    <tr><td style="color:var(--red);font-weight:800">−</td><td>Prestations</td><td style="color:var(--slate);font-size:.67rem">—</td><td class="num tr">− ${fmt(v('cout_prestations'))}</td></tr>
+    <tr><td style="color:var(--red);font-weight:800">−</td><td>Formations</td><td style="color:var(--slate);font-size:.67rem">—</td><td class="num tr">− ${fmt(v('cout_formations'))}</td></tr>
     <tr class="total-row"><td colspan="3">TOTAL COÛTS</td><td class="nb tr">− ${fmt(coutTotal)}</td></tr>
     <tr class="spacer-row"><td colspan="4"></td></tr>
-    <tr class="sep-row"><td colspan="4">📥 GAINS SOCIÉTÉ — ${Math.round(net)} bénéficiaires insérés nets</td></tr>
-    <tr><td style="color:var(--green);font-weight:800">+</td><td>Réduction allocations versées</td><td style="color:var(--slate);font-size:.68rem">${g_alloc.toLocaleString('fr-FR')} €/pers. × ${Math.round(net)}</td><td class="num tr">+ ${fmt(gain_alloc)}</td></tr>
-    <tr><td style="color:var(--green);font-weight:800">+</td><td>Cotisations salariales supplémentaires</td><td style="color:var(--slate);font-size:.68rem">${g_cotis.toLocaleString('fr-FR')} €/pers. × ${Math.round(net)}</td><td class="num tr">+ ${fmt(gain_cotis)}</td></tr>
+    <tr class="sep-row"><td colspan="4">📥 GAINS SOCIÉTÉ — ${Math.round(impactNet)} bénéficiaires insérés nets</td></tr>
+    <tr><td style="color:var(--green);font-weight:800">+</td><td>Réduction allocations versées</td><td style="color:var(--slate);font-size:.67rem">${g_alloc.toLocaleString('fr-FR')} €/pers. × ${Math.round(impactNet)}</td><td class="num tr">+ ${fmt(gain_alloc)}</td></tr>
+    <tr><td style="color:var(--green);font-weight:800">+</td><td>Cotisations salariales supplémentaires</td><td style="color:var(--slate);font-size:.67rem">${g_cotis.toLocaleString('fr-FR')} €/pers. × ${Math.round(impactNet)}</td><td class="num tr">+ ${fmt(gain_cotis)}</td></tr>
     <tr class="total-row"><td colspan="3">TOTAL GAINS SOCIÉTÉ</td><td class="nb tr">+ ${fmt(gain_soc)}</td></tr>
     <tr class="spacer-row"><td colspan="4"></td></tr>
-    <tr class="${isPos ? 'balance-pos' : 'balance-neg'}"><td colspan="3">⚖️ GAIN NET PUR (Gains − Coûts)</td><td class="nb tr">${isPos ? '+' : ''} ${fmt(gainNetPur)}</td></tr>
-  `;
-}
+    <tr class="${isPos?'balance-pos':'balance-neg'}"><td colspan="3">⚖️ GAIN NET PUR</td><td class="nb tr">${isPos?'+ ':''}${fmt(gainNetPur)}</td></tr>`;
 
-function updateBiasChips(val_sel, val_sub, val_dur, val_aub, base, label) {
-  const chips = biaisMode === 'detail'
+  // Bias chips
+  const bNames = biaisMode==='detail'
     ? [['Sélection',val_sel],['Substitution',val_sub],['Durabilité',val_dur],['Aubaine',val_aub]]
-        .map(([n,v]) => `<div class="bias-chip"><span class="cn">${n}</span><span class="cp">−${(base > 0 ? Math.round(v/base*100) : 0)}%</span></div>`).join('')
-    : `<div class="bias-chip" style="background:#eff6ff;border-color:#bfdbfe"><span class="cn" style="color:var(--blue)">${label}</span></div>`;
-  document.getElementById('bias-chips').innerHTML = chips;
+    : [['Sélection',val_sel],['Substitution',val_sub],['Durabilité',val_dur],['Aubaine',val_aub]];
+  document.getElementById('bias-chips').innerHTML = biaisMode==='detail'
+    ? bNames.map(([n,val])=>`<div class="bias-chip"><span class="cn">${n}</span><span class="cp">−${base_impact>0?Math.round(val/base_impact*100):0}%</span></div>`).join('')
+    : `<div class="bias-chip" style="background:#eff6ff;border-color:#bfdbfe"><span class="cn" style="color:var(--blue)">${biaisLabel}</span></div>`;
+
+  renderCharts(
+    ['Succès Bruts','− Contrefactuel','− Sélection','− Substitution','− Durabilité','− Aubaine','Impact Net'],
+    [succes_brut,-succes_contre,-val_sel,-val_sub,-val_dur,-val_aub,impactNet],
+    'pers.'
+  );
+
+  // Synthesis
+  const bPct = base_impact>0?Math.round((1-impactNet/base_impact)*100):0;
+  const isP = roi>=1;
+  document.getElementById('dynamic-synthesis').innerHTML = `
+    <p>Sur les <strong>${n} bénéficiaires</strong> accompagnés, la différence brute avec le groupe contrefactuel représente <strong>${Math.round(base_impact)} insertions additionnelles</strong>. Les corrections (${biaisLabel}) réduisent cet écart de <strong>${bPct}%</strong>, aboutissant à un <strong>impact réel de ${Math.round(impactNet)} bénéficiaires insérés nets</strong>.</p>
+    <p>Le coût total de l'action s'élève à <strong>${fmt(coutTotal)}</strong>. Les gains générés pour les finances publiques atteignent <strong>${fmt(gain_soc)}</strong>, soit un ROI de <strong>${roi.toFixed(2)}×</strong> <span class="verdict-pill ${isP?'verdict-pos':'verdict-neg'}">${isP?'✅ ROI Positif':'⚠️ Coût Net'}</span>. Le gain net pur pour la collectivité s'établit à <strong>${fmt(gainNetPur)}</strong>.</p>
+    <p>Sur le plan qualitatif, le radar de perception illustre l'impact ressenti par les acteurs. Des scores uniformément élevés signalent une action robuste et pérenne.</p>`;
 }
 
-function renderCharts(brut, contre, val_sel, val_sub, val_dur, val_aub, net) {
+/* ── UPDATE — Entreprises ── */
+function updateENT(){
+  const tjm = v('tjm'), jours_rh = v('jours_rh');
+  const cout_rh = tjm * jours_rh;
+  const coutTotal = cout_rh + v('cout_logistique') + v('cout_aides') + v('cout_prestations') + v('cout_formations');
+  document.getElementById('cout_rh_calc').textContent = fmt(cout_rh);
+  document.getElementById('cout_total_display').textContent = fmt(coutTotal);
+
+  const n = v('n_ent');
+  const tp_action = v('pourvoi_action')/100, tp_contre = v('pourvoi_contre')/100;
+  const recruts_brut = n * tp_action, recruts_contre = n * tp_contre;
+  const base_impact = Math.max(0, recruts_brut - recruts_contre);
+
+  // 4 biais entreprise (cascade)
+  const e_aub = v('e_aub_ent')/100, b_sel = v('b_sel_ent')/100;
+  const b_prox = v('b_prox')/100,   b_dur = v('b_dur_ent')/100;
+  const a1 = base_impact*(1-e_aub);
+  const a2 = a1*(1-b_sel);
+  const a3 = a2*(1-b_prox);
+  const impactNet = a3*(1-b_dur);
+  const val_aub = base_impact-a1, val_sel=a1-a2, val_prox=a2-a3, val_dur=a3-impactNet;
+
+  // ── Gains entreprise ──
+  const g_rate  = v('g_recrut_rate');
+  const g_prod  = v('g_productivite');
+  const g_src   = v('g_sourcing');
+  const g_jours = v('g_jours_gagnes');
+  const g_mag   = v('g_mag_jour');
+  const gain_delai = impactNet * g_jours * g_mag;   // gain délai d'embauche
+  const gain_ent   = impactNet * (g_rate + g_prod + g_src) + gain_delai;
+
+  // Afficher gain délai dans la sidebar
+  if (document.getElementById('cout_delai_calc'))
+    document.getElementById('cout_delai_calc').textContent = fmt(gain_delai);
+
+  // ── Gains société ──
+  const g_tens         = v('g_tensions');
+  const emplois_nets   = v('g_emplois_nets');          // nombre direct
+  const g_fiscal_empl  = v('g_fiscal_emploi');         // gain fiscal ① / emploi créé
+  const g_fiscal_delai = v('g_fiscal_delai');          // gain fiscal ② / délai
+
+  const gain_tensions    = impactNet * g_tens;
+  const gain_fiscal_empl = emplois_nets * g_fiscal_empl;
+  const gain_fiscal_del  = emplois_nets * g_fiscal_delai;
+  const gain_fiscal_tot  = gain_fiscal_empl + gain_fiscal_del;
+  const gain_soc         = gain_tensions + gain_fiscal_tot;
+  const gain_total       = gain_ent + gain_soc;
+  const gainNetPur       = gain_total - coutTotal;
+  const roi              = coutTotal > 0 ? gain_total / coutTotal : 0;
+
+  // Afficher computed rows société
+  if (document.getElementById('gain_tensions_calc'))
+    document.getElementById('gain_tensions_calc').textContent = fmt(gain_tensions);
+  if (document.getElementById('gain_fiscal_calc'))
+    document.getElementById('gain_fiscal_calc').textContent = fmt(gain_fiscal_tot);
+
+  document.getElementById('kpi_net').textContent     = Math.round(impactNet);
+  document.getElementById('kpi_cout').textContent    = fmt(coutTotal);
+  document.getElementById('kpi_gain').textContent    = fmt(gain_total);
+  document.getElementById('kpi_net_pur').textContent = fmt(gainNetPur);
+  document.getElementById('kpi_roi').textContent     = roi.toFixed(2)+'×';
+
+  const isPos = gainNetPur >= 0;
+  const bPct  = base_impact > 0 ? Math.round((1-impactNet/base_impact)*100) : 0;
+
+  document.getElementById('bilan-table-body').innerHTML = `
+    <tr class="sep-row"><td colspan="4">📤 COÛTS DE L'ACTION</td></tr>
+    <tr><td style="color:var(--red);font-weight:800;width:18px">−</td><td>Ressources Humaines</td><td style="color:var(--slate);font-size:.67rem">${v('tjm').toLocaleString('fr-FR')} €/j × ${v('jours_rh')} j</td><td class="num tr">− ${fmt(cout_rh)}</td></tr>
+    <tr><td style="color:var(--red);font-weight:800">−</td><td>Coût logistique</td><td style="color:var(--slate);font-size:.67rem">—</td><td class="num tr">− ${fmt(v('cout_logistique'))}</td></tr>
+    <tr><td style="color:var(--red);font-weight:800">−</td><td>Aides financières</td><td style="color:var(--slate);font-size:.67rem">—</td><td class="num tr">− ${fmt(v('cout_aides'))}</td></tr>
+    <tr><td style="color:var(--red);font-weight:800">−</td><td>Prestations</td><td style="color:var(--slate);font-size:.67rem">—</td><td class="num tr">− ${fmt(v('cout_prestations'))}</td></tr>
+    <tr><td style="color:var(--red);font-weight:800">−</td><td>Formations</td><td style="color:var(--slate);font-size:.67rem">—</td><td class="num tr">− ${fmt(v('cout_formations'))}</td></tr>
+    <tr class="total-row"><td colspan="3">TOTAL COÛTS</td><td class="nb tr">− ${fmt(coutTotal)}</td></tr>
+    <tr class="spacer-row"><td colspan="4"></td></tr>
+    <tr class="sep-row"><td colspan="4">💼 GAINS ENTREPRISES — ${Math.round(impactNet)} recrutements nets</td></tr>
+    <tr><td style="color:var(--green);font-weight:800">+</td><td>Coût évité de recrutement raté</td><td style="color:var(--slate);font-size:.67rem">${g_rate.toLocaleString('fr-FR')} €/recr. × ${Math.round(impactNet)}</td><td class="num tr">+ ${fmt(impactNet*g_rate)}</td></tr>
+    <tr><td style="color:var(--green);font-weight:800">+</td><td>Gain de productivité / CA</td><td style="color:var(--slate);font-size:.67rem">${g_prod.toLocaleString('fr-FR')} €/recr. × ${Math.round(impactNet)}</td><td class="num tr">+ ${fmt(impactNet*g_prod)}</td></tr>
+    <tr><td style="color:var(--green);font-weight:800">+</td><td>Coût évité de sourcing</td><td style="color:var(--slate);font-size:.67rem">${g_src.toLocaleString('fr-FR')} €/recr. × ${Math.round(impactNet)}</td><td class="num tr">+ ${fmt(impactNet*g_src)}</td></tr>
+    <tr><td style="color:var(--green);font-weight:800">+</td><td>Gain délai d'embauche (manque à gagner évité)</td><td style="color:var(--slate);font-size:.67rem">${g_jours} j × ${g_mag.toLocaleString('fr-FR')} €/j × ${Math.round(impactNet)} recr.</td><td class="num tr">+ ${fmt(gain_delai)}</td></tr>
+    <tr class="total-row"><td colspan="3">TOTAL GAINS ENTREPRISES</td><td class="nb tr">+ ${fmt(gain_ent)}</td></tr>
+    <tr class="spacer-row"><td colspan="4"></td></tr>
+    <tr class="sep-row"><td colspan="4">🌍 GAINS SOCIÉTÉ — Externalités positives</td></tr>
+    <tr><td style="color:var(--teal);font-weight:800">+</td><td>Baisse des tensions du marché du travail</td><td style="color:var(--slate);font-size:.67rem">${g_tens.toLocaleString('fr-FR')} €/recr. × ${Math.round(impactNet)}</td><td class="num tr">+ ${fmt(gain_tensions)}</td></tr>
+    <tr><td style="color:var(--teal);font-weight:800">+</td><td>① Gain fiscal — emplois nets créés</td><td style="color:var(--slate);font-size:.67rem">${g_fiscal_empl.toLocaleString('fr-FR')} €/emploi × ${emplois_nets} emplois</td><td class="num tr">+ ${fmt(gain_fiscal_empl)}</td></tr>
+    <tr><td style="color:var(--teal);font-weight:800">+</td><td>② Gain fiscal — réduction délai (emplois nets)</td><td style="color:var(--slate);font-size:.67rem">${g_fiscal_delai.toLocaleString('fr-FR')} €/emploi × ${emplois_nets} emplois</td><td class="num tr">+ ${fmt(gain_fiscal_del)}</td></tr>
+    <tr class="total-row"><td colspan="3">TOTAL GAINS SOCIÉTÉ</td><td class="nb tr">+ ${fmt(gain_soc)}</td></tr>
+    <tr class="spacer-row"><td colspan="4"></td></tr>
+    <tr class="${isPos?'balance-pos':'balance-neg'}"><td colspan="3">⚖️ GAIN NET PUR (Ent. + Société − Coûts)</td><td class="nb tr">${isPos?'+ ':''}${fmt(gainNetPur)}</td></tr>`;
+
+  document.getElementById('bias-chips').innerHTML =
+    [['Aubaine',val_aub],['Sélection',val_sel],['Proximité',val_prox],['Durabilité',val_dur]]
+    .map(([nm,val])=>`<div class="bias-chip"><span class="cn">${nm}</span><span class="cp">−${base_impact>0?Math.round(val/base_impact*100):0}%</span></div>`).join('');
+
+  renderCharts(
+    ['Recrutements Bruts','− Contrefactuel','− Aubaine','− Sélection','− Proximité','− Durabilité','Recrutements Nets'],
+    [recruts_brut,-recruts_contre,-val_aub,-val_sel,-val_prox,-val_dur,impactNet],
+    'recr.'
+  );
+
+  document.getElementById('dynamic-synthesis').innerHTML = `
+    <p>Sur les <strong>${n} recrutements accompagnés</strong>, la différence brute avec le taux de pourvoi contrefactuel représente <strong>${Math.round(base_impact)} recrutements additionnels</strong>. Les corrections liées aux 4 biais (aubaine, sélection d'entreprises vertueuses, proximité réseau, durabilité du poste) réduisent cet écart de <strong>${bPct}%</strong>, pour un <strong>impact réel de ${Math.round(impactNet)} recrutements aboutis nets</strong>.</p>
+    <p>Les gains entreprises s'élèvent à <strong>${fmt(gain_ent)}</strong>, incluant ${g_jours} jours de délai d'embauche gagnés (${fmt(gain_delai)} de manque à gagner évité). Les externalités positives pour la société atteignent <strong>${fmt(gain_soc)}</strong> — dont ${fmt(gain_tensions)} de baisse de tensions marché et ${fmt(gain_fiscal_tot)} de gains fiscaux sur ${emplois_nets} emplois nets créés (gain emploi + gain délai). ROI global : <strong>${roi.toFixed(2)}×</strong> <span class="verdict-pill ${isPos?'verdict-pos':'verdict-neg'}">${isPos?'✅ ROI Positif':'⚠️ Coût Net'}</span>.</p>
+    <p>Sur le plan qualitatif, le radar de perception illustre la performance collective des acteurs impliqués dans l'action.</p>`;
+}
+
+/* ── Charts ── */
+function renderCharts(labels, data, unit) {
   const ctxW = document.getElementById('waterfallChart').getContext('2d');
   if (waterChart) waterChart.destroy();
+  const colors = ['#64748b','#94a3b8','#ef4444','#f97316','#eab308','#f59e0b','#2563eb'];
+  // Adapt last bar color
+  const barColors = data.map((d,i) => i === data.length-1 ? (appMode==='ent' ? '#0f766e' : '#2563eb') : colors[i] || '#94a3b8');
   waterChart = new Chart(ctxW, {
-    type: 'bar',
-    data: {
-      labels: ['Succès Bruts','− Contrefactuel','− Sélection','− Substitution','− Durabilité','− Aubaine','Impact Net'],
-      datasets: [{ data: [brut,-contre,-val_sel,-val_sub,-val_dur,-val_aub,net],
-        backgroundColor: ['#64748b','#94a3b8','#ef4444','#f97316','#eab308','#f59e0b','#2563eb'], borderRadius: 3 }]
-    },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => '  ' + c.raw.toFixed(1) + ' pers.' } } },
-      scales: {
-        y: { grid: { color: '#f1f5f9' }, ticks: { font: { family: 'Manrope', size: 10 } } },
-        x: { grid: { display: false }, ticks: { font: { family: 'Manrope', size: 9 } } }
+    type:'bar',
+    data:{ labels, datasets:[{ data, backgroundColor: barColors, borderRadius:3 }] },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{legend:{display:false}, tooltip:{callbacks:{label:c=>'  '+c.raw.toFixed(1)+' '+unit}}},
+      scales:{
+        y:{grid:{color:'#f1f5f9'},ticks:{font:{family:'Manrope',size:10}}},
+        x:{grid:{display:false},ticks:{font:{family:'Manrope',size:9}}}
       }
     }
   });
 
   const ctxR = document.getElementById('radarChart').getContext('2d');
   if (radarChart) radarChart.destroy();
-  const scores = ['q_sat','q_syn','q_not','q_eff'].map(id => parseFloat(document.getElementById(id).value) || 0);
+  const scores = ['q_sat','q_syn','q_not','q_eff'].map(id => v(id));
+  const radarColor = appMode==='ent' ? '#0f766e' : '#2563eb';
   radarChart = new Chart(ctxR, {
-    type: 'radar',
-    data: {
-      labels: ['Satisfaction\nClients','Synergie\nActeurs','Notoriété','Sentiment\nEfficacité'],
-      datasets: [{ data: scores, borderColor: '#2563eb', backgroundColor: 'rgba(37,99,235,.1)',
-        pointBackgroundColor: '#2563eb', pointRadius: 4, borderWidth: 2 }]
+    type:'radar',
+    data:{
+      labels:['Satisfaction\nClients','Synergie\nActeurs','Notoriété','Sentiment\nEfficacité'],
+      datasets:[{data:scores,borderColor:radarColor,backgroundColor:radarColor+'1a',pointBackgroundColor:radarColor,pointRadius:4,borderWidth:2}]
     },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      scales: { r: { suggestedMin: 0, suggestedMax: 10, ticks: { display: false }, grid: { color: '#e2e8f0' },
-        pointLabels: { font: { family: 'Manrope', size: 9, weight: '600' }, color: '#475569' } } },
-      plugins: { legend: { display: false } }
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      scales:{r:{suggestedMin:0,suggestedMax:10,ticks:{display:false},grid:{color:'#e2e8f0'},
+        pointLabels:{font:{family:'Manrope',size:9,weight:'600'},color:'#475569'}}},
+      plugins:{legend:{display:false}}
     }
   });
 }
 
-function generateSynthesis(n, net, cout, netPur, roi, base, biaisLabel) {
-  const biasPct = base > 0 ? Math.round((1 - net / base) * 100) : 0;
-  const isPos   = roi >= 1;
-  const vClass  = isPos ? 'verdict-pos' : 'verdict-neg';
-  const vText   = isPos ? '✅ ROI Positif' : '⚠️ Coût Net';
-  const gainSoc = net * ((parseFloat(document.getElementById('g_alloc').value)||0) + (parseFloat(document.getElementById('g_cotis').value)||0));
-  const modeNote = biaisMode === 'confiance'
-    ? `(${biaisLabel})`
-    : `(4 biais appliqués séquentiellement)`;
-  document.getElementById('dynamic-synthesis').innerHTML = `
-    <p>Sur les <strong>${n} bénéficiaires</strong> accompagnés, la différence brute avec le groupe contrefactuel représente <strong>${Math.round(base)} insertions additionnelles</strong>. Les corrections appliquées ${modeNote} réduisent cet écart de <strong>${biasPct}%</strong>, aboutissant à un <strong>impact réel de ${Math.round(net)} bénéficiaires insérés nets</strong>.</p>
-    <p>Le coût total de l'action s'élève à <strong>${fmt(cout)}</strong>. Les gains générés pour les finances publiques atteignent <strong>${fmt(gainSoc)}</strong>, soit un ROI de <strong>${roi.toFixed(2)}×</strong> <span class="verdict-pill ${vClass}">${vText}</span>. Le gain net pur pour la collectivité s'établit à <strong>${fmt(netPur)}</strong>.</p>
-    <p>Sur le plan qualitatif, le radar de perception illustre l'impact ressenti par les acteurs de l'insertion. Des scores uniformément élevés signalent une action robuste et pérenne.</p>
-  `;
-}
-
-window.onload = () => {
-  const now = new Date();
-  const ds  = now.toLocaleDateString('fr-FR', { day:'numeric', month:'long', year:'numeric' });
-  if (document.getElementById('report-date')) document.getElementById('report-date').textContent = ds;
-  if (document.getElementById('pt-date'))     document.getElementById('pt-date').textContent = ds;
-  if (typeof updateConfianceChips === 'function') updateConfianceChips();
-  initTooltips();
-  update();
-};
-
-// ── Tooltip system: fixed-position, escapes sidebar overflow ──
-function initTooltips() {
+/* ── Tooltip ── */
+function initTooltips(){
   const floating = document.createElement('div');
   floating.id = 'tip-floating';
   document.body.appendChild(floating);
-
   document.querySelectorAll('.tip-btn').forEach(btn => {
-    const panel = btn.closest('.tip-wrap').querySelector('.tip-panel');
+    const panel = btn.closest('.tip-wrap')?.querySelector('.tip-panel');
     if (!panel) return;
-
-    btn.addEventListener('mouseenter', () => {
+    btn.addEventListener('mouseenter',()=>{
       floating.innerHTML = panel.innerHTML;
       floating.classList.remove('below');
       floating.classList.add('visible');
       positionTip(btn, floating);
     });
-    btn.addEventListener('mouseleave', () => {
-      floating.classList.remove('visible');
-    });
+    btn.addEventListener('mouseleave',()=>floating.classList.remove('visible'));
   });
 }
-
-function positionTip(btn, floating) {
-  const r   = btn.getBoundingClientRect();
-  const fw  = 280;
-  const fh  = floating.offsetHeight || 240;
-  const vw  = window.innerWidth;
-  const vh  = window.innerHeight;
-  const margin = 8;
-
-  // Horizontal: align to left of button, nudge if off-screen right
-  let left = r.left;
-  if (left + fw > vw - margin) left = vw - fw - margin;
-  if (left < margin) left = margin;
-
-  // Vertical: prefer above, fall back to below
+function positionTip(btn, floating){
+  const r=btn.getBoundingClientRect(), fw=280, fh=floating.offsetHeight||240;
+  const vw=window.innerWidth, vh=window.innerHeight, mg=8;
+  let left=r.left; if(left+fw>vw-mg) left=vw-fw-mg; if(left<mg) left=mg;
   let top;
-  if (r.top - fh - 10 > margin) {
-    top = r.top - fh - 10;
-    floating.classList.remove('below');
-  } else {
-    top = r.bottom + 10;
-    floating.classList.add('below');
-  }
-
-  floating.style.left = left + 'px';
-  floating.style.top  = top  + 'px';
+  if(r.top-fh-10>mg){ top=r.top-fh-10; floating.classList.remove('below'); }
+  else { top=r.bottom+10; floating.classList.add('below'); }
+  floating.style.left=left+'px'; floating.style.top=top+'px';
 }
 
-// ── Dedicated A4 Print Report ──────────────────────────────────────────────
-function printReport() {
-  // Capture charts as base64 images
-  const imgWaterfall = document.getElementById('waterfallChart').toDataURL('image/png');
-  const imgRadar     = document.getElementById('radarChart').toDataURL('image/png');
-
-  // Gather live DOM content
-  const bilanHTML     = document.getElementById('bilan-table-body')?.innerHTML || '';
-  const benefEl       = document.getElementById('benef-table-body');
-  const benefHTML     = benefEl ? benefEl.innerHTML : '';
-  const synthesisHTML = document.getElementById('dynamic-synthesis')?.innerHTML || '';
-
-  // KPI values
+/* ── Print Report ── */
+function printReport(){
+  const imgW = document.getElementById('waterfallChart').toDataURL('image/png');
+  const imgR = document.getElementById('radarChart').toDataURL('image/png');
+  const bilanHTML = document.getElementById('bilan-table-body')?.innerHTML || '';
+  const synthHTML = document.getElementById('dynamic-synthesis')?.innerHTML || '';
   const kpis = [
-    { label:'Impact Net Réel',  val: document.getElementById('kpi_net').textContent,     sub:'Bénéficiaires insérés nets', color:'#2563eb' },
-    { label:'Coût Total',       val: document.getElementById('kpi_cout').textContent,    sub:'Coût global de l\'action',    color:'#d97706' },
-    { label:'Gains Société',    val: document.getElementById('kpi_gain').textContent,    sub:'Finances publiques',          color:'#0891b2' },
-    { label:'Gain Net Pur',     val: document.getElementById('kpi_net_pur').textContent, sub:'Gains − Coûts',               color:'#059669' },
-    { label:'ROI Social',       val: document.getElementById('kpi_roi').textContent,     sub:'Efficience financière',       color:'#7c3aed' },
+    {label:document.getElementById('kpi_net_label').textContent, val:document.getElementById('kpi_net').textContent, color:'#2563eb'},
+    {label:'Coût Total', val:document.getElementById('kpi_cout').textContent, color:'#d97706'},
+    {label:document.getElementById('kpi_gain_label').textContent, val:document.getElementById('kpi_gain').textContent, color:appMode==='ent'?'#0f766e':'#0891b2'},
+    {label:'Gain Net Pur', val:document.getElementById('kpi_net_pur').textContent, color:'#059669'},
+    {label:'ROI', val:document.getElementById('kpi_roi').textContent, color:'#7c3aed'},
   ];
+  const titre = document.getElementById('titre_action')?.value.trim() || '';
+  const terr  = document.getElementById('territoire')?.value.trim() || '';
+  const dateStr = new Date().toLocaleDateString('fr-FR',{day:'numeric',month:'long',year:'numeric'});
+  const modeLabel = appMode==='ent' ? 'Mode Entreprises' : 'Mode Demandeurs d\'Emploi';
+  const themeColor = appMode==='ent' ? '#0f766e' : '#2563eb';
+  const biasBanner = appMode==='ent'
+    ? 'Aubaine · Sélection · Proximité · Durabilité'
+    : 'Sélection · Substitution · Durabilité · Aubaine';
 
-  // Meta
-  const titre     = document.getElementById('titre_action') ? document.getElementById('titre_action').value.trim() : '';
-  const territoire= document.getElementById('territoire')   ? document.getElementById('territoire').value.trim()   : '';
-  const dateStr   = new Date().toLocaleDateString('fr-FR', { day:'numeric', month:'long', year:'numeric' });
-
-  const kpiCards = kpis.map(k => `
-    <div style="background:#fff;border:1px solid #e2e8f0;border-radius:7px;padding:9px 11px;position:relative;overflow:hidden;flex:1">
+  const kpiCards = kpis.map(k=>`
+    <div style="background:#fff;border:1px solid #e2e8f0;border-radius:7px;padding:8px 10px;position:relative;overflow:hidden;flex:1">
       <div style="position:absolute;bottom:0;left:0;right:0;height:3px;background:${k.color}"></div>
-      <div style="font-size:6.5pt;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:#64748b;margin-bottom:4px">${k.label}</div>
-      <div style="font-family:'Aptos','Aptos Display','Calibri',sans-serif;font-size:16pt;font-weight:800;color:#0d1117;line-height:1;margin-bottom:3px;letter-spacing:-.02em">${k.val}</div>
-      <div style="font-size:6pt;color:#94a3b8">${k.sub}</div>
+      <div style="font-size:6pt;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:#64748b;margin-bottom:4px">${k.label}</div>
+      <div style="font-family:'Aptos','Calibri',sans-serif;font-size:15pt;font-weight:800;color:#0d1117;line-height:1;letter-spacing:-.02em">${k.val}</div>
     </div>`).join('');
 
-  const html = `<!DOCTYPE html>
-<html lang="fr">
-<head>
-<meta charset="UTF-8">
-<title>Rapport d'Impact${titre ? ' — ' + titre : ''}</title>
+  const html = `<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8">
+<title>Rapport d'Impact${titre?' — '+titre:''}</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
   *{box-sizing:border-box;margin:0;padding:0}
-  body{
-    font-family:'Manrope',system-ui,sans-serif;
-    background:#fff; color:#0d1117;
-    width:297mm; min-height:210mm;
-    padding:10mm 11mm 8mm;
-    font-size:8pt; line-height:1.45;
-  }
-
-  /* Header */
-  .rpt-header{display:flex;align-items:flex-end;justify-content:space-between;padding-bottom:7px;border-bottom:3px solid #2563eb;margin-bottom:9px}
+  body{font-family:'Manrope',sans-serif;background:#fff;color:#0d1117;width:297mm;min-height:210mm;padding:9mm 10mm 7mm;font-size:7.5pt;line-height:1.45}
+  .rpt-hdr{display:flex;align-items:flex-end;justify-content:space-between;padding-bottom:6px;border-bottom:3px solid ${themeColor};margin-bottom:8px}
   .rpt-logo{display:flex;align-items:center;gap:8px}
-  .rpt-logo-icon{width:28px;height:28px;background:#2563eb;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
-  .rpt-title{font-family:'Aptos','Aptos Display','Calibri',sans-serif;font-size:14pt;font-weight:800;color:#0d1117;line-height:1.1}
-  .rpt-sub{font-size:7pt;color:#64748b;margin-top:2px}
-  .rpt-meta{text-align:right;font-size:7pt;color:#64748b;line-height:1.6}
+  .rpt-logo-icon{width:26px;height:26px;background:${themeColor};border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
+  .rpt-title{font-family:'Aptos','Calibri',sans-serif;font-size:13pt;font-weight:800;color:#0d1117;line-height:1.1}
+  .rpt-sub{font-size:6.5pt;color:#64748b;margin-top:2px}
+  .rpt-meta{text-align:right;font-size:6.5pt;color:#64748b;line-height:1.6}
   .rpt-meta strong{color:#0d1117;font-weight:700}
-
-  /* KPIs */
-  .kpi-row{display:flex;gap:7px;margin-bottom:9px}
-
-  /* Main 3-col grid */
-  .main-grid{display:grid;grid-template-columns:1fr 1fr 0.82fr;gap:9px;align-items:start}
-
-  /* Panels */
-  .panel{background:#fff;border:1px solid #e2e8f0;border-radius:7px;overflow:hidden}
-  .ph{display:flex;align-items:center;gap:5px;padding:5px 9px;border-bottom:1px solid #e2e8f0;background:#f8fafc}
-  .ph-icon{font-size:10px}
-  .ph h2{font-family:'Aptos','Aptos Display','Calibri',sans-serif;font-size:7.5pt;font-weight:800;color:#0d1117}
-
-  /* Table */
-  table{width:100%;border-collapse:collapse;font-size:7pt}
-  thead th{background:#f1f5f9;padding:4px 7px;text-align:left;font-size:5.8pt;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:#64748b;border-bottom:1.5px solid #e2e8f0}
-  tbody td{padding:4px 7px;border-bottom:1px solid #f1f5f9;color:#2d3748;font-weight:500}
+  .kpi-row{display:flex;gap:6px;margin-bottom:8px}
+  .main-grid{display:grid;grid-template-columns:1fr 1fr 0.82fr;gap:8px;align-items:start}
+  .panel{background:#fff;border:1px solid #e2e8f0;border-radius:6px;overflow:hidden}
+  .ph{display:flex;align-items:center;gap:5px;padding:4px 8px;border-bottom:1px solid #e2e8f0;background:#f8fafc}
+  .ph h2{font-family:'Aptos','Calibri',sans-serif;font-size:7pt;font-weight:800;color:#0d1117}
+  table{width:100%;border-collapse:collapse;font-size:6.5pt}
+  thead th{background:#f1f5f9;padding:3px 6px;text-align:left;font-size:5.5pt;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:#64748b;border-bottom:1.5px solid #e2e8f0}
+  tbody td{padding:3.5px 6px;border-bottom:1px solid #f1f5f9;color:#2d3748;font-weight:500}
   tbody tr:last-child td{border-bottom:none}
-  .sep-row td{background:#f8fafc!important;color:#64748b!important;font-size:5.5pt;font-weight:800;text-transform:uppercase;letter-spacing:.06em;padding:3px 7px;border-bottom:1px solid #e2e8f0}
-  .total-row td{background:#059669!important;color:white!important;font-weight:800;font-size:7pt}
-  .balance-pos td{background:#0c4a6e!important;color:white!important;font-weight:800;font-size:7.5pt}
-  .balance-neg td{background:#7f1d1d!important;color:white!important;font-weight:800;font-size:7.5pt}
-  .spacer-row td{height:4px;background:#f7f9fc!important;padding:0!important;border:none!important}
-  .tr{text-align:right}
-  .nb{font-weight:800;font-variant-numeric:tabular-nums}
-  .num{font-variant-numeric:tabular-nums}
-
-  /* Charts */
-  .charts-col{display:flex;flex-direction:column;gap:7px}
+  .sep-row td{background:#f8fafc!important;color:#64748b!important;font-size:5pt;font-weight:800;text-transform:uppercase;letter-spacing:.06em;padding:2.5px 6px;border-bottom:1px solid #e2e8f0}
+  .total-row td{background:#059669!important;color:white!important;font-weight:800;font-size:6.5pt}
+  .balance-pos td{background:#0c4a6e!important;color:white!important;font-weight:800}
+  .balance-neg td{background:#7f1d1d!important;color:white!important;font-weight:800}
+  .spacer-row td{height:3px;background:#f7f9fc!important;padding:0!important;border:none!important}
+  .tr{text-align:right}.nb{font-weight:800}.num{font-variant-numeric:tabular-nums}
+  .charts-col{display:flex;flex-direction:column;gap:6px}
   .chart-img{width:100%;height:auto;display:block}
-
-  /* Synthesis */
-  .synthesis{font-size:7pt;line-height:1.65;color:#2d3748;border-left:3px solid #2563eb;padding-left:10px}
-  .synthesis p{margin-bottom:6px}
-  .synthesis p:last-child{margin-bottom:0}
-  .synthesis strong{color:#0d1117;font-weight:700}
-  .verdict-pos{background:#d1fae5;color:#059669;padding:1px 6px;border-radius:10px;font-size:6pt;font-weight:800}
-  .verdict-neg{background:#fee2e2;color:#dc2626;padding:1px 6px;border-radius:10px;font-size:6pt;font-weight:800}
-
-  /* Benef table */
-  .benef-panel{margin-top:7px}
-
-  /* Footer */
-  .rpt-footer{margin-top:8px;padding-top:5px;border-top:1px solid #e2e8f0;display:flex;align-items:center;justify-content:space-between}
-  .rpt-footer-left{font-size:6pt;color:#94a3b8}
-  .rpt-footer-right{font-size:6pt;color:#94a3b8}
-
-  @media print{
-    *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
-    body{padding:8mm 10mm 6mm}
-    @page{size:A4 landscape;margin:0}
-  }
-</style>
-</head>
-<body>
-
-  <!-- HEADER -->
-  <div class="rpt-header">
-    <div class="rpt-logo">
-      <div class="rpt-logo-icon">⚡</div>
-      <div>
-        <div class="rpt-title">${titre || 'Rapport d\'Impact — Action Emploi'}</div>
-        <div class="rpt-sub">Évaluation financière, qualitative &amp; contrefactuelle</div>
-      </div>
-    </div>
-    <div class="rpt-meta">
-      ${territoire ? `<div><strong>Territoire :</strong> ${territoire}</div>` : ''}
-      <div><strong>Date :</strong> ${dateStr}</div>
-      <div style="margin-top:2px;color:#2563eb;font-weight:700;font-size:6.5pt">Simulateur d'Impact — Actions Emploi</div>
-    </div>
-  </div>
-
-  <!-- KPIs -->
-  <div class="kpi-row">${kpiCards}</div>
-
-  <!-- MAIN 3 COLS -->
-  <div class="main-grid">
-
-    <!-- COL 1 : Bilan financier + bénéficiaire -->
+  .syn{font-size:6.8pt;line-height:1.65;color:#2d3748;border-left:3px solid ${themeColor};padding-left:9px}
+  .syn p{margin-bottom:5px}.syn p:last-child{margin-bottom:0}
+  .syn strong{color:#0d1117;font-weight:700}
+  .verdict-pos{background:#d1fae5;color:#059669;padding:1px 5px;border-radius:8px;font-size:5.5pt;font-weight:800}
+  .verdict-neg{background:#fee2e2;color:#dc2626;padding:1px 5px;border-radius:8px;font-size:5.5pt;font-weight:800}
+  .rpt-footer{margin-top:7px;padding-top:4px;border-top:1px solid #e2e8f0;display:flex;justify-content:space-between}
+  .rpt-footer span{font-size:5.5pt;color:#94a3b8}
+  @media print{*{-webkit-print-color-adjust:exact;print-color-adjust:exact}body{padding:7mm 9mm 5mm}@page{size:A4 landscape;margin:0}}
+</style></head><body>
+<div class="rpt-hdr">
+  <div class="rpt-logo">
+    <div class="rpt-logo-icon">⚡</div>
     <div>
-      <div class="panel">
-        <div class="ph"><span class="ph-icon">⚖️</span><h2>Bilan Financier Consolidé</h2></div>
-        <table>
-          <thead><tr><th></th><th>Poste</th><th>Base</th><th class="tr">Montant</th></tr></thead>
-          <tbody>${bilanHTML}</tbody>
-        </table>
-      </div>
-      ${benefHTML ? `<div class="panel benef-panel">
-        <div class="ph"><span class="ph-icon">💼</span><h2>Gain Individuel Bénéficiaire (informatif)</h2></div>
-        <table>
-          <thead><tr><th>Poste</th><th>Unitaire</th><th class="tr">Total net</th></tr></thead>
-          <tbody>${benefHTML}</tbody>
-        </table>
-      </div>` : ''}
+      <div class="rpt-title">${titre||'Rapport d\'Impact — Action Emploi'}</div>
+      <div class="rpt-sub">${modeLabel} · Évaluation financière, qualitative &amp; contrefactuelle</div>
     </div>
-
-    <!-- COL 2 : Charts -->
-    <div class="charts-col">
-      <div class="panel">
-        <div class="ph"><span class="ph-icon">📉</span><h2>Cascade d'Impact — Décomposition des Biais</h2></div>
-        <div style="padding:8px"><img class="chart-img" src="${imgWaterfall}" alt="Cascade d'impact"></div>
-      </div>
-      <div class="panel">
-        <div class="ph"><span class="ph-icon">🕸️</span><h2>Radar d'Équilibre — Qualitatif Acteurs</h2></div>
-        <div style="padding:8px"><img class="chart-img" src="${imgRadar}" alt="Radar qualitatif"></div>
-      </div>
-    </div>
-
-    <!-- COL 3 : Synthèse -->
-    <div class="panel" style="height:100%">
-      <div class="ph"><span class="ph-icon">📝</span><h2>Synthèse des Résultats</h2></div>
-      <div style="padding:10px 11px">
-        <div class="synthesis">${synthesisHTML}</div>
-      </div>
-    </div>
-
   </div>
-
-  <!-- FOOTER -->
-  <div class="rpt-footer">
-    <span class="rpt-footer-left">Généré le ${dateStr} via le Simulateur d'Impact — Actions Emploi</span>
-    <span class="rpt-footer-right">Les résultats sont calculés après correction des 4 biais d'évaluation (Sélection · Substitution · Durabilité · Aubaine)</span>
+  <div class="rpt-meta">
+    ${terr?`<div><strong>Territoire :</strong> ${terr}</div>`:''}
+    <div><strong>Date :</strong> ${dateStr}</div>
+    <div style="color:${themeColor};font-weight:700;font-size:6pt;margin-top:1px">Simulateur d'Impact — Actions Emploi</div>
   </div>
-
-<script>window.onload=()=>{setTimeout(()=>window.print(),400)}<\/script>
+</div>
+<div class="kpi-row">${kpiCards}</div>
+<div class="main-grid">
+  <div>
+    <div class="panel">
+      <div class="ph"><h2>⚖️ Bilan Financier Consolidé</h2></div>
+      <table><thead><tr><th></th><th>Poste</th><th>Base</th><th class="tr">Montant</th></tr></thead>
+      <tbody>${bilanHTML}</tbody></table>
+    </div>
+  </div>
+  <div class="charts-col">
+    <div class="panel"><div class="ph"><h2>📉 Cascade d'Impact</h2></div><div style="padding:6px"><img class="chart-img" src="${imgW}"></div></div>
+    <div class="panel"><div class="ph"><h2>🕸️ Radar Qualitatif Acteurs</h2></div><div style="padding:6px"><img class="chart-img" src="${imgR}"></div></div>
+  </div>
+  <div class="panel">
+    <div class="ph"><h2>📝 Synthèse des Résultats</h2></div>
+    <div style="padding:9px 10px"><div class="syn">${synthHTML}</div></div>
+  </div>
+</div>
+<div class="rpt-footer">
+  <span>Généré le ${dateStr} · Simulateur d'Impact — Actions Emploi · ${modeLabel}</span>
+  <span>Résultats après correction des 4 biais d'évaluation : ${biasBanner}</span>
+</div>
+<script>window.onload=()=>{setTimeout(()=>window.print(),450)}<\/script>
 </body></html>`;
 
-  const win = window.open('', '_blank');
+  const win = window.open('','_blank');
   win.document.write(html);
   win.document.close();
 }
 
-function closeModal() {
-  const m = document.getElementById('launch-modal');
-  m.style.opacity = '0';
-  m.style.transition = 'opacity .2s ease';
-  setTimeout(() => m.remove(), 220);
-}
+/* ── Init ── */
+window.onload = () => {
+  const ds = new Date().toLocaleDateString('fr-FR',{day:'numeric',month:'long',year:'numeric'});
+  if(document.getElementById('report-date')) document.getElementById('report-date').textContent = ds;
+  updateConfianceChips();
+  setBiaisMode('detail');
+  initTooltips();
+  update();
+};
 </script>
-<!-- ── LAUNCH MODAL ── -->
-<div class="modal-overlay" id="launch-modal">
-  <div class="modal-box">
-    <div class="modal-top">
-      <div class="modal-top-icon">⚡</div>
-      <h2>Simulateur d'Impact — Actions Emploi</h2>
-      <p>Évaluation financière, qualitative &amp; contrefactuelle de vos actions d'insertion</p>
-    </div>
-    <div class="modal-body">
-      <div class="modal-steps">
-        <div class="modal-step">
-          <div class="step-num">1</div>
-          <div class="step-text">
-            <strong>Renseignez les coûts de votre action</strong>
-            <span>TJM, jours d'accompagnement, logistique, aides, prestations et formations. Le coût total est calculé automatiquement.</span>
-          </div>
-        </div>
-        <div class="modal-step">
-          <div class="step-num">2</div>
-          <div class="step-text">
-            <strong>Saisissez vos résultats observés</strong>
-            <span>Nombre de bénéficiaires, taux d'accès à l'emploi de l'action et du groupe contrefactuel (population identique sans intervention).</span>
-          </div>
-        </div>
-        <div class="modal-step">
-          <div class="step-num">3</div>
-          <div class="step-text">
-            <strong>Calibrez les 4 biais d'évaluation</strong>
-            <span>Sélection, substitution, durabilité et aubaine. Chaque biais est documenté avec une méthode de mesure concrète (bouton <em>? Aide</em>).</span>
-          </div>
-        </div>
-        <div class="modal-step">
-          <div class="step-num">4</div>
-          <div class="step-text">
-            <strong>Analysez les résultats en temps réel</strong>
-            <span>Les KPIs, le bilan financier consolidé, la cascade d'impact et la synthèse se mettent à jour à chaque modification.</span>
-          </div>
-        </div>
-      </div>
-      <div class="modal-note">
-        💡 <strong>Tous les paramètres sont pliés par défaut.</strong> Dépliez chaque section dans la colonne de gauche pour saisir vos données. Les valeurs pré-remplies sont des exemples indicatifs.
-      </div>
-      <button class="modal-cta" onclick="closeModal()">Commencer la saisie des paramètres →</button>
-    </div>
-  </div>
-</div>
-
 </body>
+</html>
